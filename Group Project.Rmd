@@ -5,26 +5,43 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Please push to GitHub a word document or PDF with the following information -
 
-## R Markdown
+**Project option selection**
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+We are choosing to do Scenario 3 for our group project.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
-```
+**Create git repository**
 
-## Including Plots
+Link to our group's git repository: https://github.com/christine-truong/phw251-group-project
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+**Meeting Planning**
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Team's preferred communication method (email, text, bcourse messaging, etc.):
+Meetings (When? How frequently will you meet? Are there times or days that work well for everyone?):
+Future non-academic commitments that might affect members' availability:
+Meeting tempo (“checking in” at the beginning of meetings versus “just sticking to business”):
+
+
+EXTRA BULLETPOINTS LISTED ON ASSIGNMENT (SOME REPETITIVE):
+
+_**Roles and responsibilities**_
+
+Team's preferred communication method:
+Team's preferred meeting times and frequency:
+Team's preferred method for tracking progress:
+Point person for contacting course facilitators with questions:
+Point person for submitting all milestones:
+
+**Roles**
+
+How is your team going to keep track of progress? Who will be taking minutes, creating agendas, and contacting the course facilitators with questions?
+We encourage you to discuss potential dates and times to meet with a course facilitator during Weeks 3-5. Decide on the best date and time for all.
+Determine a point person to submit each assignment for the team.
+
+**Conflict Management (Not really something to write up here?)**
+
+If a conflict arises, plan to solve the issue as soon as possible. This is best done using synchronous (Zoom, Google Hangouts) communication rather than asynchronous (email).
+If the group is unable to resolve the conflict, seek advice from the instructional team.
