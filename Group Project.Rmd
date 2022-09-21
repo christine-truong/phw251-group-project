@@ -2,7 +2,9 @@
 title: "Group Project"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 Please push to GitHub a word document or PDF with the following information -
