@@ -1,5 +1,5 @@
 ---
-title: "Group Project"
+title: "Milestone #1"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
 date: "`r Sys.Date()`"
 output:
