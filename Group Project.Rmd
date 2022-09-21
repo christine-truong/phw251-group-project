@@ -19,7 +19,8 @@ Link to our group's git repository: https://github.com/christine-truong/phw251-g
 
 **Meeting Planning**
 
-Team's preferred communication method (email, text, bcourse messaging, etc.):
+Team's preferred communication method (email, text, bcourse messaging, etc.): 
+  Our preferred method of communication is text. 
 Meetings (When? How frequently will you meet? Are there times or days that work well for everyone?):
 Future non-academic commitments that might affect members' availability:
 Meeting tempo (“checking in” at the beginning of meetings versus “just sticking to business”):
