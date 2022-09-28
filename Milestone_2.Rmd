@@ -6,3 +6,29 @@ output:
   pdf_document: default
   html_document: default
 ---
+
+What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)
+
+
+How does the dataset relate to the group problem statement and question?
+
+
+Use appropriate import function and package based on type of file: 
+
+
+Utilize function arguments to control relevant components:
+
+
+Document the import process: 
+
+
+Identify 5+ data elements required for your specified scenario: 
+
+
+Utilize functions or resources in RStudio to determine the types of each data element: 
+
+
+Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?: 
+
+
+Provide a basic description of 5+ data elements(numeric/character/other descriptives): 
