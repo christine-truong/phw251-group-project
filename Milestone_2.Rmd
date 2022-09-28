@@ -1,0 +1,8 @@
+---
+title: "Milestone #2"
+author: "Rachael Baartmans, Lara Petalio, Christine Truong"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document: default
+---
