@@ -15,8 +15,9 @@ How does the dataset relate to the group problem statement and question?
 
 Use appropriate import function and package based on type of file: 
 ```{r}
-
-race_data <-read.csv(file='ca_csc_outcome_race_data.csv')
+library(tidyverse)
+race_data <-read_csv("~/phw251-group-project/ca_csc_outcome_race_data.csv")
+smoker_data <- read_csv("~/phw251-group-project/ca_csc_smoker_data.csv")
 ```
 
 
