@@ -7,33 +7,66 @@ output:
   html_document: default
 ---
 
-What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)
+##What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)
 
+look at project page for description
 
-How does the dataset relate to the group problem statement and question?
+**LARA**
 
+##How does the dataset relate to the group problem statement and question?
 
-Use appropriate import function and package based on type of file: 
-```{r}
+Exposure: tobacco smoke
+Side exposures: race, location of cigarette purchase
+Disease of interest: mental illness
+
+**LARA**
+
+##Use appropriate import function and package based on type of file: 
+```{r importing our data}
 library(tidyverse)
 race_data <-read_csv("ca_csc_outcome_race_data.csv")
 smoker_data <- read_csv("ca_csc_smoker_data.csv")
+# read_csv(file,
+#          col_names = TRUE,
+#          col_types = NULL,
+#          locale = default_locale(),
+#          na = c("", "NA"),
+#          quoted_na = TRUE,
+#          quote = "\"",
+#          comment = "", 
+#          trim_ws = TRUE, 
+#          skip = 0,
+#          n_max = Inf, 
+#          guess_max = min(1000, n_max),
+#          progress = show_progress(), 
+#          skip_empty_rows = TRUE)
+#ADD LATER
+#CHRISTINE
 ```
 
 
-Utilize function arguments to control relevant components:
+##Utilize function arguments to control relevant components:
+Add read_csv additional arguments later.
+**CHRISTINE**
 
+##Document the import process: 
+Write up a hashtagged paragraph under importing code to describe what we did and why.
+**CHRISTINE**
 
-Document the import process: 
+##Identify 5+ data elements required for your specified scenario: 
+In smoker_data: "WHEREBUY"
+~ Need to ask on ED discussion board for more information.
+**CHRISTINE WILL ASK MORE ABOUT THIS ON ED DISCUSSION; ALL MEMBERS WILL DISCUSS FINAL ANSWER TOGETHER ON SUNDAY**
 
+##Utilize functions or resources in RStudio to determine the types of each data element: 
+class(), typeof() functions used on variables in each relevant dataset.
+**Rachael**
 
-Identify 5+ data elements required for your specified scenario: 
+##Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?: 
+as.numeric(), as.Date(), as.factor(), etc. functions if needed after viewing data types using str() or summary().
+**Rachael**
 
-
-Utilize functions or resources in RStudio to determine the types of each data element: 
-
-
-Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?: 
-
-
-Provide a basic description of 5+ data elements(numeric/character/other descriptives): 
+##Provide a basic description of 5+ data elements(numeric/character/other descriptives):
+Numeric -- use summarize() function
+Character -- unique()
+For other descriptives, will think of later when we come to them.
