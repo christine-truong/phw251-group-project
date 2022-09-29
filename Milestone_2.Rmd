@@ -24,8 +24,11 @@ Disease of interest: mental illness
 ##Use appropriate import function and package based on type of file: 
 ```{r importing our data}
 library(tidyverse)
-race_data <-read_csv("ca_csc_outcome_race_data.csv")
-smoker_data <- read_csv("ca_csc_smoker_data.csv")
+race_data <-read_csv("ca_csc_outcome_race_data.csv", col_types = cols_only(NERVOUS = col_factor(), WORRYING = col_factor(), PROBINTR = col_factor(), PROBDOWN = col_factor(), OPHYSILL = col_factor(), race01 = col_factor(), race02 = col_factor(), race03 = col_factor(), race04 = col_factor(), race05 = col_factor(), race06 = col_factor(), race07 = col_factor(), race08 = col_factor(), race09 = col_factor(), race10 = col_factor(), race11 = col_factor()))
+smoker_data <- read_csv("ca_csc_smoker_data.csv", col_types = cols_only(smokstat = col_factor(), WHEREBUY = col_character(), BUYCALIF = col_character()))
+#Description of import process: We utilized the read_csv() function from the R readr package to import/read in our two csv-formatted data sets (one at a time) that contain information regarding the demographics, behaviors, smoking status, disease outcome, and race of individuals in the 2011 California Smokers Cohort. For the arguments of the read_csv() function, we only used col_types in order to specify the data types we wanted each column in the data sets to be imported as; no other arguments were deemed necessary to include in our code, as the data sets did not initially appear to have any missing values read incorrectly by R (i.e., not "NA") or any mislabeled columns or empty rows. We also included a nested function of cols_only() within the col_types argument so that we could read in only a subset of the columns from the original data sets, which were our variables of interest for the this project. In the data set containing demographic/behavioral/race information about the study participants, our variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, OPHYSILL, race01, race02, race03, race04, race05, race06, race07, race08, race09, race10. In the data set containing smoking status/location of cigarette purchase/disease outcomes, our variables of interest are smokstat, WHEREBUY, and BUYCALIF. When our group imported each data set into R separately with the read_csv() function, we also assigned each subsetted csv to separate objects, which are called race_data and smoker_data.
+
+#can delete below if group is ok with current code above
 # read_csv(file,
 #          col_names = TRUE,
 #          col_types = NULL,
@@ -40,22 +43,34 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv")
 #          guess_max = min(1000, n_max),
 #          progress = show_progress(), 
 #          skip_empty_rows = TRUE)
-#ADD LATER
 #CHRISTINE
 ```
-
-
 ##Utilize function arguments to control relevant components:
 Add read_csv additional arguments later.
-**CHRISTINE**
+**CHRISTINE** - added arguments to code chunk above (09/28/22)
 
 ##Document the import process: 
 Write up a hashtagged paragraph under importing code to describe what we did and why.
-**CHRISTINE**
+**CHRISTINE** - wrote hashtagged descriptive paragraph in code chunk above (09/28/22)
 
-##Identify 5+ data elements required for your specified scenario: 
-In smoker_data: "WHEREBUY"
-~ Need to ask on ED discussion board for more information.
+##Identify 5+ data elements required for your specified scenario:
+Instructions: "In addition to smoking status, CDPH would like for you to explore the impact of race and at least one social (income, education) or one behavioral (location of cigarette purchase, type of cigarette purchase, brand of cigarette) factor on disease status. Your team may pick your disease of interest (e.g. asthma, heart disease, diabetes, physical illness, and mental illness) to analyze further."
+
+_In smoker_data:_
+*"smokstat" -- assigns smoking status
+*"WHEREBUY" -- where you buy cigarettes?
+*"BUYCALIF" -- do/did you usually buy your cigarettes...
+*"NERVOUS" -- felt nervous, anxious, or on edge?
+*"WORRYING" -- not been able to stop or control worrying?
+*"PROBINTR" -- felt little interest or pleasure in doing things?
+*"PROBDOWN" -- felt down, depressed, or hopeless?
+*"OPHYSILL" -- has a physician ever told you that you have any mental illness?
+
+_In race_data:_
+*race01:race11 --> excluded race14 (REFUSED) and race15 (DON'T KNOW) because these don't specify race
+
+Total: 8 + 11 = 19 data elements/variables
+
 **CHRISTINE WILL ASK MORE ABOUT THIS ON ED DISCUSSION; ALL MEMBERS WILL DISCUSS FINAL ANSWER TOGETHER ON SUNDAY**
 
 ##Utilize functions or resources in RStudio to determine the types of each data element: 
@@ -65,6 +80,7 @@ class(), typeof() functions used on variables in each relevant dataset.
 ##Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?: 
 as.numeric(), as.Date(), as.factor(), etc. functions if needed after viewing data types using str() or summary().
 **Rachael**
+**We already changed the data type during the importing process of the data sets to the types we desire per variable -- there shouldn't be a need to convert any columns to numeric or other type at this point - Christine**
 
 ##Provide a basic description of 5+ data elements(numeric/character/other descriptives):
 Numeric -- use summarize() function
