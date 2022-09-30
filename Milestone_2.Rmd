@@ -9,9 +9,8 @@ output:
 
 ##What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)
 
-look at project page for description
+The data being utilized for this project is from the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that aimed to investigate tobacco use and behaviors among smokers in California to assess the effectiveness of smoking cessation strategies. It was sponsored by the California Department of Public Health (CDPH), and data was collected between July 8, 2011 and December 8, 2011.
 
-**LARA**
 
 ##How does the dataset relate to the group problem statement and question?
 
