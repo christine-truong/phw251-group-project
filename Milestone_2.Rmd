@@ -7,20 +7,24 @@ output:
   html_document: default
 ---
 
-##What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)
+**What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
 
-The data being utilized for this project is from the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that aimed to investigate tobacco use and behaviors among smokers in California to assess the effectiveness of smoking cessation strategies. It was sponsored by the California Department of Public Health (CDPH), and data was collected between July 8, 2011 and December 8, 2011.
+The data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that aimed to investigate statewide tobacco use and behaviors among smokers to assess the effectiveness of smoking cessation strategies in California. It was sponsored by the California Department of Public Health (CDPH), and the data was collected between July 8, 2011 and December 8, 2011.
+\newline
 
+**How does the dataset relate to the group problem statement and question?**
 
-##How does the dataset relate to the group problem statement and question?
+For this project, we aim to investigate how tobacco use impact mental illness among smokers in California in 2011. We also aim to explore how race and location of cigarette purchase can impact disease status. (NEED TO ADD STEPS ON DATA MANIPULATION)
+
 
 Exposure: tobacco smoke
 Side exposures: race, location of cigarette purchase
 Disease of interest: mental illness
+\newline
 
-**LARA**
 
-##Use appropriate import function and package based on type of file: 
+**Use appropriate import function and package based on type of file:**
+
 ```{r importing our data}
 library(tidyverse)
 race_data <-read_csv("ca_csc_outcome_race_data.csv", col_types = cols_only(NERVOUS = col_factor(), WORRYING = col_factor(), PROBINTR = col_factor(), PROBDOWN = col_factor(), OPHYSILL = col_factor(), race01 = col_factor(), race02 = col_factor(), race03 = col_factor(), race04 = col_factor(), race05 = col_factor(), race06 = col_factor(), race07 = col_factor(), race08 = col_factor(), race09 = col_factor(), race10 = col_factor(), race11 = col_factor()))
@@ -44,44 +48,49 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv", col_types = cols_only(smokstat
 #          skip_empty_rows = TRUE)
 #CHRISTINE
 ```
-##Utilize function arguments to control relevant components:
+**Utilize function arguments to control relevant components:**
 Add read_csv additional arguments later.
 **CHRISTINE** - added arguments to code chunk above (09/28/22)
+\newline
 
-##Document the import process: 
+**Document the import process:**
 Write up a hashtagged paragraph under importing code to describe what we did and why.
 **CHRISTINE** - wrote hashtagged descriptive paragraph in code chunk above (09/28/22)
+\newline
 
-##Identify 5+ data elements required for your specified scenario:
-Instructions: "In addition to smoking status, CDPH would like for you to explore the impact of race and at least one social (income, education) or one behavioral (location of cigarette purchase, type of cigarette purchase, brand of cigarette) factor on disease status. Your team may pick your disease of interest (e.g. asthma, heart disease, diabetes, physical illness, and mental illness) to analyze further."
+**Identify 5+ data elements required for your specified scenario:**
+\newline Instructions: "In addition to smoking status, CDPH would like for you to explore the impact of race and at least one social (income, education) or one behavioral (location of cigarette purchase, type of cigarette purchase, brand of cigarette) factor on disease status. Your team may pick your disease of interest (e.g. asthma, heart disease, diabetes, physical illness, and mental illness) to analyze further."
+
 
 _In smoker_data:_
-*"smokstat" -- assigns smoking status
-*"WHEREBUY" -- where you buy cigarettes?
-*"BUYCALIF" -- do/did you usually buy your cigarettes...
-*"NERVOUS" -- felt nervous, anxious, or on edge?
-*"WORRYING" -- not been able to stop or control worrying?
-*"PROBINTR" -- felt little interest or pleasure in doing things?
-*"PROBDOWN" -- felt down, depressed, or hopeless?
-*"OPHYSILL" -- has a physician ever told you that you have any mental illness?
+\newline "smokstat" -- assigns smoking status
+\newline "WHEREBUY" -- where you buy cigarettes?
+\newline "BUYCALIF" -- do/did you usually buy your cigarettes...
+\newline "NERVOUS" -- felt nervous, anxious, or on edge?
+\newline "WORRYING" -- not been able to stop or control worrying?
+\newline "PROBINTR" -- felt little interest or pleasure in doing things?
+\newline "PROBDOWN" -- felt down, depressed, or hopeless?
+\newline "OPHYSILL" -- has a physician ever told you that you have any mental illness?
 
 _In race_data:_
-*race01:race11 --> excluded race14 (REFUSED) and race15 (DON'T KNOW) because these don't specify race
+\newline race01:race11 --> excluded race14 (REFUSED) and race15 (DON'T KNOW) because these don't specify race
 
 Total: 8 + 11 = 19 data elements/variables
 
 **CHRISTINE WILL ASK MORE ABOUT THIS ON ED DISCUSSION; ALL MEMBERS WILL DISCUSS FINAL ANSWER TOGETHER ON SUNDAY**
 
-##Utilize functions or resources in RStudio to determine the types of each data element: 
+**Utilize functions or resources in RStudio to determine the types of each data element:**
 class(), typeof() functions used on variables in each relevant dataset.
 **Rachael**
+\newline
 
-##Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?: 
+**Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?:**
 as.numeric(), as.Date(), as.factor(), etc. functions if needed after viewing data types using str() or summary().
 **Rachael**
 **We already changed the data type during the importing process of the data sets to the types we desire per variable -- there shouldn't be a need to convert any columns to numeric or other type at this point - Christine**
+\newline
 
-##Provide a basic description of 5+ data elements(numeric/character/other descriptives):
+**Provide a basic description of 5+ data elements(numeric/character/other descriptives):**
 Numeric -- use summarize() function
 Character -- unique()
 For other descriptives, will think of later when we come to them.
