@@ -9,17 +9,12 @@ output:
 
 **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
 
-The data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that aimed to investigate statewide tobacco use and behaviors among smokers to assess the effectiveness of smoking cessation strategies in California. It was sponsored by the California Department of Public Health (CDPH), and the data was collected between July 8, 2011 and December 8, 2011.
+Containing two data sets, the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that aimed to investigate statewide tobacco use and behaviors among smokers to assess the effectiveness of smoking cessation strategies in California. It was sponsored by the California Department of Public Health (CDPH), and data was collected among smokers identified through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011.
 \newline
 
 **How does the dataset relate to the group problem statement and question?**
 
-For this project, we aim to investigate how tobacco use impact mental illness among smokers in California in 2011. We also aim to explore how race and location of cigarette purchase can impact disease status. (NEED TO ADD STEPS ON DATA MANIPULATION)
-
-
-Exposure: tobacco smoke
-Side exposures: race, location of cigarette purchase
-Disease of interest: mental illness
+For this project, we aim to investigate how tobacco use impact mental illness among smokers in California in 2011 as well as explore how race and location of cigarette purchase can impact disease status. Since the data source include two separate data sets, they need to be joined by participant's ID, and present only the information necessary for our study, namely the participants' smoking status, location of cigarette purchase, race, and health outcomes. Tobacco consumption will also be compared to at least four disease outcomes (NEED TO CHOOSE FOUR: asthma, heart disease, diabetes, physical illness, and/or mental illness). We hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies at the end of the study.
 \newline
 
 
@@ -29,6 +24,7 @@ Disease of interest: mental illness
 library(tidyverse)
 race_data <-read_csv("ca_csc_outcome_race_data.csv", col_types = cols_only(NERVOUS = col_factor(), WORRYING = col_factor(), PROBINTR = col_factor(), PROBDOWN = col_factor(), OPHYSILL = col_factor(), race01 = col_factor(), race02 = col_factor(), race03 = col_factor(), race04 = col_factor(), race05 = col_factor(), race06 = col_factor(), race07 = col_factor(), race08 = col_factor(), race09 = col_factor(), race10 = col_factor(), race11 = col_factor()))
 smoker_data <- read_csv("ca_csc_smoker_data.csv", col_types = cols_only(smokstat = col_factor(), WHEREBUY = col_character(), BUYCALIF = col_character()))
+
 #Description of import process: We utilized the read_csv() function from the R readr package to import/read in our two csv-formatted data sets (one at a time) that contain information regarding the demographics, behaviors, smoking status, disease outcome, and race of individuals in the 2011 California Smokers Cohort. For the arguments of the read_csv() function, we only used col_types in order to specify the data types we wanted each column in the data sets to be imported as; no other arguments were deemed necessary to include in our code, as the data sets did not initially appear to have any missing values read incorrectly by R (i.e., not "NA") or any mislabeled columns or empty rows. We also included a nested function of cols_only() within the col_types argument so that we could read in only a subset of the columns from the original data sets, which were our variables of interest for the this project. In the data set containing demographic/behavioral/race information about the study participants, our variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, OPHYSILL, race01, race02, race03, race04, race05, race06, race07, race08, race09, race10. In the data set containing smoking status/location of cigarette purchase/disease outcomes, our variables of interest are smokstat, WHEREBUY, and BUYCALIF. When our group imported each data set into R separately with the read_csv() function, we also assigned each subsetted csv to separate objects, which are called race_data and smoker_data.
 
 #can delete below if group is ok with current code above
