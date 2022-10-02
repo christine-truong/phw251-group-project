@@ -76,6 +76,15 @@ Total: 8 + 11 = 19 data elements/variables
 **CHRISTINE WILL ASK MORE ABOUT THIS ON ED DISCUSSION; ALL MEMBERS WILL DISCUSS FINAL ANSWER TOGETHER ON SUNDAY**
 
 **Utilize functions or resources in RStudio to determine the types of each data element:**
+```{r}
+#typeof(race_data)
+#typeof
+#class(race_data)
+#class
+#typeof(smoker_data)
+#class(smoker_data)
+```
+
 class(), typeof() functions used on variables in each relevant dataset.
 **Rachael**
 \newline
