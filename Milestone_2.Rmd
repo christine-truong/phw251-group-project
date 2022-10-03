@@ -11,7 +11,7 @@ output:
 
 **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
 
-Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use in California and behaviors among smokers in order to inform tobacco prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates factors associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011.
+Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use in California and behaviors among smokers in order to inform tobacco prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates characters associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011.
 \newline
 
 **How does the data set relate to the group problem statement and question?**
@@ -25,144 +25,161 @@ For this project, we aim to investigate how tobacco use primarily impacts mental
 ```{r importing our data}
 library(readr)
 race_data <-read_csv("ca_csc_outcome_race_data.csv",
-                     col_types = cols_only(NERVOUS = col_factor(),
-                                           WORRYING = col_factor(),
-                                           PROBINTR = col_factor(),
-                                           PROBDOWN = col_factor(),
-                                           OPHYSILL = col_factor(),
-                                           ASTHMA = col_factor(),
-                                           HEARTDIS = col_factor(),
-                                           DIABETES = col_factor(),
-                                           race01 = col_factor(),
-                                           race02 = col_factor(), 
-                                           race03 = col_factor(),
-                                           race04 = col_factor(), 
-                                           race05 = col_factor(),
-                                           race06 = col_factor(), 
-                                           race07 = col_factor(),
-                                           race08 = col_factor(),
-                                           race09 = col_factor(),
-                                           race10 = col_factor(), 
-                                           race11 = col_factor(),
-                                           race12 = col_factor(),
-                                           race13 = col_factor(),
-                                           race14 = col_factor(),
-                                           race15 = col_factor()),
-                    na = c("", "NA", "*", "n/a"))
+            col_select = c(NERVOUS, WORRYING, PROBINTR,
+                           PROBDOWN, OPHYSILL, ASTHMA, HEARTDIS,
+                           DIABETES, race01, race02, race03,
+                           race04, race05, race06, race07, race08,
+                           race09, race10, race11, race12, race13,
+                           race14, race15),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
+
 smoker_data <- read_csv("ca_csc_smoker_data.csv",
-                      col_types = cols_only(smokstat = col_factor(),
-                                          WHEREBUY = col_character(),
-                                          BUYCALIF = col_character(),
-                                          HOWMANY = col_factor(),
-                                          SMOK6NUM = col_double(),
-                                          SMOK6UNI = col_factor()),
-                    na = c("", "NA", "*", "n/a")))
+            col_select = c(smokstat, WHEREBUY, BUYCALIF,
+                           HOWMANY, SMOK6NUM, SMOK6UNI),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
 ```
 
 **Utilize function arguments to control relevant components:**
-Arguments added to code chunk above to specify data types and import specific columns/variables of interest. 
+\newline
+Argument of col_select was added to read_csv() function above to import only specific columns/variables of interest, as well as na for R to read in missing values as "NA." 
 \newline
 
-**Document the import process:** We utilized the read_csv() function from the R
-readr package to import/read in our two csv-formatted data sets (one at a time)
-that contain information regarding the demographics, behaviors, smoking status,
-disease outcomes, and race of individuals in the 2011 California Smokers Cohort.
-For the arguments of the read_csv() function, we only used col_types in order
-to specify the data types we wanted each column in the data sets to be imported
-as; no other arguments were deemed necessary to include in our code, as the data
-sets did not initially appear to have any missing values read incorrectly by R
-(i.e., not "NA") or any mislabeled columns or empty rows. We also included a
-nested function of cols_only() within the col_types argument so that we could
-read in only a subset of the columns from the original data sets, which were our
-variables of interest for the this project. In the data set containing
-demographic/behavioral/race information about the study participants, our
-variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, OPHYSILL, ASTHMA, HEARTDIS, DIABETES,
+**Document the import process:**
+\newline
+We utilized the read_csv() function from the R readr package to import/read in our two csv-formatted data sets (one at a time) that contain information regarding the demographics, behaviors, smoking status, disease outcomes, and race of individuals in the 2011 California Smokers Cohort.
+For the arguments of the read_csv() function, we used col_select to read in only a subset of the columns from the original data sets, which were our variables of interest for the this project.
+In addition, we included the argument of na in our read_csv() functions for both data sets in order to indicate that any missing values that show up as blank or "(DO NOT READ)"/"n/a"/any variations of N/A are identified as NA values in R.
+During the importing process, each subsetted data set was assigned to two separate objects, which are called race_data and smoker_data.
+In the data set containing demographic/behavioral/race information about the study participants (i.e., data set labeled race_data), our variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, OPHYSILL, ASTHMA, HEARTDIS, DIABETES,
 race01, race02, race03, race04, race05, race06, race07, race08, race09, race10, race11, race12, race13, race14, and race15.
-In the data set containing smoking status/location of cigarette purchase/disease
-outcomes, our variables of interest are smokstat, WHEREBUY, BUYCALIF, HOWMANY, SMOK6NUM, and SMO6UNI. When
-our group imported each data set into R separately with the read_csv() function,
-we also assigned each subsetted csv to separate objects, which are called
-race_data and smoker_data.
+In the data set containing smoking status/location of cigarette purchase/disease outcomes (i.e., data set labeled as smoker_data), our variables of interest are smokstat, WHEREBUY, BUYCALIF, HOWMANY, SMOK6NUM, and SMOK6UNI.
 \newpage
 
 ## Identify types for 5+ data elements/columns/variables
 **Identify 5+ data elements required for your specified scenario:**
 \newline 
 
-_In smoker_data:_
-\newline "smokstat" -- assigns smoking status
-\newline "WHEREBUY" -- where you buy cigarettes?
-\newline "BUYCALIF" -- do/did you usually buy your cigarettes...
-\newline "NERVOUS" -- felt nervous, anxious, or on edge?
-\newline "WORRYING" -- not been able to stop or control worrying?
-\newline "PROBINTR" -- felt little interest or pleasure in doing things?
-\newline "PROBDOWN" -- felt down, depressed, or hopeless?
-\newline "OPHYSILL" -- has a physician ever told you that you have any mental illness?
-
 _In race_data:_
-\newline race01:race11 --> excluded race14 (REFUSED) and race15 (DON'T KNOW) because these don't specify race
+\newline NERVOUS -- "Over the past 2 weeks, how often have you felt nervous, anxious, or on edge?"
+\newline WORRYING -- "Over the past 2 weeks, how often have you not been able to stop or control worrying?"
+\newline PROBINTR -- "Over the past 2 weeks, how often have you felt little interest or pleasure in doing things?"
+\newline PROBDOWN -- "Over the past 2 weeks, how often have you felt down, depressed, or hopeless?"
+\newline OPHYSILL" -- "Has a physician ever told you that you have any other physical illness?"
+\newline ASTHMA -- "Has a physician ever told you that you have asthma?"
+\newline DIABETES -- "Has a physician ever told you that you have diabetes?"
+\newline HEARTDIS -- "Has a physician ever told you that you have heart disease?"
+\newline race01:race15 -- "Which of the following categories best describes your racial background?"
 
-Total: 8 + 11 = 19 data elements/variables
+_In smoker_data:_
+\newline smokstat -- Assigns smoking status
+\newline WHEREBUY -- "Where do/did you usually buy your cigarettes?"
+\newline BUYCALIF -- "Do/did you usually buy your cigarettes..."
+\newline HOWMANY -- "During the past 30 days, on the days that you did smoke, about how many cigarettes did you usually smoke per day?" [100 = 100 OR MORE CIGARETTES]
+\newline SMOK6NUM -- "How long have you been smoking on a daily basis?" (AMOUNT OF TIME)
+\newline SMOK6UNI -- "How long have you been smoking on a daily basis?" (UNIT OF TIME)
 
-**CHRISTINE WILL ASK MORE ABOUT THIS ON ED DISCUSSION; ALL MEMBERS WILL DISCUSS FINAL ANSWER TOGETHER ON SUNDAY**
-\newpage
+Total: 23 + 6 = 29 data elements/variables
+\newline
+
 **Utilize functions or resources in RStudio to determine the types of each data element:**
-
-```{r types of data}
-typeof(race_data)
-
-class(race_data)
-
-typeof(smoker_data)
-
-class(smoker_data)
-
+```{r types of data for race_data data set}
+typeof(race_data$NERVOUS)
+typeof(race_data$WORRYING)
+typeof(race_data$PROBINTR)
+typeof(race_data$PROBDOWN)
+typeof(race_data$OPHYSILL)
+typeof(race_data$ASTHMA)
+typeof(race_data$HEARTDIS)
+typeof(race_data$DIABETES)
+typeof(race_data$race01)
+typeof(race_data$race02)
+typeof(race_data$race03)
+typeof(race_data$race04)
+typeof(race_data$race05)
+typeof(race_data$race06)
+typeof(race_data$race07)
+typeof(race_data$race08)
+typeof(race_data$race09)
+typeof(race_data$race10)
+typeof(race_data$race11)
+typeof(race_data$race12)
+typeof(race_data$race13)
+typeof(race_data$race14)
+typeof(race_data$race15)
 ```
+
+```{r types of data for smoker_data data set}
+typeof(smoker_data$smokstat)
+typeof(smoker_data$WHEREBUY)
+typeof(smoker_data$BUYCALIF)
+typeof(smoker_data$HOWMANY)
+typeof(smoker_data$SMOK6NUM)
+typeof(smoker_data$SMOK6UNI)
+```
+**Identify the desired type/format for each variable - will you need to convert any columns to numeric or other type?:**
+\newline
+The desired type/format for all variables of interest except for SMOK6NUM is character. On the other hand, the desired type/format for SMOK6NUM is numeric. We will not need to convert any columns to numeric or other type; although HOWMANY mostly consists of integers ranging from 0 to 100, the value of "100 or more cigarettes" suggests that HOWMANY should be a character instead of numeric in order to account for it.
 
 \newpage
 
-**Identify the desired type/format for each variable- will you need to convert any columns to numeric or other type?:**
-```{r type of variable}
-
-summary(race_data)
-summary(smoker_data)
-```
-
-**While importing our data we changed the data sets to the types of variables needed for our analysis, because of this no changes are needed at this point.**
-
-
-\newpage
-
-**Provide a basic description of 5+ data elements(numeric/character/other descriptives):**
-
-```{r description of data elements}
+## Provide a Basic Description of the 5+ Data Elements
+```{r unique values/categories of character data elements}
 #Character elements
-unique(race_data$WORRYING)
-
 unique(race_data$NERVOUS)
-
+unique(race_data$WORRYING)
+unique(race_data$PROBINTR)
+unique(race_data$PROBDOWN)
+unique(race_data$OPHYSILL)
+unique(race_data$ASTHMA)
+unique(race_data$HEARTDIS)
+unique(race_data$DIABETES)
+unique(race_data$race01)
+unique(race_data$race02)
+unique(race_data$race03)
+unique(race_data$race04)
+unique(race_data$race05)
+unique(race_data$race06)
+unique(race_data$race07)
+unique(race_data$race08)
+unique(race_data$race09)
+unique(race_data$race10)
+unique(race_data$race11)
+unique(race_data$race12)
+unique(race_data$race13)
+unique(race_data$race14)
+unique(race_data$race15)
 unique(smoker_data$smokstat)
-
 unique(smoker_data$WHEREBUY)
-
-#number of rows and columns
-
-nrow(race_data)
-nrow(smoker_data)
-ncol(race_data)
-ncol(smoker_data)
-
-#Frequency of race data 
-table(race_data$race01)
-table(race_data$race02)
-table(race_data$race03)
-table(race_data$race04)
-table(race_data$race05)
-table(race_data$race06)
-table(race_data$race07)
-table(race_data$race08)
-table(race_data$race09)
-table(race_data$race10)
-table(race_data$race11)
+unique(smoker_data$HOWMANY)
+unique(smoker_data$SMOK6UNI)
 ```
-
+**Basic description for character variables:**
+\newline
+For variables associated with the feelings of participants over the past 2 weeks before the time of the survey data collection (i.e., NERVOUS, WORRYING, PROBINTR, PROBDOWN), the unique values are a small number of phrases that include "Nearly every day," "Several days," "More than half the days," and "Not at all."
+\newline
+For variables associated with physical and mental illnesses (i.e., OPHYSILL, ASTHMA, HEARTDIS, DIABETES), the unique values are "No," and "Yes."
+\newline
+For variables associated with race (i.e., race01 through race15), the only unique value is "Yes."
+\newline
+For the variable associated with smoker status (i.e., smokstat), the unique values are "Current daily smoker" and "Current nondaily smoker."
+\newline
+For the variable associated with location of cigarette purchase (i.e., WHEREBUY), the unique values include a variety of geographical locations, such as "At other discount or warehouse stores such as Wal-Mart or Costco," "At tobacco discount stores," "At convenience stores or gas stations," "At liquor stores or drug stores," "In military commissaries, or," "On Indian reservations," "At supermarkets," and "Somewhere else (SPECIFY)?"
+\newline
+For the variable associated with how many cigarettes participants smoke per day (i.e., HOWMANY), the unique values are a range of numbers in their numeric forms presented as character strings, along with "100 or more cigarettes."
+\newline
+For the variable associated with the unit of time for how long participants have been smoking on a daily basis (i.e., SMOK6UNI), the unique values are "Years," "Days," and "Months."
+\newline
+\newline
+_Note: NA values are present for every variable of interest except for smokstat._
+```{r mean, median, and range of numeric data elements}
+summary(smoker_data$SMOK6NUM)
+```
+**Basic description for numeric variables:**
+\newline
+For the variable associated with the amount of time participants have been smoking on a daily basis (i.e., SMOK6NUM), the mean is 26.05, the median is 30.00, and the range is 120.00 - 1.00 = 119.00.
