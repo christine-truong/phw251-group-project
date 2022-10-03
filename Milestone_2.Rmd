@@ -124,8 +124,7 @@ typeof(smoker_data$SMOK6UNI)
 ```
 **Identify the desired type/format for each variable - will you need to convert any columns to numeric or other type?:**
 \newline
-The desired type/format for all variables of interest except for SMOK6NUM is character. On the other hand, the desired type/format for SMOK6NUM is numeric. We will not need to convert any columns to numeric or other type; although HOWMANY mostly consists of integers ranging from 0 to 100, the value of "100 or more cigarettes" suggests that HOWMANY should be a character instead of numeric in order to account for it.
-
+The desired type/format for all variables of interest except for SMOK6NUM is character. On the other hand, the desired type/format for SMOK6NUM is numeric. We will not need to convert any columns to numeric or other type; although HOWMANY mostly consists of integers ranging from 0 to 100, the value of "100 or more cigarettes," a character string, under the variable could represent numeric values over 100 for every participant that has this value. This means that converting the data type from character to numeric for HOWMANY would not make the variable useful for any number summaries, in that it skews the results we see. For example, we can convert "100 or more cigarettes" to "100" to convey the same meaning, but in the form of a number. We can then convert the data type from character to numeric using as.numeric() and use the summary() function to find the minimum and maximum values of the variable. In this case, the range could be much greater for the variable than we see it here because the values labeled "100" could be greater than 100.
 \newpage
 
 ## Provide a Basic Description of the 5+ Data Elements
