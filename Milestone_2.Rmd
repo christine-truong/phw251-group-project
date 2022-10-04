@@ -1,7 +1,7 @@
 ---
 title: "Milestone #2"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
-date: "10/03/2022"
+date: "10-04-22"
 output:
   pdf_document: default
   html_document: default
@@ -11,12 +11,12 @@ output:
 
 **What is the data source? (1-2 sentences on where the data is coming from, dates included, etc.)**
 
-Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use and behaviors among smokers in California in order to inform tobacco use prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates characters associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011.
+Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use in California and behaviors among smokers in order to inform tobacco prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates characters associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011.
 \newline
 
 **How does the data set relate to the group problem statement and question?**
 
-For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status. To better understand the relationships between these variables, the survey data would need to be cleaned up and present only our variables of interest (i.e. smoking status of each participant, location of cigarette purchase, race, and disease outcomes). The two separate data sets would also be joined by the unique ID of each participant, with race being re-coded into a single field from fifteen indicator variables to facilitate our subsequent analyses. Visualization of this cleaned, joined data through graphs or tables will then allow us to better assess the relationships between our variables of interest. In addition, we are interested in utilizing the 2011 CSC data to help us understand tobacco consumption in terms of "pack-years," which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked, and comparing the average number of pack-years to asthma, heart disease, diabetes, and mental illness; this relationship can also be better understood through graphical or table visualization. Based on our observations from our analyses, we hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies at the end of our project.
+For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status. To better understand the relationships between these variables, the survey data would need to be cleaned up and present only our variables of interest (i.e., smoking status of each participant, location of cigarette purchase, race, and disease outcomes). The two separate data sets would also be joined by the unique ID of each participant, with race being re-coded into a single field from fifteen indicator variables to facilitate our subsequent analyses. Visualization of this cleaned, joined data through graphs or tables will then allow us to better assess the relationships between our variables of interest. In addition, we are interested in utilizing the 2011 CSC data to help us understand tobacco consumption in terms of "pack-years," which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked, and comparing the average number of pack-years to asthma, heart disease, diabetes, and mental illness; this relationship can also be better understood through graphical or table visualization. Based on our observations from our analyses, we hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies at the end of our project.
 \newpage
 
 ## Import Statement
@@ -26,8 +26,8 @@ For this project, we aim to investigate how tobacco use primarily impacts mental
 library(readr)
 race_data <-read_csv("ca_csc_outcome_race_data.csv",
             col_select = c(NERVOUS, WORRYING, PROBINTR,
-                           PROBDOWN, OPHYSILL, ASTHMA, HEARTDIS,
-                           DIABETES, race01, race02, race03,
+                           PROBDOWN, ASTHMA, HEARTDIS,
+                           DIABETES, OTHMENILL, race01, race02, race03,
                            race04, race05, race06, race07, race08,
                            race09, race10, race11, race12, race13,
                            race14, race15),
@@ -56,7 +56,7 @@ We utilized the read_csv() function from the R readr package to import/read in o
 For the arguments of the read_csv() function, we used col_select to read in only a subset of the columns from the original data sets, which were our variables of interest for the this project.
 In addition, we included the argument of na in our read_csv() functions for both data sets in order to indicate that any missing values that show up as blank or "(DO NOT READ)"/"n/a"/any variations of N/A are identified as NA values in R.
 During the importing process, each subsetted data set was assigned to two separate objects, which are called race_data and smoker_data.
-In the data set containing demographic/behavioral/race information about the study participants (i.e., data set labeled race_data), our variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, OPHYSILL, ASTHMA, HEARTDIS, DIABETES,
+In the data set containing demographic/behavioral/race information about the study participants (i.e., data set labeled race_data), our variables of interest are NERVOUS, WORRYING, PROBINTR, PROBDOWN, ASTHMA, HEARTDIS, DIABETES, OTHMENILL,
 race01, race02, race03, race04, race05, race06, race07, race08, race09, race10, race11, race12, race13, race14, and race15.
 In the data set containing smoking status/location of cigarette purchase/disease outcomes (i.e., data set labeled as smoker_data), our variables of interest are smokstat, WHEREBUY, BUYCALIF, HOWMANY, SMOK6NUM, and SMOK6UNI.
 \newpage
@@ -70,12 +70,11 @@ _In race_data:_
 \newline WORRYING -- "Over the past 2 weeks, how often have you not been able to stop or control worrying?"
 \newline PROBINTR -- "Over the past 2 weeks, how often have you felt little interest or pleasure in doing things?"
 \newline PROBDOWN -- "Over the past 2 weeks, how often have you felt down, depressed, or hopeless?"
-\newline OPHYSILL" -- "Has a physician ever told you that you have any other physical illness?"
 \newline ASTHMA -- "Has a physician ever told you that you have asthma?"
 \newline DIABETES -- "Has a physician ever told you that you have diabetes?"
 \newline HEARTDIS -- "Has a physician ever told you that you have heart disease?"
+\newline OTHMENILL -- "Has a physician ever told you that you have any mental illness?"
 \newline race01:race15 -- "Which of the following categories best describes your racial background?"
-\newline
 
 _In smoker_data:_
 \newline smokstat -- Assigns smoking status
@@ -84,7 +83,6 @@ _In smoker_data:_
 \newline HOWMANY -- "During the past 30 days, on the days that you did smoke, about how many cigarettes did you usually smoke per day?" [100 = 100 OR MORE CIGARETTES]
 \newline SMOK6NUM -- "How long have you been smoking on a daily basis?" (AMOUNT OF TIME)
 \newline SMOK6UNI -- "How long have you been smoking on a daily basis?" (UNIT OF TIME)
-\newline
 
 Total: 23 + 6 = 29 data elements/variables
 \newline
@@ -95,7 +93,7 @@ typeof(race_data$NERVOUS)
 typeof(race_data$WORRYING)
 typeof(race_data$PROBINTR)
 typeof(race_data$PROBDOWN)
-typeof(race_data$OPHYSILL)
+typeof(race_data$OTHMENILL)
 typeof(race_data$ASTHMA)
 typeof(race_data$HEARTDIS)
 typeof(race_data$DIABETES)
@@ -126,8 +124,7 @@ typeof(smoker_data$SMOK6UNI)
 ```
 **Identify the desired type/format for each variable - will you need to convert any columns to numeric or other type?:**
 \newline
-\newline
-The desired type/format for all variables of interest except for SMOK6NUM is character. On the other hand, the desired type/format for SMOK6NUM is numeric. We will not need to convert any columns to numeric or other type; although HOWMANY mostly consists of integers ranging from 0 to 100, the value of "100 or more cigarettes," a character string, under the variable could represent numeric values over 100 for every participant that has this value. This means that converting the data type from character to numeric for HOWMANY would not make the variable useful for any number summaries, in that it skews the results we see. For example, we can convert "100 or more cigarettes" to "100" to convey the same meaning, but in the form of a number. We can then convert the data type from character to numeric using as.numeric() and use the summary() function to find the minimum and maximum values of the variable. In this case, the range could be much greater for the variable than we see it here because the values labeled "100" could be greater than 100.
+The desired type/format for the variables NERVOUS, WORRYING, PROBINTR, PROBDOWN, smokstat, WHEREBUY, BUYCALIF, HOWMANY, and SMOK6UNI is character. On the other hand, the desired type/format for the variables OTHMENILL, ASTHMA, HEARTDIS, DIABETES, and race01 through race15 is logical (i.e., "yes" or "no"). Also, the desired type/format for the variable SMOK6NUM is numeric. Because all variables except for SMOK6NUM (which is appropriately a numeric data type) are the character data type at the moment, we will need to convert the variables OTHMENILL, ASTHMA, HEARTDIS, DIABETES, and race01 through race15 to logical. Additionally, we will not need to convert the variable HOWMANY to any other data type either; although HOWMANY mostly consists of integers ranging from 0 to 100, the value of "100 or more cigarettes," a character string, under the variable could represent numeric values over 100 for every participant that has this value. This means that converting the data type from character to numeric for HOWMANY would not make the variable useful for any number summaries, in that it skews the results we see. For example, we can convert "100 or more cigarettes" to "100" to convey the same meaning, but in the form of a number. We can then convert the data type from character to numeric using as.numeric() and use the summary() function to find the minimum and maximum values of the variable. In this case, the range could be much greater for the variable than we see it here because the values labeled "100" could be greater than 100.
 \newpage
 
 ## Provide a Basic Description of the 5+ Data Elements
@@ -137,7 +134,7 @@ unique(race_data$NERVOUS)
 unique(race_data$WORRYING)
 unique(race_data$PROBINTR)
 unique(race_data$PROBDOWN)
-unique(race_data$OPHYSILL)
+unique(race_data$OTHMENILL)
 unique(race_data$ASTHMA)
 unique(race_data$HEARTDIS)
 unique(race_data$DIABETES)
@@ -163,36 +160,25 @@ unique(smoker_data$SMOK6UNI)
 ```
 **Basic description for character variables:**
 \newline
-
 For variables associated with the feelings of participants over the past 2 weeks before the time of the survey data collection (i.e., NERVOUS, WORRYING, PROBINTR, PROBDOWN), the unique values are a small number of phrases that include "Nearly every day," "Several days," "More than half the days," and "Not at all."
 \newline
-
-For variables associated with physical and mental illnesses (i.e., OPHYSILL, ASTHMA, HEARTDIS, DIABETES), the unique values are "No," and "Yes."
+For variables associated with physical and mental illnesses (i.e., OTHMENILL, ASTHMA, HEARTDIS, DIABETES), the unique values are "No," and "Yes."
 \newline
-
-For variables associated with race (i.e., race01 through race15), the only unique value is "Yes."
+For variables associated with race (i.e., race01 through race15), the unique value is mainly "Yes," as well as "No" for some of these variables.
 \newline
-
 For the variable associated with smoker status (i.e., smokstat), the unique values are "Current daily smoker" and "Current nondaily smoker."
 \newline
-
 For the variable associated with location of cigarette purchase (i.e., WHEREBUY), the unique values include a variety of geographical locations, such as "At other discount or warehouse stores such as Wal-Mart or Costco," "At tobacco discount stores," "At convenience stores or gas stations," "At liquor stores or drug stores," "In military commissaries, or," "On Indian reservations," "At supermarkets," and "Somewhere else (SPECIFY)?"
 \newline
-
 For the variable associated with how many cigarettes participants smoke per day (i.e., HOWMANY), the unique values are a range of numbers in their numeric forms presented as character strings, along with "100 or more cigarettes."
 \newline
-
 For the variable associated with the unit of time for how long participants have been smoking on a daily basis (i.e., SMOK6UNI), the unique values are "Years," "Days," and "Months."
 \newline
 \newline
 _Note: NA values are present for every variable of interest except for smokstat._
-
 ```{r mean, median, and range of numeric data elements}
 summary(smoker_data$SMOK6NUM)
 ```
-
-
 **Basic description for numeric variables:**
 \newline
-
 For the variable associated with the amount of time participants have been smoking on a daily basis (i.e., SMOK6NUM), the mean is 26.05, the median is 30.00, and the range is 120.00 - 1.00 = 119.00.
