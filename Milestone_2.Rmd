@@ -1,7 +1,7 @@
 ---
 title: "Milestone #2"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
-date: "10-04-22"
+date: "10-03-22"
 output:
   pdf_document: default
   html_document: default
