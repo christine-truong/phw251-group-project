@@ -1,0 +1,69 @@
+---
+title: "Milestone #3"
+author: "Rachael Baartmans, Lara Petalio, Christine Truong"
+date: "Sys.Date()"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r importing data}
+library(readr)
+
+race_data <-read_csv("ca_csc_outcome_race_data.csv",
+            col_select = c(NERVOUS, WORRYING, PROBINTR,
+                           PROBDOWN, ASTHMA, HEARTDIS,
+                           DIABETES, OTHMENILL, race01, race02, race03,
+                           race04, race05, race06, race07, race08,
+                           race09, race10, race11, race12, race13,
+                           race14, race15),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
+
+smoker_data <- read_csv("ca_csc_smoker_data.csv",
+            col_select = c(smokstat, WHEREBUY, BUYCALIF,
+                           HOWMANY, SMOK6NUM, SMOK6UNI),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
+```
+\newpage
+
+## Subset rows and columns as needed 
+```{r subset rows/columns}
+
+```
+
+\newpage
+## Create New Variables needed for analysis
+**Minimum of 2 created from existing columns **
+\newline**Examples: calculating the rate or combining character strings**
+
+```{r new variables}
+
+```
+
+\newpage
+## Clean variables for analysis 
+**Minimum of 2**
+\newline **Examples: Recode invalid values/handle missing fields/recode categories **
+
+```{r clean variables}
+
+```
+
+\newpage
+## Data dictionary based on clean dataset 
+**must include: variable name, data type, and description**
+```{r data dictionary}
+
+```
+
+\newpage
+## Tables with descriptive statistics for 4 data elements 
+```{r tables}
+
+```
+
