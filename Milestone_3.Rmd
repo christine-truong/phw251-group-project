@@ -54,7 +54,7 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 \newline **Examples: Recode invalid values/handle missing fields/recode categories **
 
 ```{r clean variables}
-#Recode all variations of n/a into just NA by using pivot_longer
+#Recode all variations of n/a into just NA by using pivot_longer.
 #Recode "Somewhere else? (SPECIFY) in BUYCALIF?
 ```
 
