@@ -33,7 +33,7 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 
 ## Subset rows and columns as needed 
 ```{r subset rows/columns}
-
+#Not needed because we already subsetted columns from our import step -- rows don't need to be subsetted either, and we can get rid of this chunk while writing the same things on the rmd as text.
 ```
 
 \newpage
@@ -42,7 +42,10 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 \newline**Examples: calculating the rate or combining character strings**
 
 ```{r new variables}
+#One column for combining all races together
+#One column for pack-years = number of packs of cigarettes smoked per day x years a person has smoked
 
+#Instructions: "Furthermore, CDPH is also interested in understanding tobacco consumption in terms of “pack-years” which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked. Given that there are about 20 cigarettes in a pack, calculate and interpret the average number of pack-years (Hint: There may be multiple ways to calculate “pack-years” with the available data elements and there is no wrong answer, as long as you can defend your calculation. One option is to utilize HOWMANY, SMOK6NUM, and SMO6UNI).  Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table, diagram, or visual representation that shows the average number of pack-years and the disease outcomes."
 ```
 
 \newpage
@@ -51,19 +54,20 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 \newline **Examples: Recode invalid values/handle missing fields/recode categories **
 
 ```{r clean variables}
-
+#Recode all variations of n/a into just NA.
+#Recode "Somewhere else? (SPECIFY) in BUYCALIF?
 ```
 
 \newpage
 ## Data dictionary based on clean dataset 
 **must include: variable name, data type, and description**
 ```{r data dictionary}
-
+#For each of the 4 data elements we pick, we must use typeof() function and describe what it stands for using the research documents published for each variable
 ```
 
 \newpage
 ## Tables with descriptive statistics for 4 data elements 
 ```{r tables}
-
+#Use Kable to make tables like in problem set 5
 ```
 
