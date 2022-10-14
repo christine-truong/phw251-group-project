@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 ```{r importing data}
-library(readr)
+library(tidyverse)
 
 race_data <-read_csv("ca_csc_outcome_race_data.csv",
             col_select = c(NERVOUS, WORRYING, PROBINTR,
@@ -32,39 +32,83 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 \newpage
 
 ## Subset rows and columns as needed 
-```{r subset rows/columns}
-#Not needed because we already subsetted columns from our import step -- rows don't need to be subsetted either, and we can get rid of this chunk while writing the same things on the rmd as text.
-```
+We have decided that we do not need to subset any rows and columns since we already did this during the importing process of our data (specified in the col_select argument of the read_csv function).
 
 \newpage
-## Create New Variables needed for analysis
-**Minimum of 2 created from existing columns **
-\newline**Examples: calculating the rate or combining character strings**
 
-```{r new variables}
-#One column for combining all races together using pivot_longer
-#One column for pack-years = number of packs of cigarettes smoked per day x years a person has smoked
-
-#Instructions: "Furthermore, CDPH is also interested in understanding tobacco consumption in terms of “pack-years” which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked. Given that there are about 20 cigarettes in a pack, calculate and interpret the average number of pack-years (Hint: There may be multiple ways to calculate “pack-years” with the available data elements and there is no wrong answer, as long as you can defend your calculation. One option is to utilize HOWMANY, SMOK6NUM, and SMO6UNI).  Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table, diagram, or visual representation that shows the average number of pack-years and the disease outcomes."
-```
-
-\newpage
 ## Clean variables for analysis 
 **Minimum of 2**
 \newline **Examples: Recode invalid values/handle missing fields/recode categories **
 
 ```{r clean variables}
-#Recode all variations of n/a into just NA
-#Recode "Somewhere else? (SPECIFY) in BUYCALIF?, recode "100+ packs of cigarettes"? - ask GSI
+
+#Changing casing for variables from capitals to lowercase in both dataframes
+names(race_data) <- tolower(names(race_data))
+names(smoker_data) <- tolower(names(smoker_data))
+
+#Cleaning smoker_data to calculate pack-years later for variables
+#"howmany", "smok6uni", and "smok6num"
+smoker_data$howmany <- as.numeric(smoker_data$howmany)
+
+smoker_data_2 <- smoker_data %>% filter(!is.na(howmany),
+  howmany != "100 or more cigarettes", smok6uni == "Years", !is.na(smok6num))
+unique(smoker_data_2$howmany)
+unique(smoker_data_2$smok6uni)
+unique(smoker_data_2$smok6num)
+
 ```
 
 \newpage
+
+## Create New Variables needed for analysis
+**Minimum of 2 created from existing columns **
+\newline**Examples: calculating the rate or combining character strings**
+
+```{r new variables}
+#Creating new variable "race" to combine variables race01:race15
+race_data_2 <- race_data %>%
+  mutate(race = case_when(race01 == "Yes" ~ "race01",
+        race02 == "Yes" ~ "race02",
+        race03 == "Yes" ~ "race03",
+        race04 == "Yes" ~ "race04",
+        race05 == "Yes" ~ "race05",
+        race06 == "Yes" ~ "race06",
+        race07 == "Yes" ~ "race07",
+        race08 == "Yes" ~ "race08",
+        race09 == "Yes" ~ "race09",
+        race10 == "Yes" ~ "race10",
+        race11 == "Yes" ~ "race11",
+        race12 == "Yes" ~ "race12",
+        race13 == "Yes" ~ "race13",
+        race14 == "Yes" ~ "race14",
+        race15 == "Yes" ~ "race15")) %>%
+  select(-(race01:race15))
+#used select() function to remove original race01:race15 variables
+
+#viewed the new data set, race_data_2
+race_data_2
+
+
+#Creating new variable "packs_per_day" for future calculations for pack-years
+smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
+
+#viewed the new data set, race_data_3
+smoker_data_3
+
+```
+\newpage
+
 ## Data dictionary based on clean dataset 
 **must include: variable name, data type, and description**
 ```{r data dictionary}
-#For each of the 4 data elements we pick, we must use typeof() function and describe what it stands for using the research documents published for each variable
+#For each of the 4 data elements we pick, we must use typeof() function and
+#describe what it stands for using the research documents published for
+#each variable
 
-#Instructions: "Data dictionary based on clean dataset (minimum 4 data elements), including: Variable name, Data type, Description. Data dictionary can be included as text or table, but should be easy for teaching team to interpret/read."
+#Instructions: "Data dictionary based on clean dataset
+#(minimum 4 data elements), including: Variable name, Data type, Description.
+#Data dictionary can be included as text or table, but should be easy for
+#teaching team to interpret/read."
 ```
 
 \newpage
