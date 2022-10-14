@@ -42,16 +42,25 @@ We have decided that we do not need to subset any rows and columns since we alre
 
 ```{r clean variables}
 
-#Changing casing for variables from capitals to lowercase in both dataframes
+#Changed casing for variables from capitals to lowercase in both dataframes
+#of race_data and smoker_data
 names(race_data) <- tolower(names(race_data))
 names(smoker_data) <- tolower(names(smoker_data))
 
-#Cleaning smoker_data to calculate pack-years later for variables
-#"howmany", "smok6uni", and "smok6num"
+#Changed the data type of "howmany" from character to numeric in order to
+#perform calculations for pack-years in the future
 smoker_data$howmany <- as.numeric(smoker_data$howmany)
 
+#Removed NA's and string values from smoker_data in order to calculate
+#pack-years later for variables "howmany", "smok6uni", and "smok6num"
 smoker_data_2 <- smoker_data %>% filter(!is.na(howmany),
   howmany != "100 or more cigarettes", smok6uni == "Years", !is.na(smok6num))
+
+##NEED TO ASK GSI ABOUT "100 OR MORE CIGARETTES" BEING FILTERED OUT - CAN
+##IMPACT PACK-YEARS CALCULATION
+
+#Viewed unique values assigned to the variables "howmany", "smok6uni", and
+#smok6num to see if all NA's and strings were removed
 unique(smoker_data_2$howmany)
 unique(smoker_data_2$smok6uni)
 unique(smoker_data_2$smok6num)
@@ -65,7 +74,8 @@ unique(smoker_data_2$smok6num)
 \newline**Examples: calculating the rate or combining character strings**
 
 ```{r new variables}
-#Creating new variable "race" to combine variables race01:race15
+
+#Created new variable "race" to combine variables race01:race15
 race_data_2 <- race_data %>%
   mutate(race = case_when(race01 == "Yes" ~ "race01",
         race02 == "Yes" ~ "race02",
@@ -83,16 +93,15 @@ race_data_2 <- race_data %>%
         race14 == "Yes" ~ "race14",
         race15 == "Yes" ~ "race15")) %>%
   select(-(race01:race15))
-#used select() function to remove original race01:race15 variables
+#Used select() function to remove original race01:race15 variables
 
-#viewed the new data set, race_data_2
+#Viewed the updated data set, race_data_2
 race_data_2
 
-
-#Creating new variable "packs_per_day" for future calculations for pack-years
+#Created new variable "packs_per_day" for future calculations for pack-years
 smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
 
-#viewed the new data set, race_data_3
+#Viewed the final cleaned data set, race_data_3
 smoker_data_3
 
 ```
