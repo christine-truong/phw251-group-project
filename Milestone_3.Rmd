@@ -124,21 +124,21 @@ typeof(smoker_data_3$howmany)
 typeof(race_data_2$nervous)
 typeof(race_data_2$asthma)
 ```
-Variable 1:
-Data Type:
-Description:
+## Variable 1: wherebuy
+- Data Type: character
+- Description: The "wherebuy" variable contains the responses to the survey question of 'where do/did you usually buy your cigarettes?' this variable gave options of general locations, somewhere else, and don't know/refused. 
 
-Variable 2:
-Data Type:
-Description:
+## Variable 2: howmany
+- Data Type: double
+- Description: The variable "howmany" contains the numeric data related to how many cigarettes were smoked in the last 30 days. The values given for this question were 1 to 100. 
 
-Variable 3:
-Data Type:
-Description:
+## Variable 3: nervous
+- Data Type: character
+- Description: The variable "nervous" is a character variable that looks at whether individuals felt nervous, anxious, or on edge in the last two weeks. The responses for this question were don't know, refused, not at all, several days, more than half the days, and nearly everyday. These responses correlated to a numeric value but were put into the dataset in character form. 
 
-Variable 4:
-Data Type:
-Description:
+## Variable 4: asthma
+- Data Type: character
+- Description: The variable "asthma" is related to medical history as given by a doctor in the past. This question asks if a physician has ever told you that you have asthma. This had three response options fo Yes, No, Refused. 
 
 \newpage
 ## Tables with descriptive statistics for 4 data elements 
