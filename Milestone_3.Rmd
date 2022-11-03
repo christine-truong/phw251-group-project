@@ -77,21 +77,21 @@ unique(smoker_data_2$smok6num)
 
 #Created new variable "race" to combine variables race01:race15
 race_data_2 <- race_data %>%
-  mutate(race = case_when(race01 == "Yes" ~ "race01",
-        race02 == "Yes" ~ "race02",
-        race03 == "Yes" ~ "race03",
-        race04 == "Yes" ~ "race04",
-        race05 == "Yes" ~ "race05",
-        race06 == "Yes" ~ "race06",
-        race07 == "Yes" ~ "race07",
-        race08 == "Yes" ~ "race08",
-        race09 == "Yes" ~ "race09",
-        race10 == "Yes" ~ "race10",
-        race11 == "Yes" ~ "race11",
-        race12 == "Yes" ~ "race12",
-        race13 == "Yes" ~ "race13",
-        race14 == "Yes" ~ "race14",
-        race15 == "Yes" ~ "race15")) %>%
+  mutate(race = case_when(race01 == "Yes" ~ "White",
+        race02 == "Yes" ~ "Black",
+        race03 == "Yes" ~ "Japanese",
+        race04 == "Yes" ~ "Chinese",
+        race05 == "Yes" ~ "Filipino",
+        race06 == "Yes" ~ "Korean",
+        race07 == "Yes" ~ "Vietnamese",
+        race08 == "Yes" ~ "Other Asian or Pacific Islander",
+        race09 == "Yes" ~ "American Indian or Alaskan Native",
+        race10 == "Yes" ~ "Mexican",
+        race11 == "Yes" ~ "Hispanic/Latio",
+        race12 == "Yes" ~ "Asian Indian",
+        race13 == "Yes" ~ "Other",
+        race14 == "Yes" ~ "Refused",
+        race15 == "Yes" ~ "Don't know")) %>%
   select(-(race01:race15))
 #Used select() function to remove original race01:race15 variables
 
