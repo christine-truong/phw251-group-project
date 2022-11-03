@@ -118,11 +118,33 @@ smoker_data_3
 #(minimum 4 data elements), including: Variable name, Data type, Description.
 #Data dictionary can be included as text or table, but should be easy for
 #teaching team to interpret/read."
+
+typeof(smoker_data_3$wherebuy)
+typeof(smoker_data_3$howmany)
+typeof(race_data_2$nervous)
+typeof(race_data_2$asthma)
 ```
+Variable 1:
+Data Type:
+Description:
+
+Variable 2:
+Data Type:
+Description:
+
+Variable 3:
+Data Type:
+Description:
+
+Variable 4:
+Data Type:
+Description:
 
 \newpage
 ## Tables with descriptive statistics for 4 data elements 
 ```{r tables}
 #Use Kable to make tables like in problem set 5
+
+
 ```
 
