@@ -143,6 +143,7 @@ typeof(race_data_2$asthma)
 \newpage
 
 ## Tables with descriptive statistics for 4 data elements 
+
 ```{r tables, Smoker Data wherebuy}
 
 library(kableExtra)
@@ -156,7 +157,8 @@ kable(table_smoker_wherebuy,
       col.names=c("Location", "Frequency"),  
       align='lcccc', 
       caption="Cigarette Buying Location",
-      format.args=list(big.mark=",")) 
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position")
 ```
 
 \newpage
@@ -171,7 +173,8 @@ kable(table_smoker_howmany,
       col.names=c("Location", "Average Cigarettes smoked"),  
       align='lcccc', 
       caption="Mean average of cigarettes smoked in the past 30 days based on buying location",
-      format.args=list(big.mark=",")) 
+      format.args=list(big.mark=","), digits=2)%>%
+  kable_styling(latex_options = "HOLD_position") 
 ```
 
 
@@ -184,10 +187,11 @@ table_race <- table(race_data_2$nervous,race_data_2$asthma)
 
 kable(table_race, 
       booktabs=T, 
-      col.names=c("No", "Yes"),  
+      col.names=c("Yes", "No"),  
       align='lcccc', 
-      caption="Feelings of Nervous and Asthma among smokers",
-      format.args=list(big.mark=",")) 
+      caption="Feelings of Nervousness among Smokers with Asthma",
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position") 
 
 
 
