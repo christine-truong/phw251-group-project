@@ -141,9 +141,54 @@ typeof(race_data_2$asthma)
 - Description: The variable "asthma" is related to medical history as given by a doctor in the past. This question asks if a physician has ever told you that you have asthma. This had three response options fo Yes, No, Refused. 
 
 \newpage
+
 ## Tables with descriptive statistics for 4 data elements 
-```{r tables}
-#Use Kable to make tables like in problem set 5
+```{r tables, Smoker Data wherebuy}
+
+library(kableExtra)
+
+#Smoker Data Table: wherebuy
+
+table_smoker_wherebuy <- table(smoker_data_3$wherebuy)
+
+kable(table_smoker_wherebuy, 
+      booktabs=T, 
+      col.names=c("Location", "Frequency"),  
+      align='lcccc', 
+      caption="Cigarette Buying Location",
+      format.args=list(big.mark=",")) 
+```
+
+\newpage
+```{r tables, Smoker Data howmany}
+#Smoker Data Table: howmany
+
+table_smoker_howmany <- smoker_data_3 %>% select(wherebuy,howmany) %>% group_by(wherebuy) %>%
+  summarize(howmany=mean(howmany))
+
+kable(table_smoker_howmany, 
+      booktabs=T, 
+      col.names=c("Location", "Average Cigarettes smoked"),  
+      align='lcccc', 
+      caption="Mean average of cigarettes smoked in the past 30 days based on buying location",
+      format.args=list(big.mark=",")) 
+```
+
+
+\newpage
+
+```{r tables, Race Data}
+#Race Data Table: nervous and asthma
+
+table_race <- table(race_data_2$nervous,race_data_2$asthma)
+
+kable(table_race, 
+      booktabs=T, 
+      col.names=c("No", "Yes"),  
+      align='lcccc', 
+      caption="Feelings of Nervous and Asthma among smokers",
+      format.args=list(big.mark=",")) 
+
 
 
 ```
