@@ -227,7 +227,7 @@ kable(table_smoker_howmany,
       booktabs=T, 
       col.names=c("Buying Location", "Average Number of Cigarettes Smoked"),  
       align='lcccc', 
-      caption="Average Number of Cigarettes Smoked In the Past 30 Days Based on Cigarette-buying Location",
+      caption="Mean No. of Cigarettes Smoked In the Past Month Based on Buying Location",
       format.args=list(big.mark=","), digits=2)%>%
   kable_styling(latex_options = "HOLD_position")
 
@@ -276,9 +276,10 @@ table_nervous_othmenill <- race_data_2 %>%
 
 kable(table_nervous_othmenill, 
       booktabs=T, 
-      col.names=c("Level of Nervousness/Anxiousness/Feeling On Edge", "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
+      col.names=c("Level of Nervousness/Anxiousness/Feeling On Edge",
+                  "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
       align='lcccc', 
-      caption="Number of Smokers Per Level of Nervousness/Anxiousness/Feeling On Edge By Mental Illness Status",
+      caption="Number of Smokers Per Level of Anxiety Feelings By Mental Illness Status",
       format.args=list(big.mark=","))%>%
   kable_styling(latex_options = "HOLD_position")
 
