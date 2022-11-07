@@ -6,7 +6,7 @@ output:
   pdf_document: default
   html_document: default
 ---
-```{r importing data}
+```{r importing data for reference}
 library(tidyverse)
 
 race_data <-read_csv("ca_csc_outcome_race_data.csv",
@@ -32,7 +32,7 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 \newpage
 
 ## Subset rows and columns as needed 
-We have decided that we do not need to subset any rows and columns since we already did this during the importing process of our data (specified in the col_select argument of the read_csv function).
+We have decided that we do not need to subset any columns since we already did this during the importing process of our data (specified in the col_select argument of the read_csv function). However, we have subsetted the smoker_data data frame for only rows that have "Years" as the value for the variable `smok6uni` for pack-year calculations that we will be performing later on our analysis. This subsetting is done while we cleaned our variables, as shown in the next step of this milestone.
 
 \newpage
 
@@ -47,23 +47,34 @@ We have decided that we do not need to subset any rows and columns since we alre
 names(race_data) <- tolower(names(race_data))
 names(smoker_data) <- tolower(names(smoker_data))
 
-#Changed the data type of "howmany" from character to numeric in order to
-#perform calculations for pack-years in the future
+#Re-coded "100 or more cigarettes" to "100" for future pack-year calculations
+#once the variable `howmany` is converted from character to numeric data type
+smoker_data$howmany <- recode(smoker_data$howmany,
+                              "100 or more cigarettes" = "100")
+
+#Changed the data type of `howmany` from character to numeric in order to
+#perform calculations for pack-years later
 smoker_data$howmany <- as.numeric(smoker_data$howmany)
 
-#Removed NA's and string values from smoker_data in order to calculate
-#pack-years later for variables "howmany", "smok6uni", and "smok6num"
-smoker_data_2 <- smoker_data %>% filter(!is.na(howmany),
-  howmany != "100 or more cigarettes", smok6uni == "Years", !is.na(smok6num))
+#Re-coded "In military commissaries, or" to "In military commissaries", as well
+#as "Somewhere else (SPECIFY)?" to "Somewhere else" to make
+#response option more understandable when displayed for the variable `wherebuy`.
+smoker_data$wherebuy <- recode(smoker_data$wherebuy,
+                  "In military commissaries, or" = "In military commissaries",
+                  "Somewhere else (SPECIFY)?" = "Somewhere else")
 
-##NEED TO ASK GSI ABOUT "100 OR MORE CIGARETTES" BEING FILTERED OUT - CAN
-##IMPACT PACK-YEARS CALCULATION
+#Filtered the value of "Years" from the variable `smok6uni` so that "Years"
+#would be the only unique value assigned to `smok6uni`. This is because we only
+#need the time unit of "Years" for calculating "pack-years" later to describe
+#tobacco consumption. This filtered subset was assigned to a new data frame
+#called smoker_data_2.
+smoker_data_2 <- smoker_data %>% filter(smok6uni == "Years")
 
-#Viewed unique values assigned to the variables "howmany", "smok6uni", and
-#smok6num to see if all NA's and strings were removed
+#Viewed unique values assigned to the cleaned variables `howmany`, `wherebuy`,
+# and `smok6uni` to see the changes in the variables' values
 unique(smoker_data_2$howmany)
+unique(smoker_data_2$wherebuy)
 unique(smoker_data_2$smok6uni)
-unique(smoker_data_2$smok6num)
 
 ```
 
@@ -71,11 +82,15 @@ unique(smoker_data_2$smok6num)
 
 ## Create New Variables needed for analysis
 **Minimum of 2 created from existing columns **
-\newline**Examples: calculating the rate or combining character strings**
+\newline
+**Examples: calculating the rate or combining character strings**
 
 ```{r new variables}
 
-#Created new variable "race" to combine variables race01:race15
+#Created new variable `race` to combine variables race01:race15 into a single
+#column. We also renamed race01 through race15 as the race categories they stand
+#for, such as, White, Black, Japanese, and so on to facilitate comprehension of
+#the race of each individual in our data set at first glance
 race_data_2 <- race_data %>%
   mutate(race = case_when(race01 == "Yes" ~ "White",
         race02 == "Yes" ~ "Black",
@@ -93,7 +108,8 @@ race_data_2 <- race_data %>%
         race14 == "Yes" ~ "Refused",
         race15 == "Yes" ~ "Don't know")) %>%
   select(-(race01:race15))
-#Used select() function to remove original race01:race15 variables
+#Used select() function to remove original race01:race15 variables following
+#combining all race variables into one column of `race`
 
 #Viewed the updated data set, race_data_2
 race_data_2
@@ -101,99 +117,157 @@ race_data_2
 #Created new variable "packs_per_day" for future calculations for pack-years
 smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
 
-#Viewed the final cleaned data set, race_data_3
+#Viewed the final cleaned data set, smoker_data_4
 smoker_data_3
 
 ```
 \newpage
 
-## Data dictionary based on clean dataset 
+## Data dictionary based on clean data set 
 **must include: variable name, data type, and description**
-```{r data dictionary}
-#For each of the 4 data elements we pick, we must use typeof() function and
-#describe what it stands for using the research documents published for
-#each variable
+Our group decided to pick 6 data elements from our cleaned data sets of race_data_2 and smoker_data_3 to include in our data dictionary. These variables are `wherebuy`, `howmany`, `nervous`, `asthma`, `race,`, and `packs_per_day`. The variables of `wherebuy`, `howmany`, and `packs_per_day` come from smoker_data_3, and the variables of `nervous`, `asthma`, and `race` come from race_data_2.
 
-#Instructions: "Data dictionary based on clean dataset
-#(minimum 4 data elements), including: Variable name, Data type, Description.
-#Data dictionary can be included as text or table, but should be easy for
-#teaching team to interpret/read."
+For each of the 6 data elements we picked, we must use the typeof() function to define its data type, as well as describe what the variable itself stands for in the context of this study question using the research documents published by the study researchers.
+
+```{r data types for variables in data dictionary}
 
 typeof(smoker_data_3$wherebuy)
 typeof(smoker_data_3$howmany)
+typeof(smoker_data_3$packs_per_day)
 typeof(race_data_2$nervous)
 typeof(race_data_2$asthma)
+typeof(race_data_2$race)
+
 ```
-## Variable 1: wherebuy
-- Data Type: character
-- Description: The "wherebuy" variable contains the responses to the survey question of 'where do/did you usually buy your cigarettes?' this variable gave options of general locations, somewhere else, and don't know/refused. 
 
-## Variable 2: howmany
+## Variable 1 name: wherebuy
+- Data Type: character
+- Description: The `wherebuy` variable contains the responses to the survey question of "Where do/did you usually buy your cigarettes?". Response options for participants include general locations (e.g., convenience stores, gas stations, super markets, liquor/drug stores, discount/warehouse stores) and more niche locations, such as Indian reservations and military commissaries. Other response options for this survey question include "Somewhere else" for locations not mentioned and for the participant to specify, as well as "Refused", or "Don't Know". Values of "Refused" and "Don't Know" were re-coded as NA during the initial import process of our two original data frames of race_data and smoker_data.
+
+## Variable 2 name: howmany
 - Data Type: double
-- Description: The variable "howmany" contains the numeric data related to how many cigarettes were smoked in the last 30 days. The values given for this question were 1 to 100. 
+- Description: The variable `howmany` contains the numeric data related to how many cigarettes were smoked per day in the last 30 days if participants did smoke during that time frame. The values given for this question were 1 to 100, as well as "Refused" and "Don't Know". Responses of "Refused" and "Don't Know" were turned into NA values in our data during the initial import process of the original data.
 
-## Variable 3: nervous
-- Data Type: character
-- Description: The variable "nervous" is a character variable that looks at whether individuals felt nervous, anxious, or on edge in the last two weeks. The responses for this question were don't know, refused, not at all, several days, more than half the days, and nearly everyday. These responses correlated to a numeric value but were put into the dataset in character form. 
+## Variable 3 name: packs_per_day
+- Data Type: double
+- Description: The variable `packs_per_day` contains the number of packs of cigarettes smoked per day for each observation in our data set. Our group created this variable in order to facilitate our calculations for tobacco consumption in "pack-years", which is defined by multiplying the number of packs of cigarettes smoked per day by the number of years a person has smoked.
 
-## Variable 4: asthma
+## Variable 4 name: nervous
 - Data Type: character
-- Description: The variable "asthma" is related to medical history as given by a doctor in the past. This question asks if a physician has ever told you that you have asthma. This had three response options fo Yes, No, Refused. 
+- Description: The variable `nervous` is a character variable that contains responses to the question of whether individuals felt nervous, anxious, or on edge in the last two weeks at the time of interviews for the study. The responses for this question were "Not at all", "Several days", "More than half the days", "Nearly every day", "Refused", and "Don't Know". The responses of "Refused" and "Don't Know" were re-coded as NA during the initial importing process of the original data frame, race_data; all other responses remain untouched in our cleaned data frame, race_data_2.
+
+## Variable 5 name: asthma
+- Data Type: character
+- Description: The variable `asthma` pertains to medical history of individuals, as diagnosed by a doctor in the past. More specifically, the question asked to participants was, "Has a physician ever told you that you have any of the following conditions?". Possible responses were "Yes", "No", "Refused", and "Don't Know"; however, the original data set contained only "Yes" and "No" answers, which are shown in our cleaned data frame, race_data_2.
+
+## Variable 6 name: race
+- Data Type: character
+- Description: The variable `race` describes the racial background of individuals that partook in the study. The racial categories for this variable include White, Black, Japanese, Chinese, Filipino, Korean, Vietnamese, other Asian or Pacific Islander, American Indian or Alaskan Native, Mexican, Hispanic/Latino, Asian Indian, and other, as well as participant responses of "Refused" or "Don't Know".
 
 \newpage
 
 ## Tables with descriptive statistics for 4 data elements 
 
-```{r tables, Smoker Data wherebuy}
+```{r descriptive statistics for wherebuy variable}
+
+#We wanted to create a print-quality table to exhibit how many smokers bought their
+#cigarettes from each unique location option listed in the study. To do this, we
+#first created a new data frame called smoker_data_3_no_na, which contains
+#only non-NA values for the variable `wherebuy` while keeping everything else
+#the same from the smoker_data_3 data frame. This is because we didn't want any
+#NA values shown in our frequency table.
+
+smoker_data_3_no_na <- smoker_data_3 %>%
+  drop_na(wherebuy)
+
+#We then made the `wherebuy` variable in smoker_data_3_no_na into a table
+#using the table() function and assigned it to the object table_smoker_wherebuy.
+
+table_smoker_wherebuy <- table(smoker_data_3_no_na$wherebuy)
+                                          
+#Finally, we used the kable() function from the kableExtra package to create our
+#print-quality table from table_smoker_wherebuy that shows the frequencies per
+#unique cigarette-buying location mentioned in the study.
 
 library(kableExtra)
 
-#Smoker Data Table: wherebuy
-
-table_smoker_wherebuy <- table(smoker_data_3$wherebuy)
-
 kable(table_smoker_wherebuy, 
       booktabs=T, 
-      col.names=c("Location", "Frequency"),  
+      col.names=c("Buying Location", "Frequency"),  
       align='lcccc', 
-      caption="Cigarette Buying Location",
+      caption="Frequencies Per Cigarette-buying Location",
       format.args=list(big.mark=","))%>%
   kable_styling(latex_options = "HOLD_position")
+
 ```
 
 \newpage
-```{r tables, Smoker Data howmany}
-#Smoker Data Table: howmany
+```{r descriptive statistics for variables wherebuy and howmany combined}
 
-table_smoker_howmany <- smoker_data_3 %>% select(wherebuy,howmany) %>% group_by(wherebuy) %>%
-  summarize(howmany=mean(howmany))
+#We created a print-quality table to show the average number of cigarettes smoked
+#in the past 30 days before the study interview based on cigarette-buying location.
+#To do this, we first subsetted data from the smoker_data_3 data frame, where we
+#only kept the variables `wherebuy` and `howmany`. We then dropped all NA values
+#from both of these variables, then grouped by `wherebuy` and calculated the mean
+#of `howmany` for all grouped observations (i.e., mean number of cigarettes
+#smoked per purchasing location). This subsetted data was assigned to the object
+#table_smoker_howmany.
+
+table_smoker_howmany <- smoker_data_3 %>%
+  select(wherebuy, howmany) %>%
+  drop_na(wherebuy, howmany) %>%
+  group_by(wherebuy) %>%
+  summarize(mean_number_of_cigarettes_smoked = mean(howmany))
+
+#Again, we used the kable() function from the kableExtra package to create our
+#print-quality table from the new subset data frame of table_smoker_howmany that
+#shows the average number of cigarettes smoked per unique cigarette-buying location.
 
 kable(table_smoker_howmany, 
       booktabs=T, 
-      col.names=c("Location", "Average Cigarettes smoked"),  
+      col.names=c("Buying Location", "Average Number of Cigarettes Smoked"),  
       align='lcccc', 
-      caption="Mean average of cigarettes smoked in the past 30 days based on buying location",
+      caption="Average Number of Cigarettes Smoked In the Past 30 Days Based on Cigarette-buying Location",
       format.args=list(big.mark=","), digits=2)%>%
-  kable_styling(latex_options = "HOLD_position") 
+  kable_styling(latex_options = "HOLD_position")
+
 ```
 
 
 \newpage
 
-```{r tables, Race Data}
-#Race Data Table: nervous and asthma
+```{r descriptive statistics for variables nervous and othmenill combined}
 
-table_race <- table(race_data_2$nervous,race_data_2$asthma)
+#We wanted to create a print-quality table to exhibit how many smokers who were
+#previously diagnosed with mental illness by a doctor felt nervous, anxious, or
+#on edge over the past two weeks before the study interviews. To do this, we
+#first subsetted data from the race_data_2 data frame, where we only kept the
+#variables `nervous` and `othmenill`. Subsequently, we dropped all NA values
+#from both of these variables because we did not want any NA variables to show
+#up in the table we are creating. We then grouped by `othmenill` and calculated
+#the number of smokers with previously diagnosed mental illness per nervous/anxious/
+#on edge level-of-feeling category.
 
-kable(table_race, 
+
+### WILL FIX THIS LATER###
+nervous_othmenill_no_na <- race_data_2 %>%
+  select(nervous, othmenill) %>%
+  drop_na(nervous, othmenill) %>%
+  pivot_wider(names_from = "othmenill", values_from = nervous)
+
+#Lastly, we used the kable() function from the kableExtra package to create our
+#print-quality table from table_nervous_othmenill that demonstrates how many
+#smokers with previously diagnosed mental illness experienced to some level or
+#did not experience nervousness, anxiousness, or felt on edge in the past two
+#weeks before the study interviews were conducted.
+
+kable(nervous_othmenill_no_na, 
       booktabs=T, 
-      col.names=c("Yes", "No"),  
+      col.names=c("Nervousness/Anxiousness", "No Mental Illness"),  
       align='lcccc', 
-      caption="Feelings of Nervousness among Smokers with Asthma",
+      caption="Feelings of Nervousness/Anxiousness/On Edge Among Smokers with Mental Illness",
       format.args=list(big.mark=","))%>%
   kable_styling(latex_options = "HOLD_position") 
-
-
 
 ```
 
