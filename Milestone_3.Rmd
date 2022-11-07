@@ -244,16 +244,29 @@ kable(table_smoker_howmany,
 #first subsetted data from the race_data_2 data frame, where we only kept the
 #variables `nervous` and `othmenill`. Subsequently, we dropped all NA values
 #from both of these variables because we did not want any NA variables to show
-#up in the table we are creating. We then grouped by `othmenill` and calculated
-#the number of smokers with previously diagnosed mental illness per nervous/anxious/
-#on edge level-of-feeling category.
+#up in the table we are creating. We then grouped by both variables and found the
+#total number of smokers with or without previously diagnosed mental illness per
+#value category for the variable `nervous`. Afterwards, we used pivot_wider() to
+#expand our table horizontally with separate columns for `othmenill`'s values for
+#better visualization of the table. Finally, we ordered the string values of
+#`nervous` by converting the variable into a factor and arranging them from lowest
+#to highest. The values being ordered range from lowest levels of nervousness/
+#anxiousness/feeling on edge (i.e., "Not at all") to highest levels
+#(i.e., "Nearly every day").
 
-
-### WILL FIX THIS LATER###
-nervous_othmenill_no_na <- race_data_2 %>%
+table_nervous_othmenill <- race_data_2 %>%
   select(nervous, othmenill) %>%
   drop_na(nervous, othmenill) %>%
-  pivot_wider(names_from = "othmenill", values_from = nervous)
+  arrange(nervous) %>%
+  group_by(othmenill, nervous) %>%
+  summarize(count = n()) %>%
+  pivot_wider(names_from = "othmenill", values_from = "count") %>%
+  mutate(nervous = factor(nervous,
+                          levels = c("Not at all", "Several days",
+                                                    "More than half the days",
+                                                    "Nearly every day"),
+                          ordered = TRUE)) %>%
+  arrange(nervous)
 
 #Lastly, we used the kable() function from the kableExtra package to create our
 #print-quality table from table_nervous_othmenill that demonstrates how many
@@ -261,13 +274,13 @@ nervous_othmenill_no_na <- race_data_2 %>%
 #did not experience nervousness, anxiousness, or felt on edge in the past two
 #weeks before the study interviews were conducted.
 
-kable(nervous_othmenill_no_na, 
+kable(table_nervous_othmenill, 
       booktabs=T, 
-      col.names=c("Nervousness/Anxiousness", "No Mental Illness"),  
+      col.names=c("Level of Nervousness/Anxiousness/Feeling On Edge", "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
       align='lcccc', 
-      caption="Feelings of Nervousness/Anxiousness/On Edge Among Smokers with Mental Illness",
+      caption="Number of Smokers Per Level of Nervousness/Anxiousness/Feeling On Edge By Mental Illness Status",
       format.args=list(big.mark=","))%>%
-  kable_styling(latex_options = "HOLD_position") 
+  kable_styling(latex_options = "HOLD_position")
 
 ```
 
