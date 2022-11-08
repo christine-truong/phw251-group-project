@@ -302,7 +302,10 @@ kable(table_nervous_othmenill,
 #frequencies per categorical combination of race and mental illness status.
 #Following this step, we used pivot_wider() to expand our table horizontally
 #with separate columns for `othmenill`'s values for better visualization of the
-#table frequencies.
+#table frequencies. We then arranged both columns with names from `othmenill`
+#in descending order, followed by re-ordering the columns for visual presentation.
+#We assigned this re-ordering step of table_race_othmenill to a new data frame
+#called table_race_othmenill_final.
 
 table_race_othmenill <- race_data_2 %>%
   select(race, othmenill) %>%
@@ -310,15 +313,15 @@ table_race_othmenill <- race_data_2 %>%
   group_by(race, othmenill) %>%
   summarize(count = n()) %>%
   pivot_wider(names_from = "othmenill", values_from = "count") %>%
-  arrange(-Yes)
+  arrange(desc(Yes), No)
 
-table_race_othmenill<- table_race_othmenill[,c(1,3,2)]
+table_race_othmenill_final <- table_race_othmenill[,c(1,3,2)]
   
 #Lastly, we used the kable() function from the kableExtra package to create our
 #print-quality table from table_nervous_othmenill that exhibits how many smokers
 #were or were not clinically diagnosed with mental illness by race category.
 
-kable(table_race_othmenill, 
+kable(table_race_othmenill_final, 
       booktabs=T, 
       col.names=c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),
       align='lcccc', 
