@@ -1,7 +1,7 @@
 ---
 title: "Milestone #3"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
-date: "07 Nov 2022"
+date: "11-07-22"
 output:
   pdf_document: default
   html_document: default
@@ -233,7 +233,6 @@ kable(table_smoker_howmany,
 
 ```
 
-
 \newpage
 
 ```{r descriptive statistics for variables nervous and othmenill combined}
@@ -248,10 +247,10 @@ kable(table_smoker_howmany,
 #total number of smokers with or without previously diagnosed mental illness per
 #value category for the variable `nervous`. Afterwards, we used pivot_wider() to
 #expand our table horizontally with separate columns for `othmenill`'s values for
-#better visualization of the table. Finally, we ordered the string values of
-#`nervous` by converting the variable into a factor and arranging them from lowest
-#to highest. The values being ordered range from lowest levels of nervousness/
-#anxiousness/feeling on edge (i.e., "Not at all") to highest levels
+#better visualization of the table frequencies. Finally, we ordered the string
+#values of `nervous` by converting the variable into a factor and arranging them
+#from lowest to highest. The values being ordered range from lowest levels of
+#nervousness/anxiousness/feeling on edge (i.e., "Not at all") to highest levels
 #(i.e., "Nearly every day").
 
 table_nervous_othmenill <- race_data_2 %>%
@@ -285,3 +284,38 @@ kable(table_nervous_othmenill,
 
 ```
 
+\newpage
+
+```{r descriptive statistics for variables race and othmenill combined}
+
+#We wanted to create a print-quality table to examine how many cases of mental
+#illness or no mental illness exist among the smokers in this study by race.
+#To do this, we first subsetted data from the race_data_2 data frame by
+#selecting only the variables of `race` and `othmenill`, then dropping all NA
+#values for both variables since we don't want any NA variables to show up in
+#our table. Subsequently, we grouped by both variables and generated the
+#frequencies per categorical combination of race and mental illness status.
+#Following this step, we used pivot_wider() to expand our table horizontally
+#with separate columns for `othmenill`'s values for better visualization of the
+#table frequencies.
+
+table_race_othmenill <- race_data_2 %>%
+  select(race, othmenill) %>%
+  drop_na(race, othmenill) %>%
+  group_by(race, othmenill) %>%
+  summarize(count = n()) %>%
+  pivot_wider(names_from = "othmenill", values_from = "count")
+
+#Lastly, we used the kable() function from the kableExtra package to create our
+#print-quality table from table_nervous_othmenill that exhibits how many smokers
+#were or were not clinically diagnosed with mental illness by race category.
+
+kable(table_race_othmenill, 
+      booktabs=T, 
+      col.names=c("Race", "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
+      align='lcccc', 
+      caption="Race and Mental Illness Status",
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
