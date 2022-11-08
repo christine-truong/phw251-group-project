@@ -80,7 +80,7 @@ unique(smoker_data_2$smok6uni)
 
 \newpage
 
-## Create New Variables needed for analysis
+## Create new variables needed for analysis
 **Minimum of 2 created from existing columns **
 \newline
 **Examples: calculating the rate or combining character strings**
