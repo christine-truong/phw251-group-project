@@ -306,15 +306,18 @@ table_race_othmenill <- race_data_2 %>%
   drop_na(race, othmenill) %>%
   group_by(race, othmenill) %>%
   summarize(count = n()) %>%
-  pivot_wider(names_from = "othmenill", values_from = "count")
+  pivot_wider(names_from = "othmenill", values_from = "count") %>%
+  arrange(-Yes)
 
+table_race_othmenill<- table_race_othmenill[,c(1,3,2)]
+  
 #Lastly, we used the kable() function from the kableExtra package to create our
 #print-quality table from table_nervous_othmenill that exhibits how many smokers
 #were or were not clinically diagnosed with mental illness by race category.
 
 kable(table_race_othmenill, 
       booktabs=T, 
-      col.names=c("Race", "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
+      col.names=c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),  
       align='lcccc', 
       caption="Race and Mental Illness Status",
       format.args=list(big.mark=","))%>%
