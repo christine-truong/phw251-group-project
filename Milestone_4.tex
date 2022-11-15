@@ -1,0 +1,495 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Milestone \#4},
+  pdfauthor={Rachael Baartmans, Lara Petalio, Christine Truong},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Milestone \#4}
+\author{Rachael Baartmans, Lara Petalio, Christine Truong}
+\date{11-14-22}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in system("timedatectl", intern = TRUE): running command 'timedatectl'
+## had status 1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.6     v dplyr   1.0.8
+## v tidyr   1.2.0     v stringr 1.4.0
+## v readr   2.1.2     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Insert previous code with updated datasets }
+\NormalTok{race\_data }\OtherTok{\textless{}{-}}\FunctionTok{read\_csv}\NormalTok{(}\StringTok{"ca\_csc\_outcome\_race\_data.csv"}\NormalTok{,}
+            \AttributeTok{col\_select =} \FunctionTok{c}\NormalTok{(NERVOUS, WORRYING, PROBINTR,}
+\NormalTok{                           PROBDOWN, ASTHMA, HEARTDIS,}
+\NormalTok{                           DIABETES, OTHMENILL, race01, race02, race03,}
+\NormalTok{                           race04, race05, race06, race07, race08,}
+\NormalTok{                           race09, race10, race11, race12, race13,}
+\NormalTok{                           race14, race15),}
+            \AttributeTok{na =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"NA"}\NormalTok{, }\StringTok{"NA/Not Applicable"}\NormalTok{, }\StringTok{"N/A"}\NormalTok{, }\StringTok{"n/a"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) NA/Not Applicable"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) Refused"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) Don\textquotesingle{}t know"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 1000 Columns: 23
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (23): NERVOUS, WORRYING, PROBINTR, PROBDOWN, ASTHMA, HEARTDIS, DIABETES,...
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{smoker\_data }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"ca\_csc\_smoker\_data.csv"}\NormalTok{,}
+            \AttributeTok{col\_select =} \FunctionTok{c}\NormalTok{(smokstat, WHEREBUY, BUYCALIF,}
+\NormalTok{                           HOWMANY, SMOK6NUM, SMOK6UNI),}
+            \AttributeTok{na =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"NA"}\NormalTok{, }\StringTok{"NA/Not Applicable"}\NormalTok{, }\StringTok{"N/A"}\NormalTok{, }\StringTok{"n/a"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) NA/Not Applicable"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) Refused"}\NormalTok{,}
+                   \StringTok{"(DO NOT READ) Don\textquotesingle{}t know"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 1000 Columns: 6
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (5): smokstat, HOWMANY, SMOK6UNI, BUYCALIF, WHEREBUY
+## dbl (1): SMOK6NUM
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Changed casing for variables from capitals to lowercase in both dataframes}
+\CommentTok{\#of race\_data and smoker\_data}
+\FunctionTok{names}\NormalTok{(race\_data) }\OtherTok{\textless{}{-}} \FunctionTok{tolower}\NormalTok{(}\FunctionTok{names}\NormalTok{(race\_data))}
+\FunctionTok{names}\NormalTok{(smoker\_data) }\OtherTok{\textless{}{-}} \FunctionTok{tolower}\NormalTok{(}\FunctionTok{names}\NormalTok{(smoker\_data))}
+
+\CommentTok{\#Re{-}coded "100 or more cigarettes" to "100" for future pack{-}year calculations}
+\CommentTok{\#once the variable \textasciigrave{}howmany\textasciigrave{} is converted from character to numeric data type}
+\NormalTok{smoker\_data}\SpecialCharTok{$}\NormalTok{howmany }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(smoker\_data}\SpecialCharTok{$}\NormalTok{howmany,}
+                              \StringTok{"100 or more cigarettes"} \OtherTok{=} \StringTok{"100"}\NormalTok{)}
+
+\CommentTok{\#Changed the data type of \textasciigrave{}howmany\textasciigrave{} from character to numeric in order to}
+\CommentTok{\#perform calculations for pack{-}years later}
+\NormalTok{smoker\_data}\SpecialCharTok{$}\NormalTok{howmany }\OtherTok{\textless{}{-}} \FunctionTok{as.numeric}\NormalTok{(smoker\_data}\SpecialCharTok{$}\NormalTok{howmany)}
+
+\CommentTok{\#Re{-}coded "In military commissaries, or" to "In military commissaries", as well}
+\CommentTok{\#as "Somewhere else (SPECIFY)?" to "Somewhere else" to make}
+\CommentTok{\#response option more understandable when displayed for the variable \textasciigrave{}wherebuy\textasciigrave{}.}
+\NormalTok{smoker\_data}\SpecialCharTok{$}\NormalTok{wherebuy }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(smoker\_data}\SpecialCharTok{$}\NormalTok{wherebuy,}
+                  \StringTok{"In military commissaries, or"} \OtherTok{=} \StringTok{"In military commissaries"}\NormalTok{,}
+                  \StringTok{"Somewhere else (SPECIFY)?"} \OtherTok{=} \StringTok{"Somewhere else"}\NormalTok{)}
+
+\CommentTok{\#Filtered the value of "Years" from the variable \textasciigrave{}smok6uni\textasciigrave{} so that "Years"}
+\CommentTok{\#would be the only unique value assigned to \textasciigrave{}smok6uni\textasciigrave{}. This is because we only}
+\CommentTok{\#need the time unit of "Years" for calculating "pack{-}years" later to describe}
+\CommentTok{\#tobacco consumption. This filtered subset was assigned to a new data frame}
+\CommentTok{\#called smoker\_data\_2.}
+\NormalTok{smoker\_data\_2 }\OtherTok{\textless{}{-}}\NormalTok{ smoker\_data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(smok6uni }\SpecialCharTok{==} \StringTok{"Years"}\NormalTok{)}
+
+
+
+\CommentTok{\#Created new variable \textasciigrave{}race\textasciigrave{} to combine variables race01:race15 into one column. }
+\NormalTok{race\_data\_2 }\OtherTok{\textless{}{-}}\NormalTok{ race\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{race =} \FunctionTok{case\_when}\NormalTok{(race01 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"White"}\NormalTok{,}
+\NormalTok{        race02 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Black"}\NormalTok{,}
+\NormalTok{        race03 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Japanese"}\NormalTok{,}
+\NormalTok{        race04 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Chinese"}\NormalTok{,}
+\NormalTok{        race05 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Filipino"}\NormalTok{,}
+\NormalTok{        race06 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Korean"}\NormalTok{,}
+\NormalTok{        race07 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Other Asian or Pacific Islander"}\NormalTok{,}
+\NormalTok{        race08 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"American Indian or Alaskan Native"}\NormalTok{,}
+\NormalTok{        race09 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Mexican"}\NormalTok{,}
+\NormalTok{        race10 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Hispanic/Latino"}\NormalTok{,}
+\NormalTok{        race11 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Other"}\NormalTok{,}
+\NormalTok{        race12 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Vietnamese"}\NormalTok{,}
+\NormalTok{        race13 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Asian Indian"}\NormalTok{,}
+\NormalTok{        race14 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Refused"}\NormalTok{,}
+\NormalTok{        race15 }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Don\textquotesingle{}t know"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{(race01}\SpecialCharTok{:}\NormalTok{race15))}
+
+\CommentTok{\#Created new variable "packs\_per\_day" for future calculations for pack{-}years}
+\NormalTok{smoker\_data\_3 }\OtherTok{\textless{}{-}}\NormalTok{ smoker\_data\_2 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{packs\_per\_day =}\NormalTok{ howmany}\SpecialCharTok{/}\DecValTok{20}\NormalTok{)}
+
+
+\NormalTok{smoker\_data\_3\_no\_na }\OtherTok{\textless{}{-}}\NormalTok{ smoker\_data\_3 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{drop\_na}\NormalTok{(wherebuy)}
+
+
+\NormalTok{table\_smoker\_wherebuy }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(smoker\_data\_3\_no\_na}\SpecialCharTok{$}\NormalTok{wherebuy)}
+                                          
+\CommentTok{\#Finally, we used the kable() function from the kableExtra package to create our}
+\CommentTok{\#print{-}quality table from table\_smoker\_wherebuy that shows the frequencies per}
+\CommentTok{\#unique cigarette{-}buying location mentioned in the study.}
+
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'kableExtra'
+## 
+## The following object is masked from 'package:dplyr':
+## 
+##     group_rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(table\_smoker\_wherebuy, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Buying Location"}\NormalTok{, }\StringTok{"Frequency"}\NormalTok{),  }
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{textbf\{Frequencies Per Cigarette{-}buying Location\}\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{format =} \StringTok{\textquotesingle{}latex\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format.args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{big.mark=}\StringTok{","}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"HOLD\_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:importing data for reference}\textbf{Frequencies Per Cigarette-buying Location}}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+Buying Location & Frequency\\
+\midrule
+At convenience stores or gas stations & 328\\
+At liquor stores or drug stores & 103\\
+At other discount or warehouse stores such as Wal-Mart or Costco & 46\\
+At supermarkets & 30\\
+At tobacco discount stores & 201\\
+\addlinespace
+In military commissaries & 7\\
+On Indian reservations & 20\\
+Somewhere else & 18\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table\_smoker\_howmany }\OtherTok{\textless{}{-}}\NormalTok{ smoker\_data\_3 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(wherebuy, howmany) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{drop\_na}\NormalTok{(wherebuy, howmany) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(wherebuy) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{mean\_number\_of\_cigarettes\_smoked =} \FunctionTok{mean}\NormalTok{(howmany))}
+
+\FunctionTok{kable}\NormalTok{(table\_smoker\_howmany, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Buying Location"}\NormalTok{, }\StringTok{"Average Number of Cigarettes Smoked"}\NormalTok{),  }
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{textbf\{Mean No. of Cigarettes Smoked In}
+\StringTok{      the Past Month Based on Buying Location\}\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format =} \StringTok{\textquotesingle{}latex\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format.args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{big.mark=}\StringTok{","}\NormalTok{), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"HOLD\_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:importing data for reference}\textbf{Mean No. of Cigarettes Smoked In
+      the Past Month Based on Buying Location}}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+Buying Location & Average Number of Cigarettes Smoked\\
+\midrule
+At convenience stores or gas stations & 15.16\\
+At liquor stores or drug stores & 14.81\\
+At other discount or warehouse stores such as Wal-Mart or Costco & 18.33\\
+At supermarkets & 16.90\\
+At tobacco discount stores & 16.13\\
+\addlinespace
+In military commissaries & 11.00\\
+On Indian reservations & 16.85\\
+Somewhere else & 24.56\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table\_nervous\_othmenill }\OtherTok{\textless{}{-}}\NormalTok{ race\_data\_2 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(nervous, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{drop\_na}\NormalTok{(nervous, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(nervous) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(othmenill, nervous) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =} \StringTok{"othmenill"}\NormalTok{, }\AttributeTok{values\_from =} \StringTok{"count"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{nervous =} \FunctionTok{factor}\NormalTok{(nervous,}
+                          \AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Not at all"}\NormalTok{, }\StringTok{"Several days"}\NormalTok{,}
+                                                    \StringTok{"More than half the days"}\NormalTok{,}
+                                                    \StringTok{"Nearly every day"}\NormalTok{),}
+                          \AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(nervous)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'othmenill'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(table\_nervous\_othmenill, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Level of Nervousness/Anxiousness/Feeling On Edge"}\NormalTok{,}
+                  \StringTok{"No Diagnosed Mental Illness"}\NormalTok{, }\StringTok{"Diagnosed Mental Illness"}\NormalTok{),  }
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{textbf\{Number of Smokers Per Level of }
+\StringTok{      Anxiety Feelings By Mental Illness Status\}\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format =} \StringTok{\textquotesingle{}latex\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format.args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{big.mark=}\StringTok{","}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"HOLD\_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:importing data for reference}\textbf{Number of Smokers Per Level of 
+      Anxiety Feelings By Mental Illness Status}}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+Level of Nervousness/Anxiousness/Feeling On Edge & No Diagnosed Mental Illness & Diagnosed Mental Illness\\
+\midrule
+Not at all & 345 & 29\\
+Several days & 247 & 52\\
+More than half the days & 95 & 30\\
+Nearly every day & 119 & 58\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table\_race\_othmenill }\OtherTok{\textless{}{-}}\NormalTok{ race\_data\_2 }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(race, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{drop\_na}\NormalTok{(race, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(race, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =} \StringTok{"othmenill"}\NormalTok{, }\AttributeTok{values\_from =} \StringTok{"count"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(Yes), No)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'race'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table\_race\_othmenill\_final }\OtherTok{\textless{}{-}}\NormalTok{ table\_race\_othmenill[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{2}\NormalTok{)]}
+
+\FunctionTok{kable}\NormalTok{(table\_race\_othmenill\_final, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Race"}\NormalTok{, }\StringTok{"Diagnosed Mental Illness"}\NormalTok{, }\StringTok{"No Diagnosed Mental Illness"}\NormalTok{),}
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=}\StringTok{\textquotesingle{}}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{textbf\{Race and Mental Illness Status\}\textquotesingle{}}\NormalTok{,}
+      \AttributeTok{format.args=}\FunctionTok{list}\NormalTok{(}\AttributeTok{big.mark=}\StringTok{","}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"HOLD\_position"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}[H]
+
+\caption{\label{tab:importing data for reference}\textbf{Race and Mental Illness Status}}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+Race & Diagnosed Mental Illness & No Diagnosed Mental Illness\\
+\midrule
+White & 137 & 660\\
+Black & 13 & 64\\
+American Indian or Alaskan Native & 10 & 29\\
+Refused & 3 & 4\\
+Filipino & 2 & 6\\
+\addlinespace
+Mexican & 2 & 17\\
+Don't know & 1 & 1\\
+Other & 1 & 2\\
+Other Asian or Pacific Islander & 1 & 5\\
+Hispanic/Latino & 1 & 16\\
+\addlinespace
+Asian Indian & NA & 1\\
+Vietnamese & NA & 2\\
+Japanese & NA & 6\\
+Chinese & NA & 7\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\newpage
+
+\hypertarget{milestone-4-assignments}{%
+\subsection{Milestone \#4 assignments}\label{milestone-4-assignments}}
+
+Visualizations (3 total) \textbf{one print quality tables per scenario}
+\newline **one print quality plot or chart per scenario** \newline **one
+additional table or plot**
+
+\hypertarget{each-visual-should-include}{%
+\section{Each visual should include:}\label{each-visual-should-include}}
+
+\newline **code** \newline **legend (if necessary) **
+\newline **interpretation (1 to 2 sentences)**
+
+\#\#PDF should be prepared for presentation \newline**each part of
+milestone on new page** \newline**only necessary info outputted**
+\newline **show work with ``echo''**
+
+\end{document}

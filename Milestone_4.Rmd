@@ -1,0 +1,184 @@
+---
+title: "Milestone #4"
+author: "Rachael Baartmans, Lara Petalio, Christine Truong"
+date: "11-14-22"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r importing data for reference}
+library(tidyverse)
+
+#Insert previous code with updated datasets 
+race_data <-read_csv("ca_csc_outcome_race_data.csv",
+            col_select = c(NERVOUS, WORRYING, PROBINTR,
+                           PROBDOWN, ASTHMA, HEARTDIS,
+                           DIABETES, OTHMENILL, race01, race02, race03,
+                           race04, race05, race06, race07, race08,
+                           race09, race10, race11, race12, race13,
+                           race14, race15),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
+
+smoker_data <- read_csv("ca_csc_smoker_data.csv",
+            col_select = c(smokstat, WHEREBUY, BUYCALIF,
+                           HOWMANY, SMOK6NUM, SMOK6UNI),
+            na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
+                   "(DO NOT READ) NA/Not Applicable",
+                   "(DO NOT READ) Refused",
+                   "(DO NOT READ) Don't know"))
+
+#Changed casing for variables from capitals to lowercase in both dataframes
+#of race_data and smoker_data
+names(race_data) <- tolower(names(race_data))
+names(smoker_data) <- tolower(names(smoker_data))
+
+#Re-coded "100 or more cigarettes" to "100" for future pack-year calculations
+#once the variable `howmany` is converted from character to numeric data type
+smoker_data$howmany <- recode(smoker_data$howmany,
+                              "100 or more cigarettes" = "100")
+
+#Changed the data type of `howmany` from character to numeric in order to
+#perform calculations for pack-years later
+smoker_data$howmany <- as.numeric(smoker_data$howmany)
+
+#Re-coded "In military commissaries, or" to "In military commissaries", as well
+#as "Somewhere else (SPECIFY)?" to "Somewhere else" to make
+#response option more understandable when displayed for the variable `wherebuy`.
+smoker_data$wherebuy <- recode(smoker_data$wherebuy,
+                  "In military commissaries, or" = "In military commissaries",
+                  "Somewhere else (SPECIFY)?" = "Somewhere else")
+
+#Filtered the value of "Years" from the variable `smok6uni` so that "Years"
+#would be the only unique value assigned to `smok6uni`. This is because we only
+#need the time unit of "Years" for calculating "pack-years" later to describe
+#tobacco consumption. This filtered subset was assigned to a new data frame
+#called smoker_data_2.
+smoker_data_2 <- smoker_data %>% filter(smok6uni == "Years")
+
+
+
+#Created new variable `race` to combine variables race01:race15 into one column. 
+race_data_2 <- race_data %>%
+  mutate(race = case_when(race01 == "Yes" ~ "White",
+        race02 == "Yes" ~ "Black",
+        race03 == "Yes" ~ "Japanese",
+        race04 == "Yes" ~ "Chinese",
+        race05 == "Yes" ~ "Filipino",
+        race06 == "Yes" ~ "Korean",
+        race07 == "Yes" ~ "Other Asian or Pacific Islander",
+        race08 == "Yes" ~ "American Indian or Alaskan Native",
+        race09 == "Yes" ~ "Mexican",
+        race10 == "Yes" ~ "Hispanic/Latino",
+        race11 == "Yes" ~ "Other",
+        race12 == "Yes" ~ "Vietnamese",
+        race13 == "Yes" ~ "Asian Indian",
+        race14 == "Yes" ~ "Refused",
+        race15 == "Yes" ~ "Don't know")) %>%
+  select(-(race01:race15))
+
+#Created new variable "packs_per_day" for future calculations for pack-years
+smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
+
+
+smoker_data_3_no_na <- smoker_data_3 %>%
+  drop_na(wherebuy)
+
+
+table_smoker_wherebuy <- table(smoker_data_3_no_na$wherebuy)
+                                          
+#Finally, we used the kable() function from the kableExtra package to create our
+#print-quality table from table_smoker_wherebuy that shows the frequencies per
+#unique cigarette-buying location mentioned in the study.
+
+library(kableExtra)
+
+kable(table_smoker_wherebuy, 
+      booktabs=T, 
+      col.names=c("Buying Location", "Frequency"),  
+      align='lcccc', 
+      caption='\\textbf{Frequencies Per Cigarette-buying Location}', 
+      format = 'latex',
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position")
+
+table_smoker_howmany <- smoker_data_3 %>%
+  select(wherebuy, howmany) %>%
+  drop_na(wherebuy, howmany) %>%
+  group_by(wherebuy) %>%
+  summarize(mean_number_of_cigarettes_smoked = mean(howmany))
+
+kable(table_smoker_howmany, 
+      booktabs=T, 
+      col.names=c("Buying Location", "Average Number of Cigarettes Smoked"),  
+      align='lcccc', 
+      caption='\\textbf{Mean No. of Cigarettes Smoked In
+      the Past Month Based on Buying Location}',
+      format = 'latex',
+      format.args=list(big.mark=","), digits=2)%>%
+  kable_styling(latex_options = "HOLD_position")
+
+table_nervous_othmenill <- race_data_2 %>%
+  select(nervous, othmenill) %>%
+  drop_na(nervous, othmenill) %>%
+  arrange(nervous) %>%
+  group_by(othmenill, nervous) %>%
+  summarize(count = n()) %>%
+  pivot_wider(names_from = "othmenill", values_from = "count") %>%
+  mutate(nervous = factor(nervous,
+                          levels = c("Not at all", "Several days",
+                                                    "More than half the days",
+                                                    "Nearly every day"),
+                          ordered = TRUE)) %>%
+  arrange(nervous)
+
+kable(table_nervous_othmenill, 
+      booktabs=T, 
+      col.names=c("Level of Nervousness/Anxiousness/Feeling On Edge",
+                  "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
+      align='lcccc', 
+      caption='\\textbf{Number of Smokers Per Level of 
+      Anxiety Feelings By Mental Illness Status}',
+      format = 'latex',
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position")
+
+table_race_othmenill <- race_data_2 %>%
+  select(race, othmenill) %>%
+  drop_na(race, othmenill) %>%
+  group_by(race, othmenill) %>%
+  summarize(count = n()) %>%
+  pivot_wider(names_from = "othmenill", values_from = "count") %>%
+  arrange(desc(Yes), No)
+
+table_race_othmenill_final <- table_race_othmenill[,c(1,3,2)]
+
+kable(table_race_othmenill_final, 
+      booktabs=T, 
+      col.names=c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),
+      align='lcccc', 
+      caption='\\textbf{Race and Mental Illness Status}',
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position")
+
+```
+
+\newpage
+## Milestone #4 assignments
+
+Visualizations (3 total)
+**one print quality tables per scenario**
+\newline **one print quality plot or chart per scenario**
+\newline **one additional table or plot** 
+
+# Each visual should include: 
+\newline **code**
+\newline **legend (if necessary) **
+\newline **interpretation (1 to 2 sentences)**
+
+##PDF should be prepared for presentation 
+\newline**each part of milestone on new page** 
+\newline**only necessary info outputted** 
+\newline **show work with "echo"**
