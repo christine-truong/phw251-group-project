@@ -168,14 +168,23 @@ kable(table_race_othmenill_final,
 \newpage
 ## Milestone #4 assignments
 
+1) Need to join 2 data sets first via inner_join()
+
 Visualizations (3 total)
 **one print quality tables per scenario**
+With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
+
 \newline **one print quality plot or chart per scenario**
-\newline **one additional table or plot** 
+With ggplot: 1 bar graph (x = disease, y = pack-years)
+
+\newline **one additional table or plot**
+With ggplot: 1 bar graph (x = race, y = frequency of purchase location)
 
 # Each visual should include: 
 \newline **code**
 \newline **legend (if necessary) **
+Unless we decide to input a third variable in a graph.
+
 \newline **interpretation (1 to 2 sentences)**
 
 ##PDF should be prepared for presentation 
