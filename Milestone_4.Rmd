@@ -86,86 +86,8 @@ smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
 smoker_data_3_no_na <- smoker_data_3 %>%
   drop_na(wherebuy)
 
-
-table_smoker_wherebuy <- table(smoker_data_3_no_na$wherebuy)
-                                          
-#Finally, we used the kable() function from the kableExtra package to create our
-#print-quality table from table_smoker_wherebuy that shows the frequencies per
-#unique cigarette-buying location mentioned in the study.
-
-library(kableExtra)
-
-kable(table_smoker_wherebuy, 
-      booktabs=T, 
-      col.names=c("Buying Location", "Frequency"),  
-      align='lcccc', 
-      caption='\\textbf{Frequencies Per Cigarette-buying Location}', 
-      format = 'latex',
-      format.args=list(big.mark=","))%>%
-  kable_styling(latex_options = "HOLD_position")
-
-table_smoker_howmany <- smoker_data_3 %>%
-  select(wherebuy, howmany) %>%
-  drop_na(wherebuy, howmany) %>%
-  group_by(wherebuy) %>%
-  summarize(mean_number_of_cigarettes_smoked = mean(howmany))
-
-kable(table_smoker_howmany, 
-      booktabs=T, 
-      col.names=c("Buying Location", "Average Number of Cigarettes Smoked"),  
-      align='lcccc', 
-      caption='\\textbf{Mean No. of Cigarettes Smoked In
-      the Past Month Based on Buying Location}',
-      format = 'latex',
-      format.args=list(big.mark=","), digits=2)%>%
-  kable_styling(latex_options = "HOLD_position")
-
-table_nervous_othmenill <- race_data_2 %>%
-  select(nervous, othmenill) %>%
-  drop_na(nervous, othmenill) %>%
-  arrange(nervous) %>%
-  group_by(othmenill, nervous) %>%
-  summarize(count = n()) %>%
-  pivot_wider(names_from = "othmenill", values_from = "count") %>%
-  mutate(nervous = factor(nervous,
-                          levels = c("Not at all", "Several days",
-                                                    "More than half the days",
-                                                    "Nearly every day"),
-                          ordered = TRUE)) %>%
-  arrange(nervous)
-
-kable(table_nervous_othmenill, 
-      booktabs=T, 
-      col.names=c("Level of Nervousness/Anxiousness/Feeling On Edge",
-                  "No Diagnosed Mental Illness", "Diagnosed Mental Illness"),  
-      align='lcccc', 
-      caption='\\textbf{Number of Smokers Per Level of 
-      Anxiety Feelings By Mental Illness Status}',
-      format = 'latex',
-      format.args=list(big.mark=","))%>%
-  kable_styling(latex_options = "HOLD_position")
-
-table_race_othmenill <- race_data_2 %>%
-  select(race, othmenill) %>%
-  drop_na(race, othmenill) %>%
-  group_by(race, othmenill) %>%
-  summarize(count = n()) %>%
-  pivot_wider(names_from = "othmenill", values_from = "count") %>%
-  arrange(desc(Yes), No)
-
-table_race_othmenill_final <- table_race_othmenill[,c(1,3,2)]
-
-kable(table_race_othmenill_final, 
-      booktabs=T, 
-      col.names=c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),
-      align='lcccc', 
-      caption='\\textbf{Race and Mental Illness Status}',
-      format.args=list(big.mark=","))%>%
-  kable_styling(latex_options = "HOLD_position")
-
 ```
 
-\newpage
 ## Milestone #4 assignments
 
 ```{r pack-years calculation}
@@ -230,51 +152,56 @@ With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table
 
 "Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
 
-\newline **one print quality plot or chart per scenario**
+**one print quality plot or chart per scenario**
 With ggplot: 1 bar graph (x = disease, y = pack-years)
 
 ```{r bar graph of pack-years by disease}
 
-ggplot(joined_smoking_df, aes(x = asthma, pack_years)) +
+joined_smoking_df %>%
+  drop_na(c(asthma, pack_years)) %>%
+  ggplot(aes(x = asthma, pack_years)) +
   geom_bar(aes(fill=race), stat="identity") +
   labs(x = "Asthma Status", y = "Pack-years (pack(s) per year)",
        title = "Pack-years by Asthma Status",
        caption = "Data Source: California Department of Public Health")
 
-ggplot(joined_smoking_df, aes(x = heartdis, pack_years)) +
+joined_smoking_df %>%
+  drop_na(c(heartdis, pack_years)) %>%
+  ggplot(aes(x = heartdis, pack_years)) +
   geom_bar(aes(fill=race), stat="identity") +
   labs(x = "Heart Disease Status", y = "Pack-years (pack(s) per year)",
        title = "Pack-years by Heart Disease Status",
        caption = "Data Source: California Department of Public Health")
 
-ggplot(joined_smoking_df, aes(x = diabetes, pack_years)) +
+joined_smoking_df %>%
+  drop_na(c(diabetes, pack_years)) %>%
+  ggplot(aes(x = diabetes, pack_years)) +
   geom_bar(aes(fill=race), stat="identity") +
   labs(x = "Diabetes Status", y = "Pack-years (pack(s) per year)",
        title = "Pack-years by Diabetes Status",
        caption = "Data Source: California Department of Public Health")
 
-ggplot(joined_smoking_df, aes(x = othmenill, pack_years)) +
+joined_smoking_df %>%
+  drop_na(c(othmenill, pack_years)) %>%
+  ggplot(aes(x = othmenill, pack_years)) +
   geom_bar(aes(fill=race), stat="identity") +
   labs(x = "Mental Illness Status", y = "Pack-years (pack(s) per year)",
        title = "Pack-years by Mental Illness Status",
        caption = "Data Source: California Department of Public Health")
 
-
-#GET RID OF NA'S?
 ```
 
-
-\newline **one additional table or plot**
+**one additional table or plot**
 With ggplot: dodged bar chart with (x = cigarette purchase location, aes(fill = othmenill) to view cigarette purchase location and mental illness status
 
 # Each visual should include: 
-\newline **code**
-\newline **legend (if necessary) **
+**code**
+**legend (if necessary) **
 Unless we decide to input a third variable in a graph.
 
-\newline **interpretation (1 to 2 sentences)**
+**interpretation (1 to 2 sentences)**
 
 ##PDF should be prepared for presentation 
-\newline**each part of milestone on new page** 
-\newline**only necessary info outputted** 
-\newline **show work with "echo"**
+**each part of milestone on new page** 
+**only necessary info outputted** 
+**show work with "echo"**
