@@ -146,14 +146,7 @@ joined_smoking_df
 ##OUR GROUP'S RESEARCH QUESTION:
 "For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status."
 
-Visualizations (3 total)
-**one print quality tables per scenario**
-With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
 
-"Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
-
-**one print quality plot or chart per scenario**
-With ggplot: 1 bar graph (x = disease, y = pack-years)
 
 ```{r bar graph of pack-years by disease}
 
@@ -191,6 +184,14 @@ joined_smoking_df %>%
 
 ```
 
+Visualizations (3 total)
+**one print quality tables per scenario**
+With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
+
+"Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
+
+**one print quality plot or chart per scenario**
+With ggplot: 1 bar graph (x = disease, y = pack-years)
 **one additional table or plot**
 With ggplot: dodged bar chart with (x = cigarette purchase location, aes(fill = othmenill) to view cigarette purchase location and mental illness status
 
