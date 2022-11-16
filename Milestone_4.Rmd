@@ -11,7 +11,7 @@ library(tidyverse)
 
 #Insert previous code with updated datasets 
 race_data <-read_csv("ca_csc_outcome_race_data.csv",
-            col_select = c(NERVOUS, WORRYING, PROBINTR,
+            col_select = c(ID, NERVOUS, WORRYING, PROBINTR,
                            PROBDOWN, ASTHMA, HEARTDIS,
                            DIABETES, OTHMENILL, race01, race02, race03,
                            race04, race05, race06, race07, race08,
@@ -23,7 +23,7 @@ race_data <-read_csv("ca_csc_outcome_race_data.csv",
                    "(DO NOT READ) Don't know"))
 
 smoker_data <- read_csv("ca_csc_smoker_data.csv",
-            col_select = c(smokstat, WHEREBUY, BUYCALIF,
+            col_select = c(psraid, smokstat, WHEREBUY, BUYCALIF,
                            HOWMANY, SMOK6NUM, SMOK6UNI),
             na = c("", "NA", "NA/Not Applicable", "N/A", "n/a",
                    "(DO NOT READ) NA/Not Applicable",
@@ -168,17 +168,104 @@ kable(table_race_othmenill_final,
 \newpage
 ## Milestone #4 assignments
 
-1) Need to join 2 data sets first via inner_join()
+```{r pack-years calculation}
+
+#We calculated pack-years, which is given by the formula of
+#pack-years = # of packs of cigarettes smoked per day * years a person has smoked.
+#This calculation led to the creation of a new variable called `pack_years`.
+#We assigned this change in the smoker_data_3_no_na data frame to a new data
+#frame called smoker_data_4, which includes the new variable `pack_years`.
+
+smoker_data_4 <- smoker_data_3_no_na %>%
+  mutate(pack_years = packs_per_day*smok6num)
+
+#Afterwards, we viewed our new data frame with the new variable `pack_years`.
+smoker_data_4
+
+```
+
+```{r joining race_data_2 and smoker_data_4 together}
+
+#In order to join our two data sets together, we first had to remove the strings
+#of 'DIS' and 'STAT' from the `id` column of race_data_2 by using gsub().
+#We overwrote these changes in the race_data_2 data frame and viewed these new
+#changes to make sure the `id` variable only contains numbers and no
+#characters.
+
+race_data_2$id <- gsub('[DISSTAT]', '', race_data_2$id)
+race_data_2
+
+#Next, looking at the smoker_data_4 data frame, we see that the `psraid`
+#variable contains each study participant's unique ID number, but the variable
+#is a numeric data type. On the other hand, `id` from the race_data_2
+#data frame is a character data type. We needed to convert `psraid` then from
+#character to numeric data type because 1) `psraid` is an identifier rather than
+#a numeric value to mathematically manipulate even if it does contain numbers
+#and 2) in order to perform a join, the two variables must be the same data
+#type.
+
+smoker_data_4$psraid <- as.character(smoker_data_4$psraid)
+
+#Afterward, we performed an inner join between race_data_2 and
+#smoker_data_4 by each study participant's unique ID number, which is
+#represented by `id` in race_data_2 and `psraid` in smoker_data_4. We
+#chose to do an inner join because we wanted to select participants that
+#exist in each of our two data sets for our final data frame.
+#We assigned this join to a new data frame called joined_smoking_df.
+
+joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_4,
+                                by=c("id" = "psraid"))
+
+#Then, we viewed the new data frame we created
+joined_smoking_df
+
+```
+
+##OUR GROUP'S RESEARCH QUESTION:
+"For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status."
 
 Visualizations (3 total)
 **one print quality tables per scenario**
 With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
 
+"Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
+
 \newline **one print quality plot or chart per scenario**
 With ggplot: 1 bar graph (x = disease, y = pack-years)
 
+```{r bar graph of pack-years by disease}
+
+ggplot(joined_smoking_df, aes(x = asthma, pack_years)) +
+  geom_bar(aes(fill=race), stat="identity") +
+  labs(x = "Asthma Status", y = "Pack-years (pack(s) per year)",
+       title = "Pack-years by Asthma Status",
+       caption = "Data Source: California Department of Public Health")
+
+ggplot(joined_smoking_df, aes(x = heartdis, pack_years)) +
+  geom_bar(aes(fill=race), stat="identity") +
+  labs(x = "Heart Disease Status", y = "Pack-years (pack(s) per year)",
+       title = "Pack-years by Heart Disease Status",
+       caption = "Data Source: California Department of Public Health")
+
+ggplot(joined_smoking_df, aes(x = diabetes, pack_years)) +
+  geom_bar(aes(fill=race), stat="identity") +
+  labs(x = "Diabetes Status", y = "Pack-years (pack(s) per year)",
+       title = "Pack-years by Diabetes Status",
+       caption = "Data Source: California Department of Public Health")
+
+ggplot(joined_smoking_df, aes(x = othmenill, pack_years)) +
+  geom_bar(aes(fill=race), stat="identity") +
+  labs(x = "Mental Illness Status", y = "Pack-years (pack(s) per year)",
+       title = "Pack-years by Mental Illness Status",
+       caption = "Data Source: California Department of Public Health")
+
+
+#GET RID OF NA'S?
+```
+
+
 \newline **one additional table or plot**
-With ggplot: 1 bar graph (x = race, y = frequency of purchase location)
+With ggplot: dodged bar chart with (x = cigarette purchase location, aes(fill = othmenill) to view cigarette purchase location and mental illness status
 
 # Each visual should include: 
 \newline **code**
