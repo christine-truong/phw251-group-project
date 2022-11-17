@@ -6,7 +6,8 @@ output:
   pdf_document: default
   html_document: default
 ---
-```{r importing data for reference}
+##Relevant Previous Importing and Data-cleaning Steps
+```{r previous import and data cleaning steps, echo = F}
 library(tidyverse)
 
 #Insert previous code with updated datasets 
@@ -51,15 +52,6 @@ smoker_data$wherebuy <- recode(smoker_data$wherebuy,
                   "In military commissaries, or" = "In military commissaries",
                   "Somewhere else (SPECIFY)?" = "Somewhere else")
 
-#Filtered the value of "Years" from the variable `smok6uni` so that "Years"
-#would be the only unique value assigned to `smok6uni`. This is because we only
-#need the time unit of "Years" for calculating "pack-years" later to describe
-#tobacco consumption. This filtered subset was assigned to a new data frame
-#called smoker_data_2.
-smoker_data_2 <- smoker_data %>% filter(smok6uni == "Years")
-
-
-
 #Created new variable `race` to combine variables race01:race15 into one column. 
 race_data_2 <- race_data %>%
   mutate(race = case_when(race01 == "Yes" ~ "White",
@@ -80,36 +72,56 @@ race_data_2 <- race_data %>%
   select(-(race01:race15))
 
 #Created new variable "packs_per_day" for future calculations for pack-years
-smoker_data_3 <- smoker_data_2 %>% mutate(packs_per_day = howmany/20)
-
-
-smoker_data_3_no_na <- smoker_data_3 %>%
-  drop_na(wherebuy)
+smoker_data_2 <- smoker_data %>% mutate(packs_per_day = howmany/20)
 
 ```
+  
+  \newpage
+  
+## Milestone #4 assignments (delete this header later)
 
-## Milestone #4 assignments
-
+## Calculating Pack-years
 ```{r pack-years calculation}
 
 #We calculated pack-years, which is given by the formula of
 #pack-years = # of packs of cigarettes smoked per day * years a person has smoked.
 #This calculation led to the creation of a new variable called `pack_years`.
-#We assigned this change in the smoker_data_3_no_na data frame to a new data
-#frame called smoker_data_4, which includes the new variable `pack_years`.
+#`pack_years` was created conditionally based on the three different time units
+#as determined by the existing variable `smok6uni`, which are: "Days", "Months",
+#and "Years". To change the unit of "Days" to years, we set up a conditional
+#statement in the code to divide `smok6num` by 365 before multiplying the result
+#by `packs_per_day` to get pack-years. Similarly, to change the unit of "Months"
+#to years, we set up a conditional statement in the code to divide `smok6num`
+#by 12 before multiplying the result by `packs_per_day` to get pack-years. For
+#`smok6uni` observations that have the value "Years", we just multiplied
+#`smok6num` by `packs_per_day` to get pack-years directly. We assigned
+#this overall change in the data frame smoker_data_2 to a new data frame
+#called smoker_data_3, which includes the new variable `pack_years`.
 
-smoker_data_4 <- smoker_data_3_no_na %>%
-  mutate(pack_years = packs_per_day*smok6num)
+smoker_data_3 <- smoker_data_2 %>%
+  mutate(pack_years =
+           case_when(smok6uni == "Days" ~ packs_per_day*(smok6num/365),
+                     smok6uni == "Months" ~ packs_per_day*(smok6num/12),
+                     smok6uni == "Years" ~ packs_per_day*(smok6num)))
 
-#Afterwards, we viewed our new data frame with the new variable `pack_years`.
-smoker_data_4
+#We then rounded `pack_years` to the nearest whole number for all observations.
+
+smoker_data_3$pack_years <- round(smoker_data_3$pack_years, 0)
+
+#Afterwards, we viewed our new data frame, which includes our new variable
+#`pack_years`.
+
+smoker_data_3
 
 ```
 
-```{r joining race_data_2 and smoker_data_4 together}
+\newpage
 
-#In order to join our two data sets together, we first had to remove the strings
-#of 'DIS' and 'STAT' from the `id` column of race_data_2 by using gsub().
+## Joining Cleaned Data Sets Together
+```{r joining race_data_2 and smoker_data_3 together}
+
+#In order to join our two cleaned data sets together, we first had to remove the
+#strings of 'DIS' and 'STAT' from the `id` column of race_data_2 by using gsub().
 #We overwrote these changes in the race_data_2 data frame and viewed these new
 #changes to make sure the `id` variable only contains numbers and no
 #characters.
@@ -117,7 +129,7 @@ smoker_data_4
 race_data_2$id <- gsub('[DISSTAT]', '', race_data_2$id)
 race_data_2
 
-#Next, looking at the smoker_data_4 data frame, we see that the `psraid`
+#Next, looking at the smoker_data_3 data frame, we see that the `psraid`
 #variable contains each study participant's unique ID number, but the variable
 #is a numeric data type. On the other hand, `id` from the race_data_2
 #data frame is a character data type. We needed to convert `psraid` then from
@@ -126,16 +138,16 @@ race_data_2
 #and 2) in order to perform a join, the two variables must be the same data
 #type.
 
-smoker_data_4$psraid <- as.character(smoker_data_4$psraid)
+smoker_data_3$psraid <- as.character(smoker_data_3$psraid)
 
 #Afterward, we performed an inner join between race_data_2 and
-#smoker_data_4 by each study participant's unique ID number, which is
-#represented by `id` in race_data_2 and `psraid` in smoker_data_4. We
+#smoker_data_3 by each study participant's unique ID number, which is
+#represented by `id` in race_data_2 and `psraid` in smoker_data_3. We
 #chose to do an inner join because we wanted to select participants that
 #exist in each of our two data sets for our final data frame.
 #We assigned this join to a new data frame called joined_smoking_df.
 
-joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_4,
+joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_3,
                                 by=c("id" = "psraid"))
 
 #Then, we viewed the new data frame we created
@@ -143,52 +155,132 @@ joined_smoking_df
 
 ```
 
-##OUR GROUP'S RESEARCH QUESTION:
-"For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status."
+\newpage
 
+```{r determining average pack-years with joined data}
 
+#We filtered out all NA values in `pack_years` in the joined_smoking_df
+#data frame so that we would not get "NA" as a result of our average pack-years
+#computations. We then averaged all the values in `pack_years` for each race
+#category and added this to the joined_smoking_df data frame as a new variable
+#called `avg_pack_years_by_race`. This new subset was then assigned to a new
+#data frame called joined_smoking_df_2.
 
-```{r bar graph of pack-years by disease}
+joined_smoking_df_2 <- joined_smoking_df %>%
+  filter(!is.na(pack_years)) %>%
+  group_by(race) %>%
+  mutate(avg_pack_years_by_race = sum(pack_years)/n())
 
-joined_smoking_df %>%
+joined_smoking_df_2
+            
+```
+
+\newpage
+
+## Visualizations
+
+_**Pack-years by Race and Disease (Four Graphs)**_
+```{r bar graph of cigarette pack-years by race and asthma}
+
+joined_smoking_df_2 %>%
   drop_na(c(asthma, pack_years)) %>%
-  ggplot(aes(x = asthma, pack_years)) +
-  geom_bar(aes(fill=race), stat="identity") +
-  labs(x = "Asthma Status", y = "Pack-years (pack(s) per year)",
-       title = "Pack-years by Asthma Status",
-       caption = "Data Source: California Department of Public Health")
-
-joined_smoking_df %>%
-  drop_na(c(heartdis, pack_years)) %>%
-  ggplot(aes(x = heartdis, pack_years)) +
-  geom_bar(aes(fill=race), stat="identity") +
-  labs(x = "Heart Disease Status", y = "Pack-years (pack(s) per year)",
-       title = "Pack-years by Heart Disease Status",
-       caption = "Data Source: California Department of Public Health")
-
-joined_smoking_df %>%
-  drop_na(c(diabetes, pack_years)) %>%
-  ggplot(aes(x = diabetes, pack_years)) +
-  geom_bar(aes(fill=race), stat="identity") +
-  labs(x = "Diabetes Status", y = "Pack-years (pack(s) per year)",
-       title = "Pack-years by Diabetes Status",
-       caption = "Data Source: California Department of Public Health")
-
-joined_smoking_df %>%
-  drop_na(c(othmenill, pack_years)) %>%
-  ggplot(aes(x = othmenill, pack_years)) +
-  geom_bar(aes(fill=race), stat="identity") +
-  labs(x = "Mental Illness Status", y = "Pack-years (pack(s) per year)",
-       title = "Pack-years by Mental Illness Status",
-       caption = "Data Source: California Department of Public Health")
+  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+  geom_bar(aes(fill=race), stat="identity", position = "dodge") +
+  coord_flip() +
+  guides(fill = "none") +
+  labs(x = "Race",
+       y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
+  title = "Average Pack-years by Race and Asthma Status",
+  caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
+  scale_y_continuous(labels = function(x) format(x,big.mark=",",
+                                                     scientific=FALSE)) +
+  facet_wrap(~ asthma, labeller = labeller(asthma =
+                                             c("No" = "Does Not Have Asthma",
+                                                      "Yes" = "Has Asthma")))
 
 ```
+\newpage
+```{r bar graph of cigarette pack-years by race and heartdis}
+
+joined_smoking_df_2 %>%
+  drop_na(c(heartdis, pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+  geom_bar(aes(fill=race), stat="identity", position = "dodge") +
+  coord_flip() +
+  guides(fill = "none") +
+  labs(x = "Race",
+       y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
+  title = "Average Pack-years by Race and Heart Disease Status",
+  caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
+  scale_y_continuous(labels = function(x) format(x,big.mark=",",
+                                                     scientific=FALSE)) +
+  facet_wrap(~ asthma, labeller = labeller(heartdis =
+                                      c("No" = "Does Not Have Heart Disease",
+                                        "Yes" = "Has Heart Disease")))
+
+
+```
+\newpage
+```{r bar graph of cigarette pack-years by race and diabetes}
+
+joined_smoking_df_2 %>%
+  drop_na(c(diabetes, pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+  geom_bar(aes(fill=race), stat="identity", position = "dodge") +
+  coord_flip() +
+  guides(fill = "none") +
+  labs(x = "Race",
+       y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
+  title = "Average Pack-years by Race and Diabetes Status",
+  caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
+  scale_y_continuous(labels = function(x) format(x,big.mark=",",
+                                                     scientific=FALSE)) +
+  facet_wrap(~ asthma, labeller = labeller(asthma =
+                                             c("No" = "Does Not Have Diabetes",
+                                                      "Yes" = "Has Diabetes")))
+
+
+```
+\newpage
+```{r bar graph of cigarette pack-years by race and othmenill}
+
+joined_smoking_df_2 %>%
+  drop_na(c(othmenill, pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+  geom_bar(aes(fill=race), stat="identity", position = "dodge") +
+  coord_flip() +
+  guides(fill = "none") +
+  labs(x = "Race",
+       y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
+  title = "Average Pack-years by Race and Mental Illness Status",
+  caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
+  scale_y_continuous(labels = function(x) format(x,big.mark=",",
+                                                     scientific=FALSE)) +
+  facet_wrap(~ asthma, labeller = labeller(asthma =
+                                      c("No" = "Does Not Have Mental Illness",
+                                        "Yes" = "Has Mental Illness")))
+
+
+```
+\newpage
+
+_**Interpretation of the Four Graphs of Pack-years by Disease:**_
+\newline
+Among individuals who reported that they do not have asthma, heart disease, diabetes, and/or mental illness, those who identified as "White" by race appear to have the greatest number of pack-years (i.e., cigarette packs smoked per year) out of all races in the 2011 California Smokers Cohort. In addition, among all individuals who reported that they do have asthma, heart disease, diabetes, and/or mental illness, those who identified as "Hispanic/Latino" by race appear to have the greatest number of pack-years (i.e., cigarette packs smoked per year) out of all races in the 2011 California Smokers Cohort.
+
+\newpage
+
+##OUR GROUP'S RESEARCH QUESTION (For reference only to help us think of relevant
+#graphs - delete later):
+"For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status."
 
 Visualizations (3 total)
 **one print quality tables per scenario**
 With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
 
 "Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
+
+Average number of pack-years = pack_years/sum(pack_years)
 
 **one print quality plot or chart per scenario**
 With ggplot: 1 bar graph (x = disease, y = pack-years)
