@@ -157,21 +157,28 @@ joined_smoking_df
 
 \newpage
 
-```{r determining average pack-years with joined data}
+##Determining Pack-years as New Variables
+```{r determining average pack-years with joined data by race per disease}
 
-#We filtered out all NA values in `pack_years` in the joined_smoking_df
-#data frame so that we would not get "NA" as a result of our average pack-years
-#computations. We then averaged all the values in `pack_years` for each race
-#category and added this to the joined_smoking_df data frame as a new variable
-#called `avg_pack_years_by_race`. This new subset was then assigned to a new
-#data frame called joined_smoking_df_2.
-
-joined_smoking_df_2 <- joined_smoking_df %>%
+avg_pack_years_race_asthma <- joined_smoking_df %>%
   filter(!is.na(pack_years)) %>%
-  group_by(race) %>%
-  mutate(avg_pack_years_by_race = sum(pack_years)/n())
+  group_by(race, asthma) %>%
+  summarize(avg_pack_years = sum(pack_years)/n())
 
-joined_smoking_df_2
+avg_pack_years_race_heartdis <- joined_smoking_df %>%
+  filter(!is.na(pack_years)) %>%
+  group_by(race, heartdis) %>%
+  mutate(avg_pack_years = sum(pack_years)/n())
+
+avg_pack_years_race_diabetes <- joined_smoking_df %>%
+  filter(!is.na(pack_years)) %>%
+  group_by(race, diabetes) %>%
+  mutate(avg_pack_years = sum(pack_years)/n())
+
+avg_pack_years_race_othmenill <- joined_smoking_df %>%
+  filter(!is.na(pack_years)) %>%
+  group_by(race, othmenill) %>%
+  mutate(avg_pack_years = sum(pack_years)/n())
             
 ```
 
@@ -182,9 +189,9 @@ joined_smoking_df_2
 _**Pack-years by Race and Disease (Four Graphs)**_
 ```{r bar graph of cigarette pack-years by race and asthma}
 
-joined_smoking_df_2 %>%
-  drop_na(c(asthma, pack_years)) %>%
-  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+avg_pack_years_race_asthma %>%
+  drop_na(c(asthma, avg_pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years)) +
   geom_bar(aes(fill=race), stat="identity", position = "dodge") +
   coord_flip() +
   guides(fill = "none") +
@@ -202,9 +209,9 @@ joined_smoking_df_2 %>%
 \newpage
 ```{r bar graph of cigarette pack-years by race and heartdis}
 
-joined_smoking_df_2 %>%
-  drop_na(c(heartdis, pack_years)) %>%
-  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+avg_pack_years_race_heartdis %>%
+  drop_na(c(heartdis, avg_pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years)) +
   geom_bar(aes(fill=race), stat="identity", position = "dodge") +
   coord_flip() +
   guides(fill = "none") +
@@ -223,9 +230,9 @@ joined_smoking_df_2 %>%
 \newpage
 ```{r bar graph of cigarette pack-years by race and diabetes}
 
-joined_smoking_df_2 %>%
-  drop_na(c(diabetes, pack_years)) %>%
-  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+avg_pack_years_race_diabetes %>%
+  drop_na(c(diabetes, avg_pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years)) +
   geom_bar(aes(fill=race), stat="identity", position = "dodge") +
   coord_flip() +
   guides(fill = "none") +
@@ -244,9 +251,9 @@ joined_smoking_df_2 %>%
 \newpage
 ```{r bar graph of cigarette pack-years by race and othmenill}
 
-joined_smoking_df_2 %>%
-  drop_na(c(othmenill, pack_years)) %>%
-  ggplot(aes(x = race, y = avg_pack_years_by_race)) +
+avg_pack_years_race_othmenill %>%
+  drop_na(c(othmenill, avg_pack_years)) %>%
+  ggplot(aes(x = race, y = avg_pack_years)) +
   geom_bar(aes(fill=race), stat="identity", position = "dodge") +
   coord_flip() +
   guides(fill = "none") +
