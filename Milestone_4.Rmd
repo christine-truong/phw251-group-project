@@ -157,36 +157,46 @@ joined_smoking_df
 
 \newpage
 
-##Determining Pack-years as New Variables
+## Determining Pack-years for Each Disease
 ```{r determining average pack-years with joined data by race per disease}
 
+#We created subsets of the data frame joined_smoking_df for each disease of
+#interest, with each subset including only the variable of `race` and average
+#values of the variable `pack_years` according to disease. This is to simplify
+#the graph and table generation process later by including only the information
+#we need in a data frame.
+
+#asthma
 avg_pack_years_race_asthma <- joined_smoking_df %>%
   filter(!is.na(pack_years)) %>%
   group_by(race, asthma) %>%
   summarize(avg_pack_years = sum(pack_years)/n())
 
+#heartdis
 avg_pack_years_race_heartdis <- joined_smoking_df %>%
   filter(!is.na(pack_years)) %>%
   group_by(race, heartdis) %>%
-  mutate(avg_pack_years = sum(pack_years)/n())
+  summarize(avg_pack_years = sum(pack_years)/n())
 
+#diabetes
 avg_pack_years_race_diabetes <- joined_smoking_df %>%
   filter(!is.na(pack_years)) %>%
   group_by(race, diabetes) %>%
-  mutate(avg_pack_years = sum(pack_years)/n())
+  summarize(avg_pack_years = sum(pack_years)/n())
 
+#othmenill
 avg_pack_years_race_othmenill <- joined_smoking_df %>%
   filter(!is.na(pack_years)) %>%
   group_by(race, othmenill) %>%
-  mutate(avg_pack_years = sum(pack_years)/n())
-            
+  summarize(avg_pack_years = sum(pack_years)/n())
+       
 ```
 
 \newpage
 
 ## Visualizations
 
-_**Pack-years by Race and Disease (Four Graphs)**_
+_**Average Pack-years by Race and Disease (Series of Four Graphs)**_
 ```{r bar graph of cigarette pack-years by race and asthma}
 
 avg_pack_years_race_asthma %>%
@@ -197,7 +207,7 @@ avg_pack_years_race_asthma %>%
   guides(fill = "none") +
   labs(x = "Race",
        y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
-  title = "Average Pack-years by Race and Asthma Status",
+  title = "Average Pack-years by Race & Asthma Status",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
@@ -217,11 +227,11 @@ avg_pack_years_race_heartdis %>%
   guides(fill = "none") +
   labs(x = "Race",
        y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
-  title = "Average Pack-years by Race and Heart Disease Status",
+  title = "Average Pack-years by Race & Heart Disease Status",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
-  facet_wrap(~ asthma, labeller = labeller(heartdis =
+  facet_wrap(~ heartdis, labeller = labeller(heartdis =
                                       c("No" = "Does Not Have Heart Disease",
                                         "Yes" = "Has Heart Disease")))
 
@@ -238,12 +248,12 @@ avg_pack_years_race_diabetes %>%
   guides(fill = "none") +
   labs(x = "Race",
        y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
-  title = "Average Pack-years by Race and Diabetes Status",
+  title = "Average Pack-years by Race & Diabetes Status",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
-  facet_wrap(~ asthma, labeller = labeller(asthma =
-                                             c("No" = "Does Not Have Diabetes",
+  facet_wrap(~ diabetes,
+             labeller = labeller(diabetes = c("No" = "Does Not Have Diabetes",
                                                       "Yes" = "Has Diabetes")))
 
 
@@ -259,11 +269,11 @@ avg_pack_years_race_othmenill %>%
   guides(fill = "none") +
   labs(x = "Race",
        y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
-  title = "Average Pack-years by Race and Mental Illness Status",
+  title = "Average Pack-years by Race & Mental Illness Status",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
-  facet_wrap(~ asthma, labeller = labeller(asthma =
+  facet_wrap(~ othmenill, labeller = labeller(othmenill =
                                       c("No" = "Does Not Have Mental Illness",
                                         "Yes" = "Has Mental Illness")))
 
@@ -271,11 +281,15 @@ avg_pack_years_race_othmenill %>%
 ```
 \newpage
 
-_**Interpretation of the Four Graphs of Pack-years by Disease:**_
+_**Interpretation of the Four Graphs of Average Pack-years by Race and Disease:**_
 \newline
-Among individuals who reported that they do not have asthma, heart disease, diabetes, and/or mental illness, those who identified as "White" by race appear to have the greatest number of pack-years (i.e., cigarette packs smoked per year) out of all races in the 2011 California Smokers Cohort. In addition, among all individuals who reported that they do have asthma, heart disease, diabetes, and/or mental illness, those who identified as "Hispanic/Latino" by race appear to have the greatest number of pack-years (i.e., cigarette packs smoked per year) out of all races in the 2011 California Smokers Cohort.
+Except for mental illness, among individuals who reported that they do not have asthma, heart disease, and/or diabetes, those who identified as either "White" or "American Indian or Alaskan Native" by race appear to have a greater number of average pack-years (i.e., average number of cigarette packs smoked per year) compared to other races in the 2011 California Smokers Cohort.
+
+Except for mental illness, among individuals who reported that they do have asthma, heart disease, and/or diabetes, those who identified as "Hispanic/Latino" by race appear to have the greatest number of average pack-years (i.e., average number of cigarette packs smoked per year) compared to other races in the 2011 California Smokers Cohort.
 
 \newpage
+
+## Work in progress:
 
 ##OUR GROUP'S RESEARCH QUESTION (For reference only to help us think of relevant
 #graphs - delete later):
