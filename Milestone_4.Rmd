@@ -202,14 +202,16 @@ With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table
 Average number of pack-years = pack_years/sum(pack_years)
 
 ```{r kable table of cigarette pack-years by disease}
-table_data<-joined_smoking_df%>%filter(!is.na(pack_years))%>%select(pack_years, asthma, heartdis, diabetes, othmenill)%>%group_by(asthma, heartdis, diabetes, othmenill)%>%summarize(avg_pack_years=sum(pack_years)/n())%>%
+table_data<-joined_smoking_df%>%filter(!is.na(pack_years))%>%group_by(asthma, heartdis, diabetes, othmenill)%>%summarize(avg_pack_years=sum(pack_years)/n())
+
+
+
+aggregate(avg_pack_years~asthma+diabetes, table_data, mean)
+
+
 kable(table_data)
- #select(pack_years, asthma, heartdis, diabetes, othmenill)%>%summarize(avg_pack_years=sum(pack_years)/n())
-  
-  
-  
- # kbl(names_from=c(asthma, heartdis, diabetes, othmenill),values_from=pack_years) %>%
-  #data.frame()
+ 
+
 ```
 
 
@@ -234,8 +236,8 @@ avg_pack_years_race_asthma %>%
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
   facet_wrap(~ asthma, labeller = labeller(asthma =
-                                             c("No" = "Does Not Have Asthma",
-                                                      "Yes" = "Has Asthma")))
+                                             c( "Yes" = "Has Asthma","No" = "Does Not Have Asthma"
+                                                     )))
 
 ```
 \newpage
