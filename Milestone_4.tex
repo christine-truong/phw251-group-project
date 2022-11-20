@@ -394,8 +394,12 @@ Disease}\label{determining-pack-years-for-each-disease}}
 
 \newpage
 
-\textbf{one print quality tables per scenario} With Kable: pack-years
-vs.~asthma/heart disease/diabetes/mental illness (1 table)
+\hypertarget{visualizations}{%
+\subsection{Visualizations}\label{visualizations}}
+
+\#\#DELETE THESE THREE PARAGRAPHS LATER: \textbf{one print quality
+tables per scenario} With Kable: pack-years vs.~asthma/heart
+disease/diabetes/mental illness (1 table)
 
 ``Compare the average number of pack-years by at least four disease
 outcomes (e.g.~asthma, heart disease, diabetes, physical illness, and/or
@@ -404,9 +408,132 @@ number of pack-years and the disease outcomes.''
 
 Average number of pack-years = pack\_years/sum(pack\_years)
 
+\emph{\textbf{Average Pack-years by Disease Status (Two Complementary
+Tables)}}
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{table\_data}\OtherTok{\textless{}{-}}\NormalTok{joined\_smoking\_df}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pack\_years))}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{group\_by}\NormalTok{(asthma, heartdis, diabetes, othmenill)}\SpecialCharTok{\%\textgreater{}\%}\FunctionTok{summarize}\NormalTok{(}\AttributeTok{avg\_pack\_years=}\FunctionTok{sum}\NormalTok{(pack\_years)}\SpecialCharTok{/}\FunctionTok{n}\NormalTok{())}
+\CommentTok{\#table\_data\textless{}{-}joined\_smoking\_df\%\textgreater{}\%filter(!is.na(pack\_years))\%\textgreater{}\%group\_by(asthma, diabetes, othmenill)\%\textgreater{}\%summarize(avg\_pack\_years=sum(pack\_years)/n())}
+
+\CommentTok{\#aggregate(avg\_pack\_years\textasciitilde{}asthma+diabetes, table\_data, mean)}
+
+\CommentTok{\#kable(table\_data)}
+
+
+\CommentTok{\#Christine\textquotesingle{}s Code}
+
+\CommentTok{\#Table for avg pack{-}years per disease for those who have them}
+\NormalTok{t\_avg\_pack\_years\_disease }\OtherTok{\textless{}{-}}\NormalTok{ joined\_smoking\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{disease =} \FunctionTok{case\_when}\NormalTok{(asthma }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Asthma"}\NormalTok{,}
+\NormalTok{                            heartdis }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Heart Disease"}\NormalTok{,}
+\NormalTok{                            diabetes }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Diabetes"}\NormalTok{,}
+\NormalTok{                            othmenill }\SpecialCharTok{==} \StringTok{"Yes"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Mental Illness"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(disease, pack\_years) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pack\_years), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(disease)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(disease) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{avg\_pack\_years =} \FunctionTok{sum}\NormalTok{(pack\_years)}\SpecialCharTok{/}\FunctionTok{n}\NormalTok{())}
+\NormalTok{t\_avg\_pack\_years\_disease}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   disease        avg_pack_years
+##   <chr>                   <dbl>
+## 1 Asthma                   24.8
+## 2 Diabetes                 25.2
+## 3 Heart Disease            28.2
+## 4 Mental Illness           16.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(t\_avg\_pack\_years\_disease, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Disease"}\NormalTok{, }\StringTok{"Average Pack{-}years"}\NormalTok{),  }
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=} \StringTok{\textquotesingle{}Average Pack{-}years for Smokers Who Have a Disease\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:kable table of cigarette pack-years by disease}Average Pack-years for Smokers Who Have a Disease}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\centering}X}
+\toprule
+Disease & Average Pack-years\\
+\midrule
+Asthma & 24.79641\\
+Diabetes & 25.23529\\
+Heart Disease & 28.16981\\
+Mental Illness & 16.50602\\
+\bottomrule
+\end{tabu}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Table for avg pack{-}years per disease for those who do not have them}
+\NormalTok{t\_avg\_pack\_years\_no\_disease }\OtherTok{\textless{}{-}}\NormalTok{ joined\_smoking\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{disease =} \FunctionTok{case\_when}\NormalTok{(asthma }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Does Not Have Asthma"}\NormalTok{,}
+\NormalTok{                            heartdis }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Does Not Have Heart Disease"}\NormalTok{,}
+\NormalTok{                            diabetes }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Does Not Have Diabetes"}\NormalTok{,}
+\NormalTok{                            othmenill }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Does Not Have Mental Illness"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(disease, pack\_years) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pack\_years), }\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(disease)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(disease) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{avg\_pack\_years =} \FunctionTok{sum}\NormalTok{(pack\_years)}\SpecialCharTok{/}\FunctionTok{n}\NormalTok{())}
+\NormalTok{t\_avg\_pack\_years\_no\_disease}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   disease                      avg_pack_years
+##   <chr>                                 <dbl>
+## 1 Does Not Have Asthma                   21.3
+## 2 Does Not Have Diabetes                 28.1
+## 3 Does Not Have Heart Disease            22.8
+## 4 Does Not Have Mental Illness          102
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(t\_avg\_pack\_years\_no\_disease, }
+      \AttributeTok{booktabs=}\NormalTok{T, }
+      \AttributeTok{col.names=}\FunctionTok{c}\NormalTok{(}\StringTok{"Disease"}\NormalTok{, }\StringTok{"Average Pack{-}years"}\NormalTok{),  }
+      \AttributeTok{align=}\StringTok{\textquotesingle{}lcccc\textquotesingle{}}\NormalTok{, }
+      \AttributeTok{caption=} \StringTok{\textquotesingle{}Average Pack{-}years Among Smokers Responding "No" to a Disease\textquotesingle{}}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{full\_width =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:kable table of cigarette pack-years by disease}Average Pack-years Among Smokers Responding "No" to a Disease}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\centering}X}
+\toprule
+Disease & Average Pack-years\\
+\midrule
+Does Not Have Asthma & 21.32526\\
+Does Not Have Diabetes & 28.08333\\
+Does Not Have Heart Disease & 22.75510\\
+Does Not Have Mental Illness & 102.00000\\
+\bottomrule
+\end{tabu}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#I created another table with all diseases present with yes/no statuses and with unique}
+\CommentTok{\#combinations}
+\NormalTok{table\_option\_2 }\OtherTok{\textless{}{-}}\NormalTok{ joined\_smoking\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(pack\_years)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(asthma, heartdis, diabetes, othmenill) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{avg\_pack\_years=}\FunctionTok{sum}\NormalTok{(pack\_years)}\SpecialCharTok{/}\FunctionTok{n}\NormalTok{())}
 \end{Highlighting}
 \end{Shaded}
 
@@ -417,84 +544,29 @@ Average number of pack-years = pack\_years/sum(pack\_years)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{aggregate}\NormalTok{(avg\_pack\_years}\SpecialCharTok{\textasciitilde{}}\NormalTok{asthma}\SpecialCharTok{+}\NormalTok{diabetes, table\_data, mean)}
+\NormalTok{table\_option\_2}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##   asthma diabetes avg_pack_years
-## 1     No       No       30.45464
-## 2    Yes       No       37.04229
-## 3     No      Yes       29.31962
-## 4    Yes      Yes       44.13333
+## # A tibble: 25 x 5
+## # Groups:   asthma, heartdis, diabetes [13]
+##    asthma heartdis diabetes othmenill avg_pack_years
+##    <chr>  <chr>    <chr>    <chr>              <dbl>
+##  1 No     No       No       No                  20.9
+##  2 No     No       No       Yes                 16.5
+##  3 No     No       No       <NA>                20.2
+##  4 No     No       Yes      No                  25.3
+##  5 No     No       Yes      Yes                 24.3
+##  6 No     No       Yes      <NA>                30  
+##  7 No     No       <NA>     No                  20  
+##  8 No     Yes      No       No                  25.0
+##  9 No     Yes      No       Yes                 32.1
+## 10 No     Yes      Yes      No                  32.7
+## # ... with 15 more rows
 \end{verbatim}
 
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{kable}\NormalTok{(table\_data)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{tabular}{l|l|l|l|r}
-\hline
-asthma & heartdis & diabetes & othmenill & avg\_pack\_years\\
-\hline
-No & No & No & No & 20.89293\\
-\hline
-No & No & No & Yes & 16.50602\\
-\hline
-No & No & No & NA & 20.25000\\
-\hline
-No & No & Yes & No & 25.27907\\
-\hline
-No & No & Yes & Yes & 24.28571\\
-\hline
-No & No & Yes & NA & 30.00000\\
-\hline
-No & No & NA & No & 20.00000\\
-\hline
-No & Yes & No & No & 24.96774\\
-\hline
-No & Yes & No & Yes & 32.11111\\
-\hline
-No & Yes & Yes & No & 32.70000\\
-\hline
-No & Yes & Yes & Yes & 34.33333\\
-\hline
-No & NA & No & No & 68.00000\\
-\hline
-Yes & No & No & No & 22.30928\\
-\hline
-Yes & No & No & Yes & 20.44444\\
-\hline
-Yes & No & No & NA & 21.00000\\
-\hline
-Yes & No & Yes & No & 47.00000\\
-\hline
-Yes & No & Yes & Yes & 11.00000\\
-\hline
-Yes & No & Yes & NA & 29.00000\\
-\hline
-Yes & No & NA & Yes & 12.00000\\
-\hline
-Yes & Yes & No & No & 19.00000\\
-\hline
-Yes & Yes & No & Yes & 21.50000\\
-\hline
-Yes & Yes & Yes & No & 102.00000\\
-\hline
-Yes & Yes & Yes & Yes & 44.80000\\
-\hline
-Yes & NA & No & No & 118.00000\\
-\hline
-Yes & NA & Yes & Yes & 31.00000\\
-\hline
-\end{tabular}
-
 \newpage
-
-\hypertarget{visualizations}{%
-\subsection{Visualizations}\label{visualizations}}
 
 \emph{\textbf{Average Pack-years by Race and Disease (Series of Four
 Graphs)}}

@@ -198,23 +198,8 @@ avg_pack_years_race_othmenill <- joined_smoking_df %>%
 ## Visualizations
 
 
-##DELETE THESE THREE PARAGRAPHS LATER: **one print quality tables per scenario**
-With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
-
-"Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
-
-Average number of pack-years = pack_years/sum(pack_years)
-
 _**Average Pack-years by Disease Status (Two Complementary Tables)**_
 ```{r kable table of cigarette pack-years by disease}
-#table_data<-joined_smoking_df%>%filter(!is.na(pack_years))%>%group_by(asthma, diabetes, othmenill)%>%summarize(avg_pack_years=sum(pack_years)/n())
-
-#aggregate(avg_pack_years~asthma+diabetes, table_data, mean)
-
-#kable(table_data)
-
-
-#Christine's Code
 
 #Table for avg pack-years per disease for those who have them
 t_avg_pack_years_disease <- joined_smoking_df %>%
@@ -263,6 +248,9 @@ table_option_2 <- joined_smoking_df %>%
 table_option_2
 
 ```
+_**Interpretation of the Three Tables of Average Pack-years by and Disease:**_
+\newline
+Among those individuals that have reported the presence of the diseases of interest, those with Diabetes have the highest average number of pack years. While those with mental illness have the lowest number of pack years. Among those without reported diseases those without mental illness have the highest average pack years. Those without asthma had the lowest average pack years. When looking at all diseases indivduals with heart disease and diabetes as well as heart disease and mental illness have the highest average pack years over all combinations of disease. 
 
 
 
