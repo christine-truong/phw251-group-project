@@ -197,11 +197,10 @@ avg_pack_years_race_othmenill <- joined_smoking_df %>%
 
 ## Visualizations
 
-
 _**Average Pack-years by Disease Status (Two Complementary Tables)**_
-```{r kable table of cigarette pack-years by disease}
+```{r table 1 of cigarette pack-years by disease}
 
-#Table for avg pack-years per disease for those who have them
+#Table for avg pack-years per disease for smokers who have a disease
 t_avg_pack_years_disease <- joined_smoking_df %>%
   mutate(disease = case_when(asthma == "Yes" ~ "Asthma",
                             heartdis == "Yes" ~ "Heart Disease",
@@ -210,17 +209,26 @@ t_avg_pack_years_disease <- joined_smoking_df %>%
   select(disease, pack_years) %>%
   filter(!is.na(pack_years), !is.na(disease)) %>%
   group_by(disease) %>%
-  summarize(avg_pack_years = sum(pack_years)/n())
+  summarize(avg_pack_years = round(sum(pack_years)/n(), 0))
 t_avg_pack_years_disease
+```
 
+```{r kable table 1 of cigarette pack-years by disease}
+
+#Kable table for avg pack-years per disease for smokers who have a disease
 kable(t_avg_pack_years_disease, 
       booktabs=T, 
       col.names=c("Disease", "Average Pack-years"),  
       align='lcccc', 
       caption= 'Average Pack-years for Smokers Who Have a Disease') %>%
-      kable_styling(full_width = T)
+      kable_styling(full_width = T) %>%
+      kable_styling(latex_options = "hold_position")
 
-#Table for avg pack-years per disease for those who do not have them
+```
+
+```{r table 2 of cigarette pack-years by disease}
+
+#Table for avg pack-years per disease for those who do not have a disease
 t_avg_pack_years_no_disease <- joined_smoking_df %>%
   mutate(disease = case_when(asthma == "No" ~ "Does Not Have Asthma",
                             heartdis == "No" ~ "Does Not Have Heart Disease",
@@ -229,28 +237,35 @@ t_avg_pack_years_no_disease <- joined_smoking_df %>%
   select(disease, pack_years) %>%
   filter(!is.na(pack_years), !is.na(disease)) %>%
   group_by(disease) %>%
-  summarize(avg_pack_years = sum(pack_years)/n())
+  summarize(avg_pack_years = round(sum(pack_years)/n(), 0))
 t_avg_pack_years_no_disease
 
-kable(t_avg_pack_years_no_disease, 
-      booktabs=T, 
-      col.names=c("Disease", "Average Pack-years"),  
-      align='lcccc', 
-      caption= 'Average Pack-years Among Smokers Responding "No" to a Disease') %>%
-      kable_styling(full_width = T)
+```
 
-#I created another table with all diseases present with yes/no statuses and with unique
-#combinations
-table_option_2 <- joined_smoking_df %>%
-  filter(!is.na(pack_years)) %>%
-  group_by(asthma, heartdis, diabetes, othmenill) %>%
-  summarize(avg_pack_years=sum(pack_years)/n())
-table_option_2
+```{r kable table 2 of cigarette pack-years by disease}
+
+#Kable table for avg pack-years per disease for those who do not have a disease
+kable(t_avg_pack_years_no_disease, 
+booktabs=T, 
+col.names=c("Disease", "Average Pack-years"),  
+align='lcccc', 
+caption= 'Average Pack-years Among Smokers Responding "No" to Having a Disease') %>%
+      kable_styling(full_width = T) %>%
+      kable_styling(latex_options = "hold_position")
 
 ```
-_**Interpretation of the Three Tables of Average Pack-years by and Disease:**_
+
+#We created another table with all diseases present with yes/no statuses,
+#showing unique combinations of diseases and the avg pack-years per combination
+#table_option_2 <- joined_smoking_df %>%
+  #filter(!is.na(pack_years)) %>%
+  #group_by(asthma, heartdis, diabetes, othmenill) %>%
+  #summarize(avg_pack_years = sum(pack_years)/n())
+#table_option_2
+
+_**Interpretation of the Three Tables of Average Pack-years by Disease Status:**_
 \newline
-Among those individuals that have reported the presence of the diseases of interest, those with Diabetes have the highest average number of pack years. While those with mental illness have the lowest number of pack years. Among those without reported diseases those without mental illness have the highest average pack years. Those without asthma had the lowest average pack years. When looking at all diseases indivduals with heart disease and diabetes as well as heart disease and mental illness have the highest average pack years over all combinations of disease. 
+Among smokers that have reported the presence of the diseases of interest (i.e., asthma, heart disease, diabetes, and mental illness), those with heart disease have the highest number of average pack-years (28), while those with mental illness have the lowest number of pack years (17). Among smokers that reported "no" to having a disease, those with no mental illness have the highest average pack years (102), while those with no asthma had the lowest average pack years (21).
 
 
 
