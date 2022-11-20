@@ -159,13 +159,13 @@ joined_smoking_df
 
 \newpage
 
-## Determining Pack-years for Each Disease
+## Determining Pack-years for Each Disease by Race
 ```{r determining average pack-years with joined data by race per disease}
 
 #We created subsets of the data frame joined_smoking_df for each disease of
 #interest, with each subset including only the variable of `race` and average
 #values of the variable `pack_years` according to disease. This is to simplify
-#the graph and table generation process later by including only the information
+#the process of creating some graphs later by including only the information
 #we need in a data frame.
 
 #asthma
@@ -372,14 +372,11 @@ Except for mental illness, among individuals who reported that they do have asth
 
 Visualizations (3 total)
 **one print quality tables per scenario**
-With Kable: pack-years vs. asthma/heart disease/diabetes/mental illness (1 table)
-
-"Compare the average number of pack-years by at least four disease outcomes (e.g. asthma, heart disease, diabetes, physical illness, and/or mental illness). Provide a print-quality table that shows the average number of pack-years and the disease outcomes."
-
-Average number of pack-years = pack_years/sum(pack_years)
+kable tables for avg pack-years by disease -- GOT THEM
 
 **one print quality plot or chart per scenario**
-With ggplot: 1 bar graph (x = disease, y = pack-years)
+With ggplot: 1 bar graph (x = disease, y = pack-years) -- GOT THEM
+
 **one additional table or plot**
 With ggplot: dodged bar chart with (x = cigarette purchase location, aes(fill = othmenill) to view cigarette purchase location and mental illness status
 
