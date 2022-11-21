@@ -6,8 +6,7 @@ output:
   pdf_document: default
   html_document: default
 ---
-##Relevant Previous Importing and Data-cleaning Steps
-```{r previous import and data cleaning steps, echo = F}
+```{r previous import and data cleaning steps, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
@@ -78,13 +77,12 @@ smoker_data_2 <- smoker_data %>% mutate(packs_per_day = howmany/20)
 
 ```
   
-  \newpage
+\newpage
   
-## Milestone #4 assignments (delete this header later)
+
 
 ## Calculating Pack-years
 ```{r pack-years calculation}
-
 #We calculated pack-years, which is given by the formula of
 #pack-years = # of packs of cigarettes smoked per day * years a person has smoked.
 #This calculation led to the creation of a new variable called `pack_years`.
@@ -110,11 +108,6 @@ smoker_data_3 <- smoker_data_2 %>%
 
 smoker_data_3$pack_years <- round(smoker_data_3$pack_years, 0)
 
-#Afterwards, we viewed our new data frame, which includes our new variable
-#`pack_years`.
-
-smoker_data_3
-
 ```
 
 \newpage
@@ -129,7 +122,6 @@ smoker_data_3
 #characters.
 
 race_data_2$id <- gsub('[DISSTAT]', '', race_data_2$id)
-race_data_2
 
 #Next, looking at the smoker_data_3 data frame, we see that the `psraid`
 #variable contains each study participant's unique ID number, but the variable
@@ -152,15 +144,12 @@ smoker_data_3$psraid <- as.character(smoker_data_3$psraid)
 joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_3,
                                 by=c("id" = "psraid"))
 
-#Then, we viewed the new data frame we created
-joined_smoking_df
-
 ```
 
 \newpage
 
 ## Determining Pack-years for Each Disease by Race
-```{r determining average pack-years with joined data by race per disease}
+```{r determining average pack-years with joined data by race per disease, message=FALSE, warning=FALSE}
 
 #We created subsets of the data frame joined_smoking_df for each disease of
 #interest, with each subset including only the variable of `race` and average
@@ -210,7 +199,7 @@ t_avg_pack_years_disease <- joined_smoking_df %>%
   filter(!is.na(pack_years), !is.na(disease)) %>%
   group_by(disease) %>%
   summarize(avg_pack_years = round(sum(pack_years)/n(), 0))
-t_avg_pack_years_disease
+
 ```
 
 ```{r kable table 1 of cigarette pack-years by disease}
@@ -238,7 +227,7 @@ t_avg_pack_years_no_disease <- joined_smoking_df %>%
   filter(!is.na(pack_years), !is.na(disease)) %>%
   group_by(disease) %>%
   summarize(avg_pack_years = round(sum(pack_years)/n(), 0))
-t_avg_pack_years_no_disease
+
 
 ```
 
@@ -249,19 +238,13 @@ kable(t_avg_pack_years_no_disease,
 booktabs=T, 
 col.names=c("Disease", "Average Pack-years"),  
 align='lcccc', 
-caption= 'Average Pack-years Among Smokers Responding "No" to Having a Disease') %>%
+caption=
+  'Average Pack-years Among Smokers Responding "No" to Having a Disease') %>%
       kable_styling(full_width = T) %>%
       kable_styling(latex_options = "hold_position")
 
 ```
 
-#We created another table with all diseases present with yes/no statuses,
-#showing unique combinations of diseases and the avg pack-years per combination
-#table_option_2 <- joined_smoking_df %>%
-  #filter(!is.na(pack_years)) %>%
-  #group_by(asthma, heartdis, diabetes, othmenill) %>%
-  #summarize(avg_pack_years = sum(pack_years)/n())
-#table_option_2
 
 _**Interpretation of the Three Tables of Average Pack-years by Disease Status:**_
 \newline
@@ -287,7 +270,8 @@ avg_pack_years_race_asthma %>%
   scale_y_continuous(labels = function(x) format(x,big.mark=",",
                                                      scientific=FALSE)) +
   facet_wrap(~ asthma, labeller = labeller(asthma =
-                                             c( "Yes" = "Has Asthma","No" = "Does Not Have Asthma"
+                                             c( "Yes" = "Has Asthma",
+                                                "No" = "Does Not Have Asthma"
                                                      )))
 
 ```
@@ -362,32 +346,4 @@ Except for mental illness, among individuals who reported that they do not have 
 
 Except for mental illness, among individuals who reported that they do have asthma, heart disease, and/or diabetes, those who identified as "Hispanic/Latino" by race appear to have the greatest number of average pack-years (i.e., average number of cigarette packs smoked per year) compared to other races in the 2011 California Smokers Cohort.
 
-\newpage
 
-## Work in progress:
-
-##OUR GROUP'S RESEARCH QUESTION (For reference only to help us think of relevant
-#graphs - delete later):
-"For this project, we aim to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status."
-
-Visualizations (3 total)
-**one print quality tables per scenario**
-kable tables for avg pack-years by disease -- GOT THEM
-
-**one print quality plot or chart per scenario**
-With ggplot: 1 bar graph (x = disease, y = pack-years) -- GOT THEM
-
-**one additional table or plot**
-With ggplot: dodged bar chart with (x = cigarette purchase location, aes(fill = othmenill) to view cigarette purchase location and mental illness status
-
-# Each visual should include: 
-**code**
-**legend (if necessary) **
-Unless we decide to input a third variable in a graph.
-
-**interpretation (1 to 2 sentences)**
-
-##PDF should be prepared for presentation 
-**each part of milestone on new page** 
-**only necessary info outputted** 
-**show work with "echo"**
