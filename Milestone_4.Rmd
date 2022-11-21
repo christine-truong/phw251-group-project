@@ -1,7 +1,7 @@
 ---
 title: "Milestone #4"
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
-date: "11-14-22"
+date: "11-21-22"
 output:
   pdf_document: default
   html_document: default
@@ -77,8 +77,6 @@ smoker_data_2 <- smoker_data %>% mutate(packs_per_day = howmany/20)
 
 ```
   
-\newpage
-  
 ```{r pack-years calculation, echo=F}
 #We calculated pack-years, which is given by the formula of
 #pack-years = # of packs of cigarettes smoked per day * years a person has smoked.
@@ -106,8 +104,6 @@ smoker_data_3 <- smoker_data_2 %>%
 smoker_data_3$pack_years <- round(smoker_data_3$pack_years, 0)
 
 ```
-
-\newpage
 
 ```{r joining race_data_2 and smoker_data_3 together, echo=F}
 
@@ -141,10 +137,9 @@ joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_3,
                                 by=c("id" = "psraid"))
 
 ```
+## _NOTE: We calculated pack-years and joined our two data sets of race_data_2 and smoker_data_3 together before creating these visualizations below. The pack-years calculation was created as the new variable `pack_years` in our joined data set, joined_smoking_df. If necessary, please see the code chunks labeled "r joining race_data_2 and smoker_data_3 together" and "r pack-years calculation" in Milestone_4.Rmd to view these processes not mentioned in this pdf._
 
 \newpage
-
-## _NOTE: We calculated pack-years and joined our two data sets of race_data_2 and smoker_data_3 together before creating these visualizations below. The pack-years calculation was created into the new variable `pack_years` in our joined data set, joined_smoking_df. If necessary, please see the code chunks labeled "r pack-years calculation" and "r joining race_data_2 and smoker_data_3 together" in Milestone_4.Rmd to view these processes._
 
 ## Visualizations
 
@@ -184,7 +179,7 @@ Among smokers who have reported having asthma, heart disease, diabetes, and/or m
 
 \newpage
 
-_**Bar Chart: Average Pack-years by Race and Mental Illness**_
+_**Bar Graph: Average Pack-years by Race and Mental Illness**_
 ```{r bar graph of cigarette pack-years by race and mental illness, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 
 #We first created a subset of the data frame joined_smoking_df for our disease of
@@ -226,7 +221,7 @@ avg_pack_years_race_othmenill %>%
 ```
 \newline 
 \newline 
-\newline _**Interpretation of Average Pack-years by Race and Disease Bar Graph:**_
+\newline _**Interpretation of Average Pack-years by Race and Mental Illness Bar Graph:**_
 \newline
 \newline
 This graph exhibits the number of average pack-years (i.e., average number of cigarette packs smoked per year) according to each race category and mental illness status of smokers in the 2011 California Smokers Cohort study.
@@ -245,13 +240,13 @@ _**Bar Graph: Cigarette Purchase Location and Mental Illness**_
 #we did not believe NA values would be telling us any valuable information.
 #We chose to create a stack bar graph in order to more easily compare the
 #mental illness statuses reported by smokers for each cigarette
-#purchase location, as well as showcase the total number of times (frequency)
-#that cigarettes were purchased at each location by smokers.
+#purchase location (since the frequencies are small), as well as showcase
+#the frequency that cigarettes were purchased at each location by smokers.
 
 joined_smoking_df %>%
   filter(!is.na(wherebuy), !is.na(othmenill)) %>%
   ggplot(aes(x = wherebuy)) + 
-  geom_bar(aes(fill=othmenill), position = "dodge") +
+  geom_bar(aes(fill=othmenill), position = "stack") +
   coord_flip() +
   theme(plot.title.position = "plot",
         plot.title = element_text(hjust = 0.5)) +
