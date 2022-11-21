@@ -6,7 +6,7 @@ output:
   pdf_document: default
   html_document: default
 ---
-```{r previous import and data cleaning steps, echo=FALSE}
+```{r previous import and data cleaning steps, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
@@ -172,7 +172,8 @@ align='lcccc',
 caption= 'Average Pack-years for Smokers Who Have a Disease') %>%
 kable_styling(full_width = T) %>%
 kable_styling(latex_options = "hold_position") %>%
-footnote(general = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
+footnote(general = 
+           "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
 
 ```
 _**Interpretation of Average Pack-years by Disease Status Table:**_
@@ -184,7 +185,7 @@ Among smokers who have reported having asthma, heart disease, diabetes, and/or m
 \newpage
 
 _**Bar Chart: Average Pack-years by Race and Mental Illness**_
-```{r bar graph of cigarette pack-years by race and mental illness, fig.width=8, fig.height=5}
+```{r bar graph of cigarette pack-years by race and mental illness, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 
 #We first created a subset of the data frame joined_smoking_df for our disease of
 #interest, mental illness, called avg_pack_years_race_othmenill. This subset
