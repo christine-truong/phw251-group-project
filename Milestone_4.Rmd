@@ -79,8 +79,7 @@ smoker_data_2 <- smoker_data %>% mutate(packs_per_day = howmany/20)
   
 \newpage
   
-## Calculating Pack-years
-```{r pack-years calculation}
+```{r pack-years calculation, echo=F}
 #We calculated pack-years, which is given by the formula of
 #pack-years = # of packs of cigarettes smoked per day * years a person has smoked.
 #This calculation led to the creation of a new variable called `pack_years`.
@@ -110,8 +109,7 @@ smoker_data_3$pack_years <- round(smoker_data_3$pack_years, 0)
 
 \newpage
 
-## Joining Cleaned Data Sets Together
-```{r joining race_data_2 and smoker_data_3 together}
+```{r joining race_data_2 and smoker_data_3 together, echo=F}
 
 #In order to join our two cleaned data sets together, we first had to remove the
 #strings of 'DIS' and 'STAT' from the `id` column of race_data_2 by using gsub().
@@ -145,6 +143,8 @@ joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_3,
 ```
 
 \newpage
+
+## _NOTE: We calculated pack-years and joined our two data sets of race_data_2 and smoker_data_3 together before creating these visualizations below. The pack-years calculation was created into the new variable `pack_years` in our joined data set, joined_smoking_df. If necessary, please see the code chunks labeled "r pack-years calculation" and "r joining race_data_2 and smoker_data_3 together" in Milestone_4.Rmd to view these processes._
 
 ## Visualizations
 
@@ -236,27 +236,29 @@ Among smokers who have reported having mental illness, those who identified as "
 
 \newpage
 
-## Bar Graph: Cigarette Purchase Location and Mental Illness ##
+_**Bar Graph: Cigarette Purchase Location and Mental Illness**_
+```{r bar graph of frequencies by cigarette purchase location and mental illness, fig.width=8, fig.height=5}
 
-```{r}
-#As similarly performed as the graph above, 
-#we also excluded NA values for wherebuy and othmenill variables prior to creating this graph.
-#We chose to create a stack bar graph in order to more easily compare the mental illness status 
-#reported by smokers for each cigarette purchase location as well as showcase
-#the total number of times (frequency) cigarettes were purchased at each location by smokers.
+#As similarly performed for the graph above, we also excluded NA values for the
+#variables of `wherebuy` and `othmenill` prior to creating this graph because
+#we did not believe NA values would be telling us any valuable information.
+#We chose to create a stack bar graph in order to more easily compare the
+#mental illness statuses reported by smokers for each cigarette
+#purchase location, as well as showcase the total number of times (frequency)
+#that cigarettes were purchased at each location by smokers.
 
-location_othemenill_graph <- joined_smoking_df %>%
-  select(wherebuy,othmenill,pack_years) %>%
+joined_smoking_df %>%
   filter(!is.na(wherebuy), !is.na(othmenill)) %>%
-  ggplot(aes(x=wherebuy)) + 
-  geom_bar(aes(fill=othmenill), position="stack") +
-  theme_minimal(base_size=6) +
+  ggplot(aes(x = wherebuy)) + 
+  geom_bar(aes(fill=othmenill), position = "dodge") +
+  coord_flip() +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5)) +
   scale_fill_discrete(name = "Has Mental Illness",) + 
-  labs(x="Cigarette Purchase Location",
-       y="Frequency of Cigarette Purchase",
-       title="Cigarette Purchase Location and Mental Illness Status 
-       Among Smokers in 2011 Califoria Smokers Cohort Study")
-location_othemenill_graph
+  labs(x = "Location of Cigarette Purchase",
+       y ="Frequency",
+  title="Cigarette-buying Location and Mental Illness Status",
+  caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
 
 ```
 \newpage
@@ -267,4 +269,4 @@ _**Interpretation for Mental Illness Status by Cigarette Purchase Location Bar G
 This bar graph explores the relationship between cigarette purchase location and mental illness status among smokers
 in the 2011 California Smokers Cohort study.
 
-Mental illness was not reported by majority of the smokers from each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations followed by those who purchased cigarettes at tobacco discount stores, two locations that also have the highest number of cigarette purchases among smokers.
+Mental illness was not reported by the majority of the smokers for each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations, followed by those who purchased cigarettes at tobacco discount stores; these are the two locations that also have the highest number of cigarette purchases made among smokers.
