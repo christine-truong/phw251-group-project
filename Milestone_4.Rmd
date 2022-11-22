@@ -143,10 +143,10 @@ joined_smoking_df <- inner_join(x = race_data_2, y = smoker_data_3,
 
 ## Visualizations
 
-_**Table: Average Pack-years by Disease Status**_
-```{r table of cigarette pack-years by disease}
+_**Table: Average Number of Pack-years by Disease Outcome Among Smokers**_
+```{r table of cigarette pack-years by disease outcome among smokers}
 
-#Table for avg pack-years per disease for smokers who have a disease
+#Table for average number of pack-years per disease for smokers who have a disease
 t_avg_pack_years_disease <- joined_smoking_df %>%
   mutate(disease = case_when(asthma == "Yes" ~ "Asthma",
                             heartdis == "Yes" ~ "Heart Disease",
@@ -158,29 +158,29 @@ t_avg_pack_years_disease <- joined_smoking_df %>%
   summarize(avg_pack_years = round(sum(pack_years)/n(), 0))
 
 
-#Kable table for avg pack-years per disease for smokers who have a disease
-#(produced below)
+#Kable table for average number of pack-years per disease outcome for smokers who
+#have a disease (produced below)
 kable(t_avg_pack_years_disease, 
 booktabs=T, 
-col.names=c("Disease", "Average Pack-years"),  
+col.names=c("Disease", "Average Number of Pack-years"),  
 align='lcccc', 
-caption= 'Average Pack-years for Smokers Who Have a Disease') %>%
+caption= 'Average Number of Pack-years by Disease Outcome Among Smokers') %>%
 kable_styling(full_width = T) %>%
 kable_styling(latex_options = "hold_position") %>%
 footnote(general = 
            "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
 
 ```
-_**Interpretation of Average Pack-years by Disease Status Table:**_
+_**Interpretation of Average Number of Pack-years by Disease Outcome Among Smokers Table:**_
 \newline
-This table demonstrates the average number of pack-years (i.e., average number of cigarette packs smoked per year) per disease type for smokers who reported having asthma, diabetes, heart disease, and/or mental illness in the 2011 California Smokers Cohort study.
+This table demonstrates the average number of pack-years per disease type for smokers who reported having asthma, diabetes, heart disease, and/or mental illness in the 2011 California Smokers Cohort study.
 
 Among smokers who have reported having asthma, heart disease, diabetes, and/or mental illness, those with heart disease have the highest number of average pack-years (28), while those with mental illness have the lowest number of average pack-years (17).
 
 \newpage
 
-_**Bar Graph: Average Pack-years by Race and Mental Illness**_
-```{r bar graph of cigarette pack-years by race and mental illness, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
+_**Bar Graph: Average Number of Pack-years by Race and Mental Illness Status Among Smokers**_
+```{r bar graph of cigarette pack-years by race and mental illness among smokers, fig.width=8, fig.height=5, message=FALSE, warning=FALSE}
 
 #We first created a subset of the data frame joined_smoking_df for our disease of
 #interest, mental illness, called avg_pack_years_race_othmenill. This subset
@@ -195,23 +195,24 @@ avg_pack_years_race_othmenill <- joined_smoking_df %>%
   summarize(avg_pack_years = sum(pack_years)/n())
 
 
-#We then created a bar graph representing avg_pack_years_race_othmenill excluding
-#NA values in the variables `othmenill` and `avg_pack_years` since we have
-#determined that the NA values do not present valuable information for our
-#analyses.
+#We then created a bar graph representing avg_pack_years_race_othmenill,
+#excluding NA values in the variable `othmenill` since we have determined that
+#the NA values do not present valuable information for our analyses; the NA
+#values had already been dropped for `avg_pack_years` in the process of creating
+#the subset of avg_pack_years_race_othmenill in the previous step.
 
 avg_pack_years_race_othmenill %>%
-  drop_na(c(othmenill, avg_pack_years)) %>%
+  drop_na(othmenill) %>%
   ggplot(aes(x = race, y = avg_pack_years)) +
-  geom_bar(aes(fill=race), stat="identity", position = "dodge") +
+  geom_bar(aes(fill = race), stat = "identity", position = "dodge") +
   coord_flip() +
   guides(fill = "none") +
+  theme(plot.title.position = "plot",
+        plot.title = element_text(hjust = 0.5)) +
   labs(x = "Race",
-       y = "Average Pack-years (Avg. # of Cigarette Packs Smoked per Year)",
-  title = "Average Pack-years by Race & Mental Illness Status",
+       y = "Average Number of Pack-years",
+  title = "Average Number of Pack-years by Race & Mental Illness Status Among Smokers",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health") +
-  scale_y_continuous(labels = function(x) format(x,big.mark=",",
-                                                     scientific=FALSE)) +
   facet_wrap(~ othmenill, labeller = labeller(othmenill =
                                       c("No" = "Does Not Have Mental Illness",
                                         "Yes" = "Has Mental Illness"))) +
@@ -221,48 +222,46 @@ avg_pack_years_race_othmenill %>%
 ```
 \newline 
 \newline 
-\newline _**Interpretation of Average Pack-years by Race and Mental Illness Bar Graph:**_
+\newline _**Interpretation of Average Pack-years by Race and Mental Illness Status Among Smokers Bar Graph:**_
 \newline
 \newline
-This graph exhibits the number of average pack-years (i.e., average number of cigarette packs smoked per year) according to each race category and mental illness status of smokers in the 2011 California Smokers Cohort study.
+This graph exhibits the number of average pack-years for each race category and by mental illness status of smokers in the 2011 California Smokers Cohort study.
 
-Among smokers who have reported having no mental illness, those who identified as "Hispanic/Latino" by race appear to have the greatest number of average pack-years, followed closely by "White" and "American Indian or Alaskan Native", compared to other races in the 2011 California Smokers Cohort.
+Among smokers who have reported having no mental illness, those who identified as "Hispanic/Latino" by race appear to have the greatest number of average pack-years, followed by "White and "American Indian or Alaskan Native", out of all race categories in the 2011 California Smokers Cohort.
 
-Among smokers who have reported having mental illness, those who identified as "Other" by race appear to have the greatest number of average pack-years, followed closely by "White" and "American Indian or Alaskan Native", compared to other races in the 2011 California Smokers Cohort.
+Among smokers who have reported having mental illness, those who identified as "Other" by race appear to have the greatest number of average pack-years compared to other races in the 2011 California Smokers Cohort, with "White" and "American Indian or Alaskan Native" following closely behind.
 
 \newpage
 
-_**Bar Graph: Cigarette Purchase Location and Mental Illness**_
-```{r bar graph of frequencies by cigarette purchase location and mental illness, fig.width=8, fig.height=5}
+_**Bar Graph: Cigarette-buying Location Frequencies by Mental Illness Status Among Smokers**_
+```{r bar graph of frequency per cigarette purchase location by mental illness among smokers, fig.width=8, fig.height=5}
 
 #As similarly performed for the graph above, we also excluded NA values for the
 #variables of `wherebuy` and `othmenill` prior to creating this graph because
 #we did not believe NA values would be telling us any valuable information.
-#We chose to create a stack bar graph in order to more easily compare the
-#mental illness statuses reported by smokers for each cigarette
-#purchase location (since the frequencies are small), as well as showcase
-#the frequency that cigarettes were purchased at each location by smokers.
+#We chose to create a stacked bar graph instead of a dodged bar graph in order
+#to facilitate total frequency comparisons between different cigarette purchase
+#locations regardless of mental illness status.
 
 joined_smoking_df %>%
   filter(!is.na(wherebuy), !is.na(othmenill)) %>%
   ggplot(aes(x = wherebuy)) + 
-  geom_bar(aes(fill=othmenill), position = "stack") +
+  geom_bar(aes(fill = othmenill), position = "stack") +
   coord_flip() +
   theme(plot.title.position = "plot",
         plot.title = element_text(hjust = 0.5)) +
-  scale_fill_discrete(name = "Has Mental Illness",) + 
+  scale_fill_discrete(name = "Has Mental Illness") + 
   labs(x = "Location of Cigarette Purchase",
-       y ="Frequency",
-  title="Cigarette-buying Location and Mental Illness Status",
+       y = "Frequency",
+  title = "Cigarette-buying Location Frequencies by Mental Illness Status Among Smokers",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
 
 ```
 \newpage
 
-_**Interpretation for Mental Illness Status by Cigarette Purchase Location Bar Graph:**_
+_**Interpretation of Cigarette-buying Location Frequencies by Mental Illness Status Among Smokers Bar Graph:**_
 \newline
 \newline
-This bar graph explores the relationship between cigarette purchase location and mental illness status among smokers
-in the 2011 California Smokers Cohort study.
+This bar graph explores the relationship between frequencies per cigarette purchase location and mental illness status among smokers in the 2011 California Smokers Cohort study.
 
-Mental illness was not reported by the majority of the smokers for each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations, followed by those who purchased cigarettes at tobacco discount stores; these are the two locations that also have the highest number of cigarette purchases made among smokers.
+Mental illness was not reported by the majority of the smokers for each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations, followed by those who purchased cigarettes at tobacco discount stores; these are the two locations that also have the highest frequencies among smokers for making cigarette purchases at.
