@@ -3,31 +3,29 @@ title: 'Milestone #5'
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
-## Problem Statement
+<h2>Problem Statement</h2>
 
 For this project, we aimed to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status. In addition, we were interested in utilizing the 2011 CSC data to help us understand tobacco consumption in terms of "pack-years," which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked, and comparing the average number of pack-years to asthma, heart disease, diabetes, and mental illness. Based on our observations from our analyses, we hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies from this project.
 
-\newpage
+<h2>Methods</h2>
 
-## Methods
+<h4>_**Data Source**_</h4>
 
-_**Data Source:**_
+Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use in California and behaviors among smokers in order to inform tobacco prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates characters associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011. This data from the surveys conducted were split into two separate data sets, with the first containing information regarding each participant's smoking status, behaviors associated with smoking, and demographics; the second data set includes information regarding each participant's race and disease outcomes. The data sets were stored as data frames called `smoker_data` and `race_data`, respectively.
 
-Sponsored by the State of California's Department of Public Health (CDPH), the data source for this project is the 2011 California Smokers Cohort (CSC), which is a part of the California Tobacco Surveys (CTS) that collected information on the prevalence of tobacco use in California and behaviors among smokers in order to inform tobacco prevention efforts. To help CDPH better assess the effectiveness of smoking cessation strategies, the 2011 CSC data specifically investigates characters associated with quitting behavior among only smokers identified through telephone contacts purchased from data brokers, as well as through the California Health Interview Survey Longitudinal Smokers Survey (CLSS) between July 8, 2011 and December 8, 2011. This data from the surveys conducted were split into two separate data sets, with the first containing information regarding each participant's smoking status, behaviors associated with smoking, and demographics; the second data set includes information regarding each participant's race and disease outcomes. The data sets were stored as data frames called smoker_data and race_data, respectively.
+<h3>_**Data Wrangling**_</h3>
 
-## _**Data Wrangling**_
-
-_**Variables Kept During Import**_
+<h4>_**Variables Kept During Import**_</h4>
 
 Our group decided to keep only a select few variables from each of the two data sets during the importing process. The variables kept from each data set are as follows:
 
-*From the smoker_data data set: psraid, smokstat, WHEREBUY, BUYCALIF, HOWMANY, SMOK6NU, SMOK6UNI
+<ul>From the `smoker_data` data set: <li>`psraid`</li> <li>`smokstat`</li> <li>`WHEREBUY`</li> <li>`BUYCALIF`</li> <li>`HOWMANY`</li> <li>`SMOK6NUM`</li> <li>`SMOK6UNI`</li></ul>
 
-*From the race_data data set: ID, NERVOUS, WORRYING, PROBINTR, PROBDOWN, ASTHMA, HEARTDIS, DIABETES, OTHMENILL, race01, race02, race03, race04, race05, race06, race07, race08, race09, race10, race11, race12, race13, race14, race15
+<ul>From the `race_data` data set: <li>`ID`</li> <li>`NERVOUS`</li> <li>`WORRYING`</li> <li>`PROBINTR`</li> <li>`PROBDOWN`</li> <li>`ASTHMA`</li> <li>`HEARTDIS`</li> <li>`DIABETES`</li> <li>`OTHMENILL`</li> <li>`race01`</li> <li>`race02`</li> <li>`race03`</li> <li>`race04`</li> <li>`race05`</li> <li>`race06`</li> <li>`race07`</li> <li>`race08`</li> <li>`race09`</li> <li>`race10`</li> <li>`race11`</li> <li>`race12`</li> <li>`race13`</li> <li>`race14`</li> <li>`race15`</li></ul>
 
 ```{r import data sets and keep variables of interest, echo=F, message=F, warning=F}
 
@@ -57,13 +55,13 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 
 ```
 
-_**Cleaning the Data**_
+<h4>_**Cleaning the Data**_</h4>
 
 During the import of our data, we also included the argument of na in our read_csv() functions for both data sets in order to indicate that any missing values that show up as blank or "(DO NOT READ)"/"n/a"/any variations of N/A are identified as NA values in R.
 
-Following the importing stage, we changed the casing for all variables to lowercase in both data sets, as well as re-coded some character values to be error free, such as "In military commissariess, or" to "In military commissaries" and "Somewhere else (SPECIFY)?" to "Somewhere else" for the variable `wherebuy` from the data frame of smoker_data. Our group also re-coded the value of "100 or more cigarettes" to "100" for the variable `howmany` in the race_data data frame, which allowed us to convert the data type of the variable from character to numeric; the purpose of this conversion was to facilitate our calculation for pack-years later on in our analysis.
+Following the importing stage, we changed the casing for all variables to lowercase in both data sets, as well as re-coded some character values to be error free, such as "In military commissariess, or" to "In military commissaries" and "Somewhere else (SPECIFY)?" to "Somewhere else" for the variable `wherebuy` from the data frame of `smoker_data`. Our group also re-coded the value of "100 or more cigarettes" to "100" for the variable `howmany` in the `race_data` data frame, which allowed us to convert the data type of the variable from character to numeric; the purpose of this conversion was to facilitate our calculation for pack-years later on in our analysis.
 
-In order to join the two data frames together, our group had to first re-code the values of the variable `id` in the race_data data frame to show only numbers and no character strings. The purpose of this process is so that the values of `id` would match those of the variable `psraid` in the smoker_data data frame since they both represent participant IDs. We then converted the data type of `psraid` from numeric to character; with the same data type for the identical key variables of `id` = `psraid`, we were then able to join the two data sets together into a single data frame.
+In order to join the two data frames together, our group had to first re-code the values of the variable `id` in the `race_data` data frame to show only numbers and no character strings. The purpose of this process is so that the values of `id` would match those of the variable `psraid` in the `smoker_data` data frame since they both represent participant IDs. We then converted the data type of `psraid` from numeric to character; with the same data type for the identical key variables of `id` = `psraid`, we were then able to join the two data sets together into a single data frame.
 
 ```{r cleaning the data, echo=F, message=F, warning=F}
 
@@ -110,9 +108,9 @@ joined_smoking_df <- inner_join(x = race_data, y = smoker_data,
 
 ```
 
-_**Creating New Variables**_
+<h4>_**Creating New Variables**_</h4>
 
-Our group created a new variable called `race` to combine variables `race01` through `race15` into a single column shown in our final joined data frame; this was done by using conditional statements when a participant answered "Yes" to any particular race variable, which also allowed us to rename race 01 through race15 as the race categories they represent, such as White, Black, Japanese, and so on for better comprehension of the race of each individual in our data set at first glance.
+Our group created a new variable called `race` to combine variables `race01` through `race15` into a single column shown in our final joined data frame; this was done by using conditional statements when a participant answered "Yes" to any particular race variable, which also allowed us to rename `race 01` through `race15` as the race categories they represent, such as White, Black, Japanese, and so on for better comprehension of the race of each individual in our data set at first glance.
 
 Another variable we created was `pack_years`, which was created by multiplying the number of cigarette packs per day by the length of time a participant has been smoking on a daily basis. Before multiplying the length of time smoked by the number of cigarette packs per day, our group made sure to convert the length of time smoked to years based on the unit of time reported, such as dividing the length of time by 365 for time reported in days and by 12 for time reported in months; these different calculations by unit of time reported were essentially conditional statements that led us to create `pack_years`.
 
@@ -153,36 +151,13 @@ joined_smoking_final_df$pack_years <- round(joined_smoking_final_df$pack_years, 
 
 ```
 
-_**Additional Data Wrangling for Visualizations**_
+<h4>_**Additional Data Wrangling for Visualizations**_</h4>
 
 For all of our visualizations, we dropped all NA values based on variables presented in tables and graphs because we found these NA values to be unhelpful toward our analysis of the data.
 
-\newpage
+<h2>Results</h2>
 
-## Results
-
-```{r descriptive statistics for variables race and othmenill combined table, echo=F, message=F, warning=F}
-
-table_race_othmenill <- joined_smoking_final_df %>%
-  select(race, othmenill) %>%
-  drop_na(race, othmenill) %>%
-  group_by(race, othmenill) %>%
-  summarize(count = n()) %>%
-  pivot_wider(names_from = "othmenill", values_from = "count") %>%
-  arrange(desc(Yes), No)
-
-table_race_othmenill_final <- table_race_othmenill[,c(1,3,2)]
-
-kable(table_race_othmenill_final, 
-      booktabs=T, 
-      col.names=c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),
-      align='lcccc', 
-      caption='\\textbf{Race and Mental Illness Status}',
-      format.args=list(big.mark=","))%>%
-  kable_styling(latex_options = "HOLD_position")
-
-```
-
+<h3>_**Table 1**_</h3>
 ```{r table of cigarette pack-years by disease outcome among smokers, echo=F, message=F, warning=F}
 
 #Table for average number of pack-years per disease for smokers who have a disease
@@ -203,16 +178,47 @@ kable(t_avg_pack_years_disease,
 booktabs=T, 
 col.names=c("Disease", "Average Number of Pack-years"),  
 align='lcccc', 
-caption= 'Average Number of Pack-years by Disease Outcome Among Smokers') %>%
+caption= '<center><b><h4 style="color: black;">Average Number of Pack-years by Disease Outcome Among Smokers</h4></b></center>') %>%
 kable_styling(full_width = T) %>%
 kable_styling(latex_options = "hold_position") %>%
-footnote(general = 
-           "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
+footnote(general_title = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health", footnote_as_chunk = T,
+         general = "")
 
 ```
+
 This table demonstrates the average number of pack-years per disease type for smokers who reported having asthma, diabetes, heart disease, and/or mental illness in the 2011 California Smokers Cohort study.
 
 Among smokers who have reported having asthma, heart disease, diabetes, and/or mental illness, those with heart disease have the highest number of average pack-years (28), while those with mental illness have the lowest number of average pack-years (17).
+
+<h3>_**Table 2**_</h3>
+```{r descriptive statistics for variables race and othmenill combined table, echo=F, message=F, warning=F}
+
+table_race_othmenill <- joined_smoking_final_df %>%
+  select(race, othmenill) %>%
+  drop_na(race, othmenill) %>%
+  group_by(race, othmenill) %>%
+  summarize(count = n()) %>%
+  pivot_wider(names_from = "othmenill", values_from = "count") %>%
+  arrange(desc(Yes), No)
+
+table_race_othmenill_final <- table_race_othmenill[,c(1,3,2)]
+
+kable(table_race_othmenill_final, 
+      booktabs = T, 
+      col.names = c("Race", "Diagnosed Mental Illness", "No Diagnosed Mental Illness"),
+      align ='lcccc', 
+      caption = '<center><b><h4 style="color: black;">Mental Illness Status by Race</h4></b></center>', digits = 0,
+      format.args=list(big.mark=","))%>%
+  kable_styling(latex_options = "HOLD_position") %>%
+footnote(general_title = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health", footnote_as_chunk = T,
+         general = "")
+```
+
+This table displays the number of participants who reported having diagnosed mental illness or no diagnosed mental illness separated by racial background of the participants.
+
+Participants who identified themselves as "White" appear to have the greatest number of both diagnosed mental illness and no diagnosed mental illness cases.
+
+<h3>_**Figure 1**_</h3>
 
 ```{r bar graph of cigarette pack-years by race and mental illness among smokers, fig.width=8, fig.height=5, echo=F, message=F, warning=F}
 
@@ -255,11 +261,13 @@ avg_pack_years_race_othmenill %>%
        
 ```
 
-This graph exhibits the number of average pack-years for each race category and by mental illness status of smokers in the 2011 California Smokers Cohort study.
+This graph exhibits the number of average pack-years for each race category and by reported mental illness status of smokers in the 2011 California Smokers Cohort study.
 
 Among smokers who have reported having no mental illness, those who identified as "Hispanic/Latino" by race appear to have the greatest number of average pack-years, followed by "White and "American Indian or Alaskan Native", out of all race categories in the 2011 California Smokers Cohort.
 
 Among smokers who have reported having mental illness, those who identified as "Other" by race appear to have the greatest number of average pack-years compared to other races in the 2011 California Smokers Cohort, with "White" and "American Indian or Alaskan Native" following closely behind.
+
+<h3>_**Figure 2**_</h3>
 
 ```{r bar graph of frequency per cigarette purchase location by mental illness among smokers, fig.width=8, fig.height=5, echo=F, message=F, warning=F}
 
@@ -285,6 +293,16 @@ joined_smoking_final_df %>%
 
 ```
 
-This bar graph explores the relationship between frequencies per cigarette purchase location and mental illness status among smokers in the 2011 California Smokers Cohort study.
+This bar graph explores the relationship between frequencies per cigarette purchase location and reported mental illness status among smokers in the 2011 California Smokers Cohort study.
 
 Mental illness was not reported by the majority of the smokers for each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations, followed by those who purchased cigarettes at tobacco discount stores; these are the two locations that also have the highest frequencies among smokers for making cigarette purchases at.
+
+<h2>Discussion</h2>
+
+Based on our results from the analysis on our data, the impact of race on diagnosed mental illness status is inconclusive. This conclusion is supported by the conflicting information given by Table 2 and Figure 1, in that smokers who identified as "White" had the highest number of reported mental illness diagnoses, but the race category of "Other" surpassed "White" in terms of average number of pack-years to quantify tobacco consumption, as shown in Figure 1. However, it is worth mentioning that the "White" race category's average number of pack-years is very close to that of "Other"; the two race categories' bar lengths are similar in length, as seen in Figure 1. This point of interest suggests for further research into the relationship between race and mental illness outcomes with the recommendation that the analyses rule out confounding factors and other factors that may bias the results, which were not covered in this analysis. For example, given the data we have here, we do not know how accurate participants' reports of diagnosed mental illnesses are, which may influence the length of the bars per race by reported mental illness status category in Figure 1.
+
+In addition our group has concluded that there is a possible association between cigarette purchasing locations and mental illness outcomes. Although there were few cases of reported mental illness diagnoses compared to that for no mental illness diagnoses, the highest numbers of reported mental illness diagnoses were for the cigarette-buying locations of convenience or gas stations, as well as tobacco discount stores. Again though, further research and strict analyses must be performed in order to minimize confounding and factors that may distort the relationship between cigarette purchasing locations and mental illness outcomes.
+
+Lastly, we conclude that out of the four diseases of asthma, diabetes, heart disease, and mental illness, tobacco consumption in terms of pack-years was the lowest among smokers who reported having mental illness and the highest among smokers who reported having heart disease; this conclusion is supported by the information exhibited in Table 1.
+
+
