@@ -3,8 +3,8 @@ title: 'Milestone #5'
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
 date: "`r Sys.Date()`"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 <h2>Problem Statement</h2>
@@ -112,7 +112,7 @@ joined_smoking_df <- inner_join(x = race_data, y = smoker_data,
 
 Our group created a new variable called `race` to combine variables `race01` through `race15` into a single column shown in our final joined data frame; this was done by using conditional statements when a participant answered "Yes" to any particular race variable, which also allowed us to rename `race 01` through `race15` as the race categories they represent, such as White, Black, Japanese, and so on for better comprehension of the race of each individual in our data set at first glance.
 
-We also created `pack_years`, which was created by multiplying the number of cigarette packs per day by the length of time a participant has been smoking on a daily basis. Before multiplying the length of time smoked by the number of cigarette packs per day, our group made sure to convert the length of time smoked to years based on the unit of time reported, such as dividing the length of time by 365 for time reported in days and by 12 for time reported in months; these different calculations by unit of time reported were essentially conditional statements that led us to create `pack_years`.
+Another variable we created was `pack_years`, which was created by multiplying the number of cigarette packs per day by the length of time a participant has been smoking on a daily basis. Before multiplying the length of time smoked by the number of cigarette packs per day, our group made sure to convert the length of time smoked to years based on the unit of time reported, such as dividing the length of time by 365 for time reported in days and by 12 for time reported in months; these different calculations by unit of time reported were essentially conditional statements that led us to create `pack_years`.
 
 ```{r creating new variables, echo=F, message=F, warning=F}
 
@@ -269,40 +269,46 @@ Among smokers who have reported having mental illness, those who identified as "
 
 <h3>_**Figure 2**_</h3>
 
-```{r bar graph of frequency per cigarette purchase location by mental illness among smokers, fig.width=8, fig.height=5, echo=F, message=F, warning=F}
+```{r bar graph of percentage per cigarette purchase location by mental illness among smokers, fig.width=10, fig.height=5, echo=F, message=F, warning=F}
 
 #As similarly performed for the graph above, we also excluded NA values for the
 #variables of `wherebuy` and `othmenill` prior to creating this graph because
 #we did not believe NA values would be telling us any valuable information.
-#We chose to create a stacked bar graph instead of a dodged bar graph in order
-#to facilitate total frequency comparisons between different cigarette purchase
-#locations regardless of mental illness status.
+#We chose to create a dodged bar graph with percentages grouped by cigarette
+#purchase location and mental illness status in order for the viewer to
+#easily compare the percentage of purchases made at each cigarette purchase
+#location by mental illness status.
 
 joined_smoking_final_df %>%
   filter(!is.na(wherebuy), !is.na(othmenill)) %>%
-  ggplot(aes(x = wherebuy)) + 
-  geom_bar(aes(fill = othmenill), position = "stack") +
+  group_by(othmenill, wherebuy) %>%
+  summarize(n = n()) %>%
+  mutate(freq = n/sum(n)) %>%
+ggplot(aes(x = wherebuy, y = freq*100, fill = othmenill)) +
+  geom_bar(stat = "identity", position = "dodge") +
   coord_flip() +
+  facet_wrap(~othmenill) +
+  scale_y_continuous(limits = c(0, 100)) +
   theme(plot.title.position = "plot",
         plot.title = element_text(hjust = 0.5)) +
-  scale_fill_discrete(name = "Has Mental Illness") + 
+  scale_fill_discrete(name = "Has Mental Illness") +
   labs(x = "Location of Cigarette Purchase",
-       y = "Frequency",
-  title = "Cigarette-buying Location Frequencies by Mental Illness Status Among Smokers",
+       y = "Percentage",
+  title = "Percentage of Cigarette Purchases Made Among Smokers by Cigarette Retailer and Mental Illness Status",
   caption = "Data Source: 2011 California Smokers Cohort, CA Dept. of Health")
 
 ```
 
-This bar graph explores the relationship between frequencies per cigarette purchase location and reported mental illness status among smokers in the 2011 California Smokers Cohort study.
+This bar graph explores the relationship between cigarette purchase location frequencies by smokers and reported mental illness status among smokers in the 2011 California Smokers Cohort study.
 
-Mental illness was not reported by the majority of the smokers for each cigarette purchase location. However, mental illness was reported in the greatest number by those who purchased cigarettes at convenience stores or gas stations, followed by those who purchased cigarettes at tobacco discount stores; these are the two locations that also have the highest frequencies among smokers for making cigarette purchases at.
+Among smokers with reported mental illness, the greatest percentage of cigarette purchases were made at convenience stores or gas stations, followed by the location of tobacco discount stores; these are the two locations that also have the highest percentages for buying cigarettes at among smokers with no reported mental illness.
 
 <h2>Discussion</h2>
 
-Based on our results from the analysis of our data, the impact of race on diagnosed mental illness status is inconclusive. This conclusion is supported by the conflicting information given by Table 2 and Figure 1; as shown in Table 2, smokers who identified as "White" had the highest number of reported mental illness diagnoses, but in Figure 1, the race category of "Other" surpassed "White" in terms of tobacco consumption (average pack-years) and had the greatest number of average pack-years for those who reported diagnosed mental illnesses. However, it is notable that the "White" race category's average number of pack-years is still very close to that of "Other"; the two race categories' bar lengths are similar in length, as seen in Figure 1. This interesting observation warrants further research into the relationship between race and reported mental illness outcomes, with the recommendation that potential confounders and sources of potential bias are accounted for, which were not in this analysis.
+Based on our results from the analysis of our data, the impact of race on diagnosed mental illness status is inconclusive. This conclusion is supported by the conflicting information given by Table 2 and Figure 1; as shown in Table 2, smokers who identified as "White" had the highest number of reported mental illness diagnoses, but in Figure 1, the race category of "Other" surpassed "White" in terms of tobacco consumption (average pack-years) and had the greatest number of average pack-years for those who reported diagnosed mental illnesses. However, it is notable that the "White" race category's average number of pack-years is still very close to that of "Other"; the two race categories' bar lengths are similar in length, as seen in Figure 1. This interesting observation warrants further research into the relationship between race and reported mental illness outcomes, with the recommendation that potential confounders and sources of potential bias are accounted for, which were not in this analysis. For example, given the data we have here, we do not know how accurate participants' reports of diagnosed mental illnesses are, which may skew the length of the bars per race by reported mental illness status category in Figure 1.
 
-We also concluded that there is a possible association between cigarette purchasing locations and mental illness outcomes. Although there were few cases of reported mental illness diagnoses compared to that for no mental illness diagnoses, the highest numbers of reported mental illness diagnoses were for the cigarette-buying locations of convenience or gas stations, as well as tobacco discount stores. In order to strengthen this conclusion, further research and thorough statistical analyses must also be performed in order to minimize confounding and account for factors that may distort the relationship between cigarette purchasing locations and mental illness outcomes.
+In addition our group has concluded that there is a possible association between cigarette purchasing locations and mental illness outcomes. As exhibited by Figure 2, convenience stores/gas had the highest percentage of cigarette purchases made by smokers with reported mental illness diagnoses, followed by tobacco discount stores. In order to strengthen this conclusion, further research and thorough statistical analyses must also be performed in order to minimize confounding and account for factors that may distort the relationship between cigarette purchasing locations and mental illness outcomes.
 
 Lastly, we conclude that out of the four diseases of asthma, diabetes, heart disease, and mental illness, tobacco consumption in terms of pack-years was the lowest among smokers who reported having mental illness and the highest among smokers who reported having heart disease; this conclusion is supported by the information exhibited in Table 1.
 
-Overall, our group recommends that CDPH further investigate the cigarette purchasing locations of convenience stores, gas stations, and tobacco discount stores and their relationship to reported mental illness diagnoses. CDPH could look into potential tobacco product(s) specifically sold at these locations that smokers cannot get anywhere else, as well as the potency of the specific product(s). In addition, we recommend CDPH to look into the unique characteristics of the demographic that frequent these places. If financial budgets permit, CDPH could conduct further studies on the impact of race on mental illness outcomes using different methods to measure the outcomes of mental illnesst to minimize bias in order to arrive at more concrete conclusions.
+Overall, our group recommends that CDPH further investigate the cigarette purchasing locations of convenience stores, gas stations, and tobacco discount stores and their relationship to mental illness diagnoses. CDPH could look into potential tobacco product(s) specifically sold at these locations that smokers cannot get anywhere else, as well as the potency of the specific product(s). In addition, we recommend CDPH to look into the unique characteristics of the demographic that frequent these places. The findings of these investigations could then lead to more concrete conclusions of our group's analyses in order to further develop tobacco cessation programs and interventions. If financial budgets permit, CDPH could additionally conduct further studies on the impact of race on mental illness outcomes, possibly with different methods to measure the outcomes of mental illness instead of relying on participant reporting that would minimize bias in order to arrive at more concrete conclusions.
