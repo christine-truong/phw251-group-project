@@ -9,7 +9,7 @@ output:
 
 <h2>Problem Statement</h2>
 
-For this project, we aimed to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011, as well as explore how race and location of cigarette purchase can impact disease status. In addition, we were interested in utilizing the 2011 CSC data to help us understand tobacco consumption in terms of "pack-years," which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked, and comparing the average number of pack-years to asthma, heart disease, diabetes, and mental illness. Based on our observations from our analyses, we hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies from this project.
+We aimed to investigate how tobacco use primarily impacts mental illness among smokers in California in 2011 and explore how race and location of cigarette purchase can impact disease status. We were also interested in utilizing the 2011 CSC data to help us understand tobacco consumption in terms of "pack-years," which is the product of the number of packs of cigarettes smoked per day and the years a person has smoked, and comparing the average number of pack-years to asthma, heart disease, diabetes, and mental illness. Based on our observations from our analyses, we hope to provide some insight and suggestions for CDPH on how to redirect resources that can strengthen smoking cessation strategies from this project.
 
 <h2>Methods</h2>
 
@@ -50,9 +50,9 @@ smoker_data <- read_csv("ca_csc_smoker_data.csv",
 
 During the import of our data, we did not exclude any missing values and reclassified any response value of "(DO NOT READ)"/"n/a"/any variations of N/A as missing.
 
-Following the importing stage, we changed the casing for all variables to lowercase in both data sets, as well as re-coded some character values to be error free, such as "In military commissaries, or" to "In military commissaries" and "Somewhere else (SPECIFY)?" to "Somewhere else" for the variable `wherebuy` from the data frame of `smoker_data`. Our group also re-coded the value of "100 or more cigarettes" to "100" for the variable `howmany` in the `race_data` data frame, which allowed us to convert the data type of the variable from character to numeric; the purpose of this conversion was to facilitate our calculation for pack-years later on in our analysis.
+Following the importing stage, we changed the casing for all variables to lowercase in both data sets, re-coded some character values to be error free, and modified the "100 or more cigarettes" to "100" for the variable `howmany` in the `race_data` data frame. This allowed us to convert the data type of the variable from character to numeric; the purpose of this conversion was to facilitate our calculation for pack-years later on in our analysis.
 
-In order to join the two data frames together, our group had to first re-code the values of the variable `id` in the `race_data` data frame to show only numbers and no character strings. The purpose of this process is so that the values of `id` would match those of the variable `psraid` in the `smoker_data` data frame since they both represent participant IDs. We then converted the data type of `psraid` from numeric to character; with the same data type for the identical key variables of `id` = `psraid`, we were then able to join the two data sets together into a single data frame.
+To join the two data frames we re-coded the values of the variable `id` in the `race_data` data frame to show only numbers and no character strings. This was done so the values of `id` would match those of the variable `psraid` in the `smoker_data` data frame since they both represent participant IDs. We then converted the data type of `psraid` from numeric to character; with the same data type for the identical key variables of `id` = `psraid`, we were then able to join the two data sets together into a single data frame.
 
 ```{r cleaning the data, echo=F, message=F, warning=F}
 
@@ -101,9 +101,7 @@ joined_smoking_df <- inner_join(x = race_data, y = smoker_data,
 
 <h4>_**Creating New Variables**_</h4>
 
-Our group created a new variable called `race` to combine variables `race01` through `race15` into a single column shown in our final joined data frame; this was done by using conditional statements when a participant answered "Yes" to any particular race variable, which also allowed us to rename `race 01` through `race15` as the race categories they represent, such as White, Black, Japanese, and so on for better comprehension of the race of each individual in our data set at first glance.
-
-Another variable we created was `pack_years`, which was created by multiplying the number of cigarette packs per day by the length of time a participant has been smoking on a daily basis. Before multiplying the length of time smoked by the number of cigarette packs per day, our group made sure to convert the length of time smoked to years based on the unit of time reported, such as dividing the length of time by 365 for time reported in days and by 12 for time reported in months; these different calculations by unit of time reported were essentially conditional statements that led us to create `pack_years`.
+Our group created a new variable called `race` to combine variables `race01` through `race15` into a single column shown in our final joined data frame for better comprehension of the race of each individual in our data set at first glance.We also created was `pack_years`, which was created by multiplying the number of cigarette packs per day by the length of time a participant has been smoking on a daily basis. 
 
 ```{r creating new variables, echo=F, message=F, warning=F}
 
