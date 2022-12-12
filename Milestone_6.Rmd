@@ -1,7 +1,7 @@
 ---
 title: 'Milestone #6'
 author: "Rachael Baartmans, Lara Petalio, Christine Truong"
-date: "`r Sys.Date()`"
+date: "2022-12-11"
 output:
   html_document: default
   pdf_document: default
