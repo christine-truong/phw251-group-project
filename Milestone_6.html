@@ -11,7 +11,7 @@
 
 <meta name="author" content="Rachael Baartmans, Lara Petalio, Christine Truong" />
 
-<meta name="date" content="2022-12-07" />
+<meta name="date" content="2022-12-12" />
 
 <title>Milestone #6</title>
 
@@ -590,7 +590,7 @@ pre code {
 <h1 class="title toc-ignore">Milestone #6</h1>
 <h4 class="author">Rachael Baartmans, Lara Petalio, Christine
 Truong</h4>
-<h4 class="date">2022-12-07</h4>
+<h4 class="date">2022-12-12</h4>
 
 </div>
 
@@ -598,17 +598,17 @@ Truong</h4>
 <h2>
 Problem Statement
 </h2>
-<p>For this project, we aimed to investigate how tobacco use primarily
-impacts mental illness among smokers in California in 2011, as well as
-explore how race and location of cigarette purchase can impact disease
-status. In addition, we were interested in utilizing the 2011 CSC data
-to help us understand tobacco consumption in terms of “pack-years,”
-which is the product of the number of packs of cigarettes smoked per day
-and the years a person has smoked, and comparing the average number of
-pack-years to asthma, heart disease, diabetes, and mental illness. Based
-on our observations from our analyses, we hope to provide some insight
-and suggestions for CDPH on how to redirect resources that can
-strengthen smoking cessation strategies from this project.</p>
+<p>We aimed to investigate how tobacco use primarily impacts mental
+illness among smokers in California in 2011 and explore how race and
+location of cigarette purchase can impact disease status. We were also
+interested in utilizing the 2011 CSC data to help us understand tobacco
+consumption in terms of “pack-years,” which is the product of the number
+of packs of cigarettes smoked per day and the years a person has smoked,
+and comparing the average number of pack-years to asthma, heart disease,
+diabetes, and mental illness. Based on our observations from our
+analyses, we hope to provide some insight and suggestions for CDPH on
+how to redirect resources that can strengthen smoking cessation
+strategies from this project.</p>
 <h2>
 Methods
 </h2>
@@ -643,20 +643,15 @@ respectively.</p>
 and reclassified any response value of “(DO NOT READ)”/“n/a”/any
 variations of N/A as missing.</p>
 <p>Following the importing stage, we changed the casing for all
-variables to lowercase in both data sets, as well as re-coded some
-character values to be error free, such as “In military commissaries,
-or” to “In military commissaries” and “Somewhere else (SPECIFY)?” to
-“Somewhere else” for the variable <code>wherebuy</code> from the data
-frame of <code>smoker_data</code>. Our group also re-coded the value of
-“100 or more cigarettes” to “100” for the variable <code>howmany</code>
-in the <code>race_data</code> data frame, which allowed us to convert
-the data type of the variable from character to numeric; the purpose of
-this conversion was to facilitate our calculation for pack-years later
-on in our analysis.</p>
-<p>In order to join the two data frames together, our group had to first
-re-code the values of the variable <code>id</code> in the
-<code>race_data</code> data frame to show only numbers and no character
-strings. The purpose of this process is so that the values of
+variables to lowercase in both data sets, re-coded some character values
+to be error free, and modified the “100 or more cigarettes” to “100” for
+the variable <code>howmany</code> in the <code>race_data</code> data
+frame. This allowed us to convert the data type of the variable from
+character to numeric; the purpose of this conversion was to facilitate
+our calculation for pack-years later on in our analysis.</p>
+<p>To join the two data frames we re-coded the values of the variable
+<code>id</code> in the <code>race_data</code> data frame to show only
+numbers and no character strings. This was done so the values of
 <code>id</code> would match those of the variable <code>psraid</code> in
 the <code>smoker_data</code> data frame since they both represent
 participant IDs. We then converted the data type of <code>psraid</code>
@@ -668,23 +663,11 @@ join the two data sets together into a single data frame.</p>
 </h4>
 <p>Our group created a new variable called <code>race</code> to combine
 variables <code>race01</code> through <code>race15</code> into a single
-column shown in our final joined data frame; this was done by using
-conditional statements when a participant answered “Yes” to any
-particular race variable, which also allowed us to rename
-<code>race 01</code> through <code>race15</code> as the race categories
-they represent, such as White, Black, Japanese, and so on for better
-comprehension of the race of each individual in our data set at first
-glance.</p>
-<p>Another variable we created was <code>pack_years</code>, which was
-created by multiplying the number of cigarette packs per day by the
-length of time a participant has been smoking on a daily basis. Before
-multiplying the length of time smoked by the number of cigarette packs
-per day, our group made sure to convert the length of time smoked to
-years based on the unit of time reported, such as dividing the length of
-time by 365 for time reported in days and by 12 for time reported in
-months; these different calculations by unit of time reported were
-essentially conditional statements that led us to create
-<code>pack_years</code>.</p>
+column shown in our final joined data frame for better comprehension of
+the race of each individual in our data set at first glance.We also
+created was <code>pack_years</code>, which was created by multiplying
+the number of cigarette packs per day by the length of time a
+participant has been smoking on a daily basis.</p>
 <h4>
 <em><strong>Additional Data Wrangling for Visualizations</strong></em>
 </h4>
@@ -1071,15 +1054,15 @@ which were not in this analysis. For example, given the data we have
 here, we do not know how accurate participants’ reports of diagnosed
 mental illnesses are, which may skew the length of the bars per race by
 reported mental illness status category in Figure 1.</p>
-<p>In addition our group has concluded that there is a possible
-association between cigarette purchasing locations and mental illness
-outcomes. As exhibited by Figure 2, convenience stores/gas had the
-highest percentage of cigarette purchases made by smokers with reported
-mental illness diagnoses, followed by tobacco discount stores. In order
-to strengthen this conclusion, further research and thorough statistical
-analyses must also be performed in order to minimize confounding and
-account for factors that may distort the relationship between cigarette
-purchasing locations and mental illness outcomes.</p>
+<p>In addition, our group concludes that there is a possible association
+between cigarette purchasing locations and mental illness outcomes. As
+exhibited by Figure 2, convenience stores/gas had the highest percentage
+of cigarette purchases made by smokers with reported mental illness
+diagnoses, followed by tobacco discount stores. In order to strengthen
+this conclusion, further research and thorough statistical analyses must
+also be performed in order to minimize confounding and account for
+factors that may distort the relationship between cigarette purchasing
+locations and mental illness outcomes.</p>
 <p>Lastly, we conclude that out of the four diseases of asthma,
 diabetes, heart disease, and mental illness, tobacco consumption in
 terms of pack-years was the lowest among smokers who reported having
